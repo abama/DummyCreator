@@ -11,6 +11,8 @@ import de.abama.dummycreator.entities.Page;
 import de.abama.dummycreator.masterdata.MasterData;
 import de.abama.dummycreator.utlilities.ArticleUtilities;
 import de.abama.dummycreator.utlilities.ControllerUtilities;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -82,7 +84,7 @@ public class Controller {
     private ScrollPane view_Spread;
     
     @FXML
-    private ListView<?> search_result;
+    private ListView<HBox> search_result;
     
     @FXML
     private Label info_articles;
@@ -108,11 +110,14 @@ public class Controller {
     }
     
     @FXML
-    private void importCSV(ActionEvent event) {
+    private void importCSV(ActionEvent event) throws IOException {
     	final File file = ControllerUtilities.chooseCsvFile();
     	final CSV csv = CsvFileUtility.read(file);
     	masterData.add(ArticleUtilities.createArticles(csv));
     	updateMasterDataInfo();
+    	//search_result.setItems(FXCollections.observableArrayList(masterData.getArticleNumbers()));
+    	
+    	search_result.setItems(new ArticleUtilities().createListItems(masterData.getArticles()));
     }
 
 	private void updateMasterDataInfo() {
@@ -141,9 +146,7 @@ public class Controller {
     	System.out.println("Seiten: " + catalogue.getPages().size());
     	updateCatalogueViews();
     	
-    	VBox pageThumbnail = new VBox();
-    	
-		pageThumbnail = FXMLLoader.load(getClass().getResource("PageThumbnail.fxml"));
+    	VBox pageThumbnail = FXMLLoader.load(getClass().getResource("PageThumbnail.fxml"));
 		((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(currentPage.getNumber()));
 		//((TextField) pageThumbnail.lookup("#label")).setText("Neue Seite");
 		

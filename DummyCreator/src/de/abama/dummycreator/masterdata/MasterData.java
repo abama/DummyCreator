@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
+
+import java.util.Set;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import de.abama.dummycreator.entities.Article;
 import de.abama.dummycreator.entities.ArticleGroup;
 
@@ -29,5 +35,13 @@ public class MasterData {
 		for(final Article article : articles){
 			this.articles.put(article.getNumber(), article);
 		}
+	}
+
+	public List<Integer> getArticleNumbers() {
+		return new ArrayList<Integer>(articles.keySet());
+	}
+
+	public List<Article> getArticles() {
+		return new ArrayList<Article>(articles.values());
 	}
 }

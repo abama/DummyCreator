@@ -19,6 +19,8 @@ public class CsvFileUtility {
 		CSV csv = new CSV();
 
 		final List<String> lines = readLines(file);
+		
+		detectSeparator(lines.get(0));
 				
 		for(final String line : lines){
 			csv.addRow(Arrays.asList(line.split(sep)));
@@ -71,5 +73,11 @@ public class CsvFileUtility {
 		System.out.println("CSV - Zeilen gelesen: " + rows.size());
 
 		return rows;
+	}
+	
+	private static void detectSeparator(final String row){
+		if(row.contains("\t")) sep = "\t";
+		else if(row.contains(";")) sep = ";";
+		else if(row.contains(",")) sep = ",";
 	}
 }
