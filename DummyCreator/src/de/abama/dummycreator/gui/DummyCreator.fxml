@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.abama.dummycreator.gui.Controller">
+   <children>
+      <VBox prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar>
+              <menus>
+                  <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="DummyCreator">
+                    <items>
+                      <MenuItem mnemonicParsing="false" style="-fx-font-weight: normal;" text="Einstellungen" />
+                        <MenuItem mnemonicParsing="false" style="-fx-font-weight: normal;" text="Beenden" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Datei">
+                  <items>
+                    <MenuItem fx:id="menu_file_new" mnemonicParsing="false" onAction="#newFile" text="Neu" />
+                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Öffnen" />
+                        <MenuItem mnemonicParsing="false" text="Speichern" />
+                        <MenuItem mnemonicParsing="false" text="Speichern als..." />
+                        <MenuItem mnemonicParsing="false" onAction="#closeFile" text="Schließen" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Eigenschaften" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Bearbeiten">
+                  <items>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" text="Ausschneiden" />
+                        <MenuItem mnemonicParsing="false" text="Kopieren" />
+                        <MenuItem mnemonicParsing="false" text="Einfügen" />
+                        <MenuItem mnemonicParsing="false" text="Löschen" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Umbenennen" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Hinzufügen">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#newChapter" text="Kapitel" />
+                        <MenuItem mnemonicParsing="false" onAction="#newPage" text="Seite" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Export">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Tabelle" />
+                        <MenuItem mnemonicParsing="false" text="XML" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <SplitPane dividerPositions="0.1, 0.2" prefHeight="608.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
+              <items>
+                  <AnchorPane maxWidth="400.0" prefWidth="250.0">
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TitledPane animated="false" collapsible="false" text="Suche">
+                                <content>
+                                  <AnchorPane maxHeight="150.0" minHeight="0.0" minWidth="0.0" prefWidth="300.0">
+                                       <children>
+                                          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <HBox>
+                                                   <children>
+                                                      <TextArea minHeight="24.0" promptText="Artikelnummer(n)" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="26.0" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <TextArea minHeight="24.0" promptText="Name / Beschreibung" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="46.0" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <TextArea minHeight="24.0" promptText="Schlagworte" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" text="Suche..." AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" prefHeight="448.0" prefWidth="367.0" text="Verfügbare Artikel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                                             <children>
+                                                <ListView fx:id="search_result" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                  <SplitPane orientation="VERTICAL" SplitPane.resizableWithParent="false">
+                    <items>
+                        <AnchorPane>
+                           <children>
+                              <TitledPane animated="false" collapsible="false" contentDisplay="BOTTOM" text="Hinzufügen" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <content>
+                                    <AnchorPane>
+                                       <children>
+                                          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#newChapter" text="Kapitel">
+                                                   <graphic>
+                                                      <VBox alignment="CENTER" prefWidth="100.0">
+                                                         <children>
+                                                            <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@./icon_kapitel.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic>
+                                                </Button>
+                                                <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#newPage" text="Seite">
+                                                   <graphic>
+                                                      <VBox alignment="CENTER" prefWidth="100.0">
+                                                         <children>
+                                                            <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@./icon_kapitel.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic>
+                                                </Button>
+                                                <Button contentDisplay="TOP" layoutX="10.0" layoutY="159.0" mnemonicParsing="false" onAction="#newGroup" text="Gruppe">
+                                                   <graphic>
+                                                      <VBox alignment="CENTER" prefWidth="100.0">
+                                                         <children>
+                                                            <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@./icon_kapitel.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <SplitPane dividerPositions="0.25" orientation="VERTICAL">
+                    <items>
+                        <HBox SplitPane.resizableWithParent="false">
+                           <children>
+                              <AnchorPane>
+                                 <children>
+                                    <Button fx:id="pages_prev_btn" mnemonicParsing="false" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <HBox fx:id="view_Pages" />
+                                       </content>
+<!--                                        <padding> -->
+<!--                                           <Insets top="10.0" /> -->
+<!--                                        </padding> -->
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="10.0" layoutY="10.0">
+                                 <children>
+                                    <Button fx:id="pages_next_btn" mnemonicParsing="false" text="&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <AnchorPane>
+                                 <children>
+                                    <Button fx:id="spread_prev_btn" mnemonicParsing="false" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <ScrollPane fx:id="view_spread" fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+                                 <content>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <TextField fx:id="spread_left_keywords" alignment="CENTER" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;">
+                                                   <VBox.margin>
+                                                      <Insets left="100.0" right="100.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                                <Pane fx:id="spread_left_content" prefHeight="200.0" prefWidth="388.0" style="-fx-background-color: fff;" VBox.vgrow="ALWAYS">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </Pane>
+                                                <Label fx:id="spread_left_number" text="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightgrey;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <TextField fx:id="spread_right_keywords" alignment="CENTER" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;">
+                                                   <VBox.margin>
+                                                      <Insets left="100.0" right="100.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                                <Pane fx:id="spread_right_content" style="-fx-background-color: fff;" VBox.vgrow="ALWAYS">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </Pane>
+                                                <Label fx:id="spread_right_number" text="3">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </content>
+                              </ScrollPane>
+                              <AnchorPane>
+                                 <children>
+                                    <Button fx:id="spread_next_btn" mnemonicParsing="false" text="&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                    </items>
+                  </SplitPane>
+              </items>
+            </SplitPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
