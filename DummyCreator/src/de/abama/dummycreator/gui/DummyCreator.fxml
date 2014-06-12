@@ -53,6 +53,11 @@
                         <MenuItem mnemonicParsing="false" text="XML" />
                     </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Artikeldaten">
+                     <items>
+                        <MenuItem fx:id="menu_masterdata_import" mnemonicParsing="false" onAction="#importCSV" text="Importieren..." />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <SplitPane dividerPositions="0.1, 0.2" prefHeight="608.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
@@ -104,7 +109,7 @@
                               </TitledPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TitledPane animated="false" collapsible="false" prefHeight="448.0" prefWidth="367.0" text="Verfügbare Artikel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TitledPane animated="false" collapsible="false" prefHeight="448.0" prefWidth="367.0" text="Ergebnis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0">
                                              <children>
@@ -115,6 +120,31 @@
                                     </TitledPane>
                                  </children>
                               </AnchorPane>
+                              <TitledPane animated="false" text="Datenbestand">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Artikel: " />
+                                                <Label layoutX="10.0" layoutY="25.0" text="Gruppen:" GridPane.rowIndex="1" />
+                                                <Label fx:id="info_articles" text="0" GridPane.columnIndex="1" />
+                                                <Label fx:id="info_groups" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
                            </children>
                         </VBox>
                      </children>

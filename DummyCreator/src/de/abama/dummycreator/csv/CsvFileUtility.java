@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CsvUtility {
+public class CsvFileUtility {
 
 	private static String sep = "\t";
 

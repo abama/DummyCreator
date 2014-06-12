@@ -5,6 +5,8 @@ import java.io.IOException;
 import de.abama.dummycreator.CatalogueManager;
 import de.abama.dummycreator.entities.Catalogue;
 import de.abama.dummycreator.entities.Page;
+import de.abama.dummycreator.masterdata.MasterData;
+import de.abama.dummycreator.utlilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Controller {
+	
+	private MasterData masterData = new MasterData();
 	
 	private CatalogueManager fileManager = new CatalogueManager();
 	private Catalogue catalogue = fileManager.newFile();
@@ -75,6 +79,15 @@ public class Controller {
     
     @FXML
     private ListView<?> search_result;
+    
+    @FXML
+    private Label info_articles;
+    
+    @FXML
+    private Label info_groups;
+    
+    @FXML
+    private MenuItem menu_masterdata_import;
 
     @FXML
     private void newFile(ActionEvent event) {
@@ -90,6 +103,9 @@ public class Controller {
     	///System.out.println("Öffnen");
     }
     
+    private void importCsv(ActionEvent event) {
+    	
+    }
 
 	@FXML
     private void closeFile(ActionEvent event) {

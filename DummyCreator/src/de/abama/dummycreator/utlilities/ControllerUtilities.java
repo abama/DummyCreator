@@ -1,4 +1,4 @@
-package de.abama.dummycreator.gui;
+package de.abama.dummycreator.utlilities;
 
 import java.io.File;
 
