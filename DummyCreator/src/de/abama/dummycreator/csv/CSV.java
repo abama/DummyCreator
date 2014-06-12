@@ -25,15 +25,16 @@ public class CSV {
 		return headings;
 	}
 	
-	public String getField(int column, int row){
+	public String getField(int row, int column){
 		if(rows.size()<row) return null;
 		if(rows.get(row).size()<column) return null;
 		return rows.get(row).get(column);
 	}
 	
-	public String getField(String heading, int row){
+	public String getField(int row, String heading){
 		if(headings.contains(heading)) {
-			return getField(headings.indexOf(heading),row);
+			final String value = getField(row, headings.indexOf(heading));
+			return value;
 		}
 		return null;
 	}
@@ -62,5 +63,19 @@ public class CSV {
 
 	public void setHeadings(List<String> headings) {
 		this.headings = headings;		
+	}
+	
+	public void addRow(final List<String> row){
+		rows.add(row);
+	}
+
+	public void removeRow(int i) {
+		if(rows.size()>= i){
+			rows.remove(i);	
+		}		
+	}
+
+	public int getRowCount() {
+		return rows.size();
 	}
 }

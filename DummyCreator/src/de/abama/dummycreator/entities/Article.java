@@ -6,7 +6,7 @@ public class Article implements Serializable {
 	
 	private static final long serialVersionUID = 4624798489378228851L;
 	
-	private int number;
+	private Integer number;
 	private String title;
 	
 	private String description1;
@@ -14,6 +14,10 @@ public class Article implements Serializable {
 	private String description3;
 	
 	private ArticleGroup group;
+	
+	public Article(){
+		
+	}
 
 	public Article(final int number){
 		this.number = number;
@@ -35,7 +39,7 @@ public class Article implements Serializable {
 		return group;
 	}
 
-	public int getNumber(){
+	public Integer getNumber(){
 		return number;
 	}
 

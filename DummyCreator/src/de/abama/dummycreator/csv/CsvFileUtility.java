@@ -2,9 +2,10 @@ package de.abama.dummycreator.csv;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,33 +18,40 @@ public class CsvFileUtility {
 
 		CSV csv = new CSV();
 
-		final List<List<String>> rows = readFile(file);
-
-		if (rows.size() > 0) {
-			csv.setHeadings(rows.get(0));
-			rows.remove(0);
+		final List<String> lines = readLines(file);
+				
+		for(final String line : lines){
+			csv.addRow(Arrays.asList(line.split(sep)));
 		}
+
+		if (csv.getRows().size() > 0) {
+			csv.setHeadings(csv.getRows().get(0));
+			csv.removeRow(0);
+		}
+				
+		System.out.println("CSV - Spalten: " + csv.getHeadings());
+		
+		System.out.println("CSV - Zeilen: " + csv.getRows().size());
 
 		return csv;
 	}
 
-	private static List<List<String>> readFile(final File file) {
+	private static List<String> readLines(final File file) {
+		
+		System.out.println("Lese CSV " + file.getPath());
 
-		BufferedReader br = null;
-
-		final List<List<String>> rows = new ArrayList<List<String>>();
-
-		try {
-
-			br = new BufferedReader(new FileReader(file));
+		final List<String> rows = new ArrayList<String>();
+		
+		BufferedReader bufferedReader = null;
+		
+		try {		
+			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-16"));			
 
 			String line;
-
-			// List<String> row = new ArrayList<String>();
-
-			while ((line = br.readLine()) != null) {
-
-				rows.add(Arrays.asList(line.split(sep)));
+			
+			while ((line = bufferedReader.readLine()) != null) {
+				//System.out.println(line);
+				rows.add(line);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -51,16 +59,16 @@ public class CsvFileUtility {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (br != null) {
+			if (bufferedReader != null) {
 				try {
-					br.close();
+					bufferedReader.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
-		System.out.println("Done");
+		System.out.println("CSV - Zeilen gelesen: " + rows.size());
 
 		return rows;
 	}

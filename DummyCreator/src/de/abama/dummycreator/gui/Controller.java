@@ -1,11 +1,15 @@
 package de.abama.dummycreator.gui;
 
+import java.io.File;
 import java.io.IOException;
 
 import de.abama.dummycreator.CatalogueManager;
+import de.abama.dummycreator.csv.CSV;
+import de.abama.dummycreator.csv.CsvFileUtility;
 import de.abama.dummycreator.entities.Catalogue;
 import de.abama.dummycreator.entities.Page;
 import de.abama.dummycreator.masterdata.MasterData;
+import de.abama.dummycreator.utlilities.ArticleUtilities;
 import de.abama.dummycreator.utlilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,9 +107,19 @@ public class Controller {
     	///System.out.println("Öffnen");
     }
     
-    private void importCsv(ActionEvent event) {
-    	
+    @FXML
+    private void importCSV(ActionEvent event) {
+    	final File file = ControllerUtilities.chooseCsvFile();
+    	final CSV csv = CsvFileUtility.read(file);
+    	masterData.add(ArticleUtilities.createArticles(csv));
+    	updateMasterDataInfo();
     }
+
+	private void updateMasterDataInfo() {
+		System.out.println("Artikel: " + Integer.toString(masterData.getArticleCount()));
+		info_articles.setText(Integer.toString(masterData.getArticleCount()));
+		info_groups.setText(Integer.toString(masterData.getGroupCount()));
+	}
 
 	@FXML
     private void closeFile(ActionEvent event) {
