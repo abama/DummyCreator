@@ -8,6 +8,7 @@ import java.util.List;
 
 
 import java.util.Set;
+import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,7 @@ import de.abama.dummycreator.entities.Article;
 import de.abama.dummycreator.entities.ArticleGroup;
 
 public class MasterData {
-	private HashMap<Integer, Article> articles = new HashMap<Integer, Article>();
+	private TreeMap<Integer, Article> articles = new TreeMap<Integer, Article>();
 	private List<ArticleGroup> groups = new ArrayList<ArticleGroup>();
 	
 	public int getArticleCount(){
@@ -34,6 +35,7 @@ public class MasterData {
 	public void add(final List<Article> articles){
 		for(final Article article : articles){
 			this.articles.put(article.getNumber(), article);
+			this.articles = new TreeMap<Integer, Article>(this.articles);
 		}
 	}
 

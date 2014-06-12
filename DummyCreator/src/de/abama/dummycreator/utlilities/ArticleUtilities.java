@@ -8,11 +8,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.entities.Article;
 
 public class ArticleUtilities {
+	
+	private String imageBasePath = Configuration.imageBasePath;
+	
 	public static List<Article> createArticles(final CSV csv){
 		System.out.println(csv.getRows().size());
 		List<Article> articles = new ArrayList<Article>();
@@ -35,6 +41,9 @@ public class ArticleUtilities {
 			((Label) articleBox.lookup("#title")).setText(article.getTitle());
 			((Label) articleBox.lookup("#number")).setText(Integer.toString(article.getNumber()));
 			((Label) articleBox.lookup("#description")).setText(article.getDescription2()+article.getDescription3());
+			final String imagePath = imageBasePath+article.getNumber()+".png";
+			System.out.println("Lade " + imagePath + "...");
+			((ImageView) articleBox.lookup("#image")).setImage(new Image(imageBasePath+article.getNumber()+".png", true));
 			list.add(articleBox);
 		}
 		
