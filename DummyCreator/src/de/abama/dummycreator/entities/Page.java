@@ -18,7 +18,6 @@ public class Page implements Serializable {
 	private List<ArticleGroup> groups = new ArrayList<ArticleGroup>();
 	
 	public Page(Catalogue catalogue) {
-		// TODO Auto-generated constructor stub
 		this.catalogue = catalogue;
 	}
 

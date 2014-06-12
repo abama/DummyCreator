@@ -2,6 +2,8 @@ package de.abama.dummycreator.entities;
 
 import java.io.Serializable;
 
+import javafx.scene.image.Image;
+
 public class Article implements Serializable {
 	
 	private static final long serialVersionUID = 4624798489378228851L;
@@ -14,6 +16,8 @@ public class Article implements Serializable {
 	private String description3;
 	
 	private ArticleGroup group;
+
+	private Image image;
 	
 	public Article(){
 		
@@ -73,5 +77,13 @@ public class Article implements Serializable {
 	
 	public void setTitle(final String title){
 		this.title = title;
+	}
+
+	public void setImage(Image image) {
+		this.image = image; 
+	}
+
+	public Image getImage() {
+		return image;
 	}
 }

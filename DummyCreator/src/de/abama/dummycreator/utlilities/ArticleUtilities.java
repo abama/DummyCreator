@@ -17,7 +17,7 @@ import de.abama.dummycreator.entities.Article;
 
 public class ArticleUtilities {
 	
-	private String imageBasePath = Configuration.imageBasePath;
+	private static String imageBasePath = Configuration.imageBasePath;
 	
 	public static List<Article> createArticles(final CSV csv){
 		System.out.println(csv.getRows().size());
@@ -28,6 +28,7 @@ public class ArticleUtilities {
 			article.setTitle(csv.getField(i, "Titel"));
 			article.setDescription2(csv.getField(i, "Subtitle"));
 			article.setDescription3(csv.getField(i, "SubSubTitle"));
+			article.setImage(new Image(imageBasePath+article.getNumber()+".png", true));
 			articles.add(article);
 		}
 		return articles;
@@ -42,8 +43,8 @@ public class ArticleUtilities {
 			((Label) articleBox.lookup("#number")).setText(Integer.toString(article.getNumber()));
 			((Label) articleBox.lookup("#description")).setText(article.getDescription2()+article.getDescription3());
 			final String imagePath = imageBasePath+article.getNumber()+".png";
-			System.out.println("Lade " + imagePath + "...");
-			((ImageView) articleBox.lookup("#image")).setImage(new Image(imageBasePath+article.getNumber()+".png", true));
+			//System.out.println("Lade " + imagePath + "...");
+			((ImageView) articleBox.lookup("#image")).setImage(article.getImage());
 			list.add(articleBox);
 		}
 		
