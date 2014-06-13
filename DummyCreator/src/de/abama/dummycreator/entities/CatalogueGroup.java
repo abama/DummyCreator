@@ -4,46 +4,46 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticleGroup implements Serializable {
+public class CatalogueGroup implements Serializable {
 
 	private static final long serialVersionUID = -5891268528749563927L;
 	
 	private List<Article> articles = new ArrayList<Article>();
 	
-	private Integer number;
+	private char index;
 	private String title;
 	private String description;
 	
-	private Page page;
+	private CataloguePage page;
 	
-	public void addArticle(final Article article){
-		Article[] articles = {article};
-		addArticles(articles);
+	public void add(final Article article){
+		articles.add(article);
 	}	
 	
-	public void addArticles(final Article[] articles){
+	public void addAll(final Article[] articles){
 		for(Article article : articles){
-			article.setGroup(this);
-			this.articles.add(article);
+			add(article);
 		}
-		updateGroupData();
+		//updateGroupData();
 	}
 	
 	public String getDescription() {
 		return description;
 	}
 	
+	/*
 	public char getIndex(){
 		int offset = page.getGroups().indexOf(this);
 		char index = (char)(Character.getNumericValue('A')+offset); 
 		return index;
 	}
+	*/
 	
-	public Integer getNumber() {
-		return number;
+	public char getIndex() {
+		return index;
 	}
 	
-	public Page getPage(){
+	public CataloguePage getPage(){
 		return page;
 	}	
 	
@@ -61,18 +61,18 @@ public class ArticleGroup implements Serializable {
 		for(Article article : articles){
 			this.articles.remove(article);
 		}
-		updateGroupData();
+		//updateGroupData();
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public void setNumber(Integer number) {
-		this.number = number;
+	public void setIndex(char index) {
+		this.index = index;
 	}
 
-	public void setPage(final Page page){
+	public void setPage(final CataloguePage page){
 		this.page = page;
 	}
 
@@ -80,13 +80,19 @@ public class ArticleGroup implements Serializable {
 		this.title = title;
 	}
 
+	/*
 	public void updateGroupData(){
 		if(articles.size() == 0) {
-			number = null;
+			index = null;
 			title = null;
 		} else {
-			number = articles.get(0).getNumber();
+			index = articles.get(0).getNumber();
 			title = articles.get(0).getTitle();
 		}
+	}
+	*/
+	
+	public int getArticlesCount(){
+		return articles.size();
 	}
 }

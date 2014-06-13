@@ -10,7 +10,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage window) {
 		try {
-			Parent fxml = FXMLLoader.load(getClass().getResource("./gui/DummyCreator.fxml"));
+			Parent fxml = FXMLLoader.load(getClass().getResource("./gui/fxml/DummyCreator.fxml"));
 			window.setScene(new Scene(fxml));
 			window.setTitle("DummyCreator");
 			window.show();

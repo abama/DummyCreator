@@ -4,27 +4,30 @@ import java.io.Serializable;
 
 import javafx.scene.image.Image;
 
-public class Article implements Serializable {
+public class Article {
+		
+	private String description1 = "Beschreibung1";
+	private String description2 = "Beschreibung2";
+	private String description3 = "Beschreibung3";
 	
-	private static final long serialVersionUID = 4624798489378228851L;
-	
-	private Integer number;
-	private String title;
-	
-	private String description1;
-	private String description2;
-	private String description3;
-	
-	private ArticleGroup group;
-
 	private Image image;
+	
+	private String number = "Artikelnummer";
+
+	private float price;
+	
+	private String title = "Titel";
 	
 	public Article(){
 		
 	}
 
-	public Article(final int number){
+	public Article(final String number){
 		this.number = number;
+	}
+	
+	public String getDescription(){
+		return description1 + description2 + description3;
 	}
 
 	public String getDescription1() {
@@ -39,16 +42,16 @@ public class Article implements Serializable {
 		return description3;
 	}
 
-	public ArticleGroup getGroup(){
-		return group;
+	public Image getImage() {
+		return image;
 	}
 
-	public Integer getNumber(){
+	public String getNumber(){
 		return number;
 	}
-
-	public Page getPage(){
-		return group.getPage();
+	
+	public float getPrice() {
+		return price;
 	}
 	
 	public String getTitle() {
@@ -66,24 +69,20 @@ public class Article implements Serializable {
 	public void setDescription3(String description3) {
 		this.description3 = description3;
 	}
-	
-	public void setGroup(final ArticleGroup group){
-		this.group = group;
-	}
-	
-	public void setNumber(final int number) {
-		this.number = number;
-	}
-	
-	public void setTitle(final String title){
-		this.title = title;
-	}
 
 	public void setImage(Image image) {
 		this.image = image; 
 	}
 
-	public Image getImage() {
-		return image;
+	public void setNumber(final String number) {
+		this.number = number;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public void setTitle(final String title){
+		this.title = title;
 	}
 }

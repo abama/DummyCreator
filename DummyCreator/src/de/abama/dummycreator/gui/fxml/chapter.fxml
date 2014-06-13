@@ -13,7 +13,7 @@
       <Label layoutX="41.0" layoutY="138.0" text="Trends" />
       <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../workspace/DummyCreator/src/gui/icon_kapitel.png" />
+            <Image url="@../image/icon_kapitel.png" />
          </image>
       </ImageView>
       <Label text="K1" />

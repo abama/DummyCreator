@@ -6,7 +6,10 @@ public class Configuration {
 	
 	private static Configuration configuration = null;
 		
-	public static String imageBasePath = "file://abamasrv/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-PNG-S/";
+	//public static String imageBasePath = "file://abamasrv/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-PNG-S/";
+	public static String imageBasePath = "file:/Volumes/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-PNG-S/";
+	
+	public static boolean loadImages = false;
 	
 	private Configuration(){}
 	

@@ -1,4 +1,4 @@
-package de.abama.dummycreator.gui;
+package de.abama.dummycreator.gui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

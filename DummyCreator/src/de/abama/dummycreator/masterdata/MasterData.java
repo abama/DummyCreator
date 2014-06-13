@@ -1,23 +1,16 @@
 package de.abama.dummycreator.masterdata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-
-
-
-import java.util.Set;
 import java.util.TreeMap;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import de.abama.dummycreator.entities.Article;
-import de.abama.dummycreator.entities.ArticleGroup;
+import de.abama.dummycreator.entities.CatalogueGroup;
+import de.abama.dummycreator.entities.ListArticle;
 
 public class MasterData {
-	private TreeMap<Integer, Article> articles = new TreeMap<Integer, Article>();
-	private List<ArticleGroup> groups = new ArrayList<ArticleGroup>();
+	private TreeMap<String, Article> articles = new TreeMap<String, Article>();
+	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 	
 	public int getArticleCount(){
 		return articles.size();
@@ -32,15 +25,16 @@ public class MasterData {
 		groups.clear();
 	}
 	
-	public void add(final List<Article> articles){
-		for(final Article article : articles){
+	public void add(final List<ListArticle> list){
+		for(final Article article : list){
 			this.articles.put(article.getNumber(), article);
-			this.articles = new TreeMap<Integer, Article>(this.articles);
+			this.articles = new TreeMap<String, Article>(this.articles);
 		}
+		System.out.println("Artikel: " + list.size());
 	}
 
-	public List<Integer> getArticleNumbers() {
-		return new ArrayList<Integer>(articles.keySet());
+	public List<String> getArticleNumbers() {
+		return new ArrayList<String>(articles.keySet());
 	}
 
 	public List<Article> getArticles() {
