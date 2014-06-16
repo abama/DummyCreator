@@ -18,10 +18,10 @@ public class CataloguePage implements Serializable {
 	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 	
 	public int getNumber(){
-		System.out.println(catalogue);
-		System.out.println(catalogue.getPages().indexOf(this));
-		System.out.println(catalogue.getFirstPage());
-		return catalogue.getPages().indexOf(this)+catalogue.getFirstPage();
+		//System.out.println(catalogue);
+		//System.out.println(catalogue.getPages().indexOf(this));
+		//System.out.println(catalogue.getFirstPage());
+		return catalogue.getPages().indexOf(this)+catalogue.getFirstPageNumber();
 	}
 	
 	public Set<String> getKeywords(){

@@ -1,5 +1,6 @@
 package de.abama.dummycreator.masterdata;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,22 +8,22 @@ import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import de.abama.dummycreator.config.Configuration;
+import de.abama.dummycreator.csv.CSV;
+import de.abama.dummycreator.csv.CsvFileUtility;
 import de.abama.dummycreator.entities.Article;
 import de.abama.dummycreator.entities.CatalogueGroup;
 import de.abama.dummycreator.entities.ListArticle;
-import de.abama.dummycreator.utlilities.ProgressWindow;
+import de.abama.dummycreator.utlilities.ArticleUtilities;
+import de.abama.dummycreator.utlilities.GuiUtilities;
 
 public class MasterData {
 	
 	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
 	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 	
+	@SuppressWarnings("unused")
 	private Configuration configuration = Configuration.getInstance();
 	
 	public int getArticleCount(){
@@ -57,9 +58,9 @@ public class MasterData {
 	public ObservableList<HBox> searchByNumber(String text) throws IOException {
 		List<HBox> list = new ArrayList<HBox>();
 		for(final String key : articles.keySet()){
-			if(text.contains(key)){
+			if(key.contains(text) || text.contains(key)){
 				final ListArticle article = articles.get(key);
-				list.add(createArticleListEntry(article, true));
+				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
 		}
 		ObservableList<HBox> observableList = FXCollections.observableList(list);
@@ -67,13 +68,14 @@ public class MasterData {
 	}
 
 	public ObservableList<HBox> searchByDescription(String text) throws IOException {
+		text = text.toLowerCase();
 		List<HBox> list = new ArrayList<HBox>();
 		for(final ListArticle article : articles.values()){
-			if(article.getTitle().contains(text)){
-				list.add(createArticleListEntry(article, true));
+			if(article.getTitle().toLowerCase().contains(text)){
+				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
-			else if(article.getDescription().contains(text)){
-				list.add(createArticleListEntry(article, true));
+			else if(article.getDescription().toLowerCase().contains(text)){
+				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
 		}
 		ObservableList<HBox> observableList = FXCollections.observableList(list);
@@ -85,7 +87,7 @@ public class MasterData {
 		return null;
 	}
 	
-	public ObservableList<HBox> getAll(boolean loadImages) throws IOException {
+	public ObservableList<HBox> createArticleListGroupEntries(boolean loadImages) throws IOException {
 		List<HBox> list = new ArrayList<HBox>();
 		
 		//TODO Progress Window
@@ -93,12 +95,12 @@ public class MasterData {
 		//final ProgressWindow progressWindow = new ProgressWindow("Artikel importieren", "",0,articles.size());
 		//progressWindow.show();
 		
-		int i=0;
+		//int i=0;
 			
 		for(final ListArticle article : articles.values()){
-			i++;
+			//i++;
 			//progressWindow.setProgress(i);
-			list.add(createArticleListEntry(article, loadImages));
+			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
 		}
 		
 		ObservableList<HBox> observableList = FXCollections.observableList(list);
@@ -107,16 +109,13 @@ public class MasterData {
 		
 		return observableList;
 	}
-	
-	private HBox createArticleListEntry(final ListArticle article, boolean loadImage) throws IOException{
-		
-		HBox articleBox = FXMLLoader.load(getClass().getResource("../gui/fxml/article.fxml"));
-		((Label) articleBox.lookup("#title")).setText(article.getTitle());
-		((Label) articleBox.lookup("#number")).setText(article.getNumber());
-		((Label) articleBox.lookup("#description")).setText(article.getDescription());
-		if(loadImage) {
-			((ImageView) articleBox.lookup("#image")).setImage(new Image(configuration.imageBasePath+article.getNumber()+".png", true));
+
+	public void importCsv(final File file) {
+		if (file != null) {
+			final CSV csv = CsvFileUtility.read(file);
+			add(ArticleUtilities.createListArticles(csv));
 		}
-		return articleBox;
 	}
+	
+	
 }

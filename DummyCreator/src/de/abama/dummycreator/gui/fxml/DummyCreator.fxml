@@ -296,7 +296,7 @@
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <Button fx:id="spread_prev_btn" mnemonicParsing="false" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="spread_prev_btn" mnemonicParsing="false" onAction="#spreadDown" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
@@ -315,7 +315,7 @@
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </VBox.margin>
                                                    <content>
-                                                      <VBox style="-fx-background-color: fff;" />
+                                                      <ListView fx:id="spread_left_groups" />
                                                    </content>
                                                 </ScrollPane>
                                                 <Label fx:id="spread_left_number" text="2">
@@ -333,12 +333,12 @@
                                                    </VBox.margin>
                                                 </TextField>
                                                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-                                                   <content>
-                                                      <VBox style="-fx-background-color: fff;" />
-                                                   </content>
                                                    <VBox.margin>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </VBox.margin>
+                                                   <content>
+                                                      <ListView fx:id="spread_right_groups" />
+                                                   </content>
                                                 </ScrollPane>
                                                 <Label fx:id="spread_right_number" text="3">
                                                    <font>
@@ -353,7 +353,7 @@
                               </AnchorPane>
                               <AnchorPane>
                                  <children>
-                                    <Button fx:id="spread_next_btn" mnemonicParsing="false" text="&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="spread_next_btn" mnemonicParsing="false" onAction="#spreadUp" text="&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </children>

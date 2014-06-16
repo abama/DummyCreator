@@ -5,9 +5,11 @@ import java.util.List;
 
 public class Catalogue {
 	
-	private int firstPage = 1;
+	private int firstPageNumber = 1;
 	
 	private List<CataloguePage> pages = new ArrayList<CataloguePage>();
+	
+	private List<CatalogueChapter> chapters  = new ArrayList<CatalogueChapter>();
 	
 	public List<CataloguePage> getPages(){
 		return pages;
@@ -28,21 +30,20 @@ public class Catalogue {
 	
 	public CataloguePage getPage(final int number){
 		try {
-			return pages.get(number - 1);
+			return pages.get(number - firstPageNumber);
 		}
 		catch(Exception e){
 			return null;
 		}
 	}
 
-	public List<Article> getGroups() {
-		// TODO getGroups()
-		return null;
+	public CataloguePage getFirstPage() {
+		return pages.get(0);
 	}
-
-	public int getFirstPage() {
-		return firstPage;
-	}
+	
+	public CataloguePage getLastPage() {
+		return pages.get(pages.size()-1);
+	}	
 
 	public CataloguePage add(CataloguePage page) {
 		pages.add(page);
@@ -58,15 +59,15 @@ public class Catalogue {
 	}
 
 	public CataloguePage getOrCreatePage(int number) {
-		if(pages.size()==0) firstPage = number;
+		if(pages.size()==0) firstPageNumber = number;
 		//System.out.println("Suche Seite: " + number);
-		while(pages.size()+firstPage-1 < number){
+		while(pages.size()+firstPageNumber-1 < number){
 			final CataloguePage page = new CataloguePage();
 			page.setCatalogue(this);
 			this.add(page);
 			//System.out.println("Erstelle neue Seite.");
 		}
-		return pages.get(number-firstPage);
+		return pages.get(number-firstPageNumber);
 	}
 
 	public int getPagesCount() {
@@ -79,5 +80,21 @@ public class Catalogue {
 			groupCount+=page.getGroupsCount();
 		}
 		return groupCount;
+	}
+
+	public void setFirstPage(int page) {
+		this.firstPageNumber = page;
+	}
+
+	public int getFirstPageNumber() {
+		return firstPageNumber;
+	}
+	
+	public int getLastPageNumber() {
+		return firstPageNumber+pages.size()-1;
+	}
+
+	public int getChaptersCount() {
+		return chapters.size();
 	}
 }

@@ -1,4 +1,4 @@
-package de.abama.dummycreator.utlilities;
+package de.abama.dummycreator.gui.controller;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

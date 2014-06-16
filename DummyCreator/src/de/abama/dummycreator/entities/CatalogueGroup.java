@@ -4,31 +4,32 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.image.Image;
+
 public class CatalogueGroup implements Serializable {
 
 	private static final long serialVersionUID = -5891268528749563927L;
 	
-	private List<Article> articles = new ArrayList<Article>();
+	private List<CatalogueArticle> articles = new ArrayList<CatalogueArticle>();
 	
 	private char index;
-	private String title;
-	private String description;
 	
 	private CataloguePage page;
 	
-	public void add(final Article article){
+	public void add(final CatalogueArticle article){
 		articles.add(article);
 	}	
 	
-	public void addAll(final Article[] articles){
-		for(Article article : articles){
+	public void addAll(final CatalogueArticle[] articles){
+		for(CatalogueArticle article : articles){
 			add(article);
 		}
 		//updateGroupData();
 	}
 	
 	public String getDescription() {
-		return description;
+		if(articles.size()!=0) return articles.get(0).getDescription();
+		return ("");
 	}
 	
 	public char getIndex() {
@@ -40,7 +41,8 @@ public class CatalogueGroup implements Serializable {
 	}	
 	
 	public String getTitle() {
-		return title;
+		if(articles.size()!=0) return articles.get(0).getTitle();
+		return ("Neue Artikelgruppe");
 	}
 	
 	public void removeArticle(final Article article){
@@ -56,20 +58,12 @@ public class CatalogueGroup implements Serializable {
 		//updateGroupData();
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public void setIndex(char index) {
 		this.index = index;
 	}
 
 	public void setPage(final CataloguePage page){
 		this.page = page;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	/*
@@ -86,5 +80,14 @@ public class CatalogueGroup implements Serializable {
 	
 	public int getArticlesCount(){
 		return articles.size();
+	}
+
+	public Image getImage() {
+		if(articles.size()!=0) return articles.get(0).getImage();
+		return null;
+	}
+
+	public List<CatalogueArticle> getArticles() {
+		return articles;
 	}
 }

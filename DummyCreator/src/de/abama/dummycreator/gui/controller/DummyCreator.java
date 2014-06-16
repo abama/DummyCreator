@@ -6,13 +6,11 @@ import java.net.URISyntaxException;
 
 import de.abama.dummycreator.CatalogueManager;
 import de.abama.dummycreator.config.Configuration;
-import de.abama.dummycreator.csv.CSV;
-import de.abama.dummycreator.csv.CsvFileUtility;
 import de.abama.dummycreator.entities.Catalogue;
 import de.abama.dummycreator.entities.CataloguePage;
 import de.abama.dummycreator.masterdata.MasterData;
-import de.abama.dummycreator.utlilities.ArticleUtilities;
 import de.abama.dummycreator.utlilities.GuiUtilities;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,28 +25,25 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class DummyCreator {
 
-	private MasterData masterData = new MasterData();
-	private Configuration configuration = Configuration.getInstance();
-	
 	private CatalogueManager catalogueManager = new CatalogueManager();
 	private Catalogue catalogue = catalogueManager.newFile();
-
+	
 	private Clipboard clipboard = Clipboard.getSystemClipboard();
-	private CataloguePage currentPage;
+	private Configuration configuration = Configuration.getInstance();
 
+	private CataloguePage currentPage;
 	// Aktuelle Position in der Seiten�bersicht
 	private int currentPageRange;
 
-	// Aktuell angezeigte Doppelseite
-	// private int currentPage;
-
 	@FXML
 	private Label info_articles;
+
+	// Aktuell angezeigte Doppelseite
+	// private int currentPage;
 
 	@FXML
 	private Label info_catalogue_articles;
@@ -62,6 +57,8 @@ public class DummyCreator {
 	@FXML
 	private Label info_catalogue_pages;
 
+	private MasterData masterData = new MasterData();
+
 	@FXML 
 	private MenuItem menu_file_new;
 	 
@@ -69,13 +66,13 @@ public class DummyCreator {
 	private MenuItem menu_file_open;
 	
 	@FXML 
+	private MenuItem menu_file_properties;
+	
+	@FXML 
 	private MenuItem menu_file_save;
 	
 	@FXML 
 	private MenuItem menu_file_saveas;
-	
-	@FXML 
-	private MenuItem menu_file_properties;
 	
 	@FXML 
 	private MenuItem menu_masterdata_import;
@@ -87,10 +84,19 @@ public class DummyCreator {
 	private Button pages_prev_btn;
 
 	@FXML
+    private TextArea search_by_description;
+
+	@FXML
+    private TextArea search_by_keywords;
+
+	@FXML
+    private TextArea search_by_number;
+
+	@FXML
 	private ListView<HBox> search_result;
 
 	@FXML
-	private Pane spread_left_content;
+	private ListView<HBox> spread_left_groups;
 
 	@FXML
 	private TextField spread_left_keywords;
@@ -105,89 +111,47 @@ public class DummyCreator {
 	private Button spread_prev_btn;
 
 	@FXML
-	private Pane spread_right_content;
+	private ListView<HBox> spread_right_groups;
 
 	@FXML
 	private TextField spread_right_keywords;
-
-	@FXML
-	private Label spread_right_number;
-
-	@FXML
-	private HBox view_Pages;
-
-	@FXML
-	private ScrollPane view_Spread;
 	
     @FXML
-    private TextArea search_by_number;
+	private Label spread_right_number;
     
     @FXML
-    private TextArea search_by_description;
+	private HBox view_Pages;
     
     @FXML
-    private TextArea search_by_keywords;
+	private ScrollPane view_Spread;
 
 	@FXML
-	private void addArticle(ActionEvent event) {
-		System.out.println("Artikel hinzufügen");
-
+	private void addArticle(ActionEvent event) throws IOException {
 		search_result.getSelectionModel().getSelectedItem();
-
 		updateSpreadView();
 	}
 	
 	@FXML
-	private void searchByNumber(KeyEvent event) throws IOException {
-	    if (event.getCode() == KeyCode.ENTER) {
-	    	String text = search_by_number.getText().replaceAll(".$", "");
-	    	search_by_number.clear();
-	    	//System.out.println(text);
-	    	search_by_number.setText(text);
-	    	
-	    	search_result.setItems(masterData.searchByNumber(search_by_number.getText()));
-	    }
-	}
-	
-	@FXML
-	private void searchByDescription(KeyEvent event) throws IOException {
-	    if (event.getCode() == KeyCode.ENTER) {
-	    	search_result.setItems(masterData.searchByDescription(search_by_description.getText()));
-	    }
-	}
-	
-	@FXML
-	private void searchByKeywords(KeyEvent event) {
-	    if (event.getCode() == KeyCode.ENTER) {
-	    	search_result.setItems(masterData.searchByKeywords(search_by_keywords.getText()));
-	    }
-	}
-
-	@FXML
-	private void closeFile(ActionEvent event) {
-		System.out.println("Schlie�en");
+	private void closeFile(ActionEvent event) throws IOException {
 		updateUiViews();
 	}
-
+	
 	@FXML
 	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
 		final File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
-		if (file != null) {
-			final CSV csv = CsvFileUtility.read(file);
-			masterData.add(ArticleUtilities.createListArticles(csv));
-			updateInfoPanel();
-			search_result.setItems(masterData.getAll(false));
-		}
+		masterData.importCsv(file);
+		updateInfoPanel();
+		search_result.setItems(masterData.createArticleListGroupEntries(false));
 	}
 
 	@FXML
-	private void listDrag(ActionEvent event) {
+	private void listDrag(ActionEvent event) throws IOException {
 		System.out.println("Liste - Drag & Drop");
 		updateSpreadView();
 	}
 
 	@FXML
-	private void newChapter(ActionEvent event) {
+	private void newChapter(ActionEvent event) throws IOException {
 		System.out.println("Neues Kapitel");
 		// TODO: catalogue.addChapter();
 		updateUiViews();
@@ -200,7 +164,7 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void newGroup(ActionEvent event) {
+	private void newGroup(ActionEvent event) throws IOException {
 		System.out.println("Neue Gruppe");
 		updateSpreadView();
 	}
@@ -237,14 +201,50 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void removeArticle(ActionEvent event) {
-		System.out.println("Artikel löschen");
+	private void removeArticle(ActionEvent event) throws IOException {
+		//System.out.println("Artikel löschen");
 		updateSpreadView();
 	}
 
+	@FXML
+	private void searchByDescription(KeyEvent event) throws IOException {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	search_result.setItems(masterData.searchByDescription(search_by_description.getText()));
+	    }
+	}
+
+	@FXML
+	private void searchByKeywords(KeyEvent event) {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	search_result.setItems(masterData.searchByKeywords(search_by_keywords.getText()));
+	    }
+	}
+
+	@FXML
+	private void searchByNumber(KeyEvent event) throws IOException {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	//String text = search_by_number.getText().replace("\n", "").replace("\r", "");
+	    	//search_by_number.setText(text);
+	    	//search_by_number.clear();
+	    	search_result.setItems(masterData.searchByNumber(search_by_number.getText()));
+	    }
+	}
+	
+	@FXML
+	private void spreadDown(ActionEvent event) throws IOException{
+		catalogueManager.previousSpread();
+		updateSpreadView();
+	}
+
+	@FXML
+	private void spreadUp(ActionEvent event) throws IOException{
+		catalogueManager.nextSpread();
+		updateSpreadView();
+	}	
+	
 	private void updateInfoPanel() {
 		info_articles.setText(Integer.toString(masterData.getArticleCount()));
-//		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
+		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
 		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
 		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
 		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
@@ -255,12 +255,17 @@ public class DummyCreator {
 
 	}
 
-	private void updateSpreadView() {
-		// spread_right_content =
-		// ControllerUtilities.getRightPageContent(catalogue, currentPage);
+	private void updateSpreadView() throws IOException {
+		final ObservableList<HBox> list = catalogueManager.getCurrentLeftPageGroups();
+		//System.out.println(list);
+		spread_left_groups.setItems(list);
+		spread_left_number.setText(Integer.toString(catalogueManager.getCurrentLeftPage().getNumber()));
+		spread_right_groups.setItems(catalogueManager.getCurrentRightPageGroups());
+		spread_right_number.setText(Integer.toString(catalogueManager.getCurrentRightPage().getNumber()));
+		
 	}
 
-	private void updateUiViews() {
+	private void updateUiViews() throws IOException {
 		updateSpreadView();
 		updatePagesView();
 		updateInfoPanel();

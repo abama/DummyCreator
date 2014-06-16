@@ -1,5 +1,6 @@
 package de.abama.dummycreator.entities;
 
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 import javafx.scene.image.Image;
 
@@ -13,7 +14,7 @@ public class Article {
 	protected String description2 = "Beschreibung2";
 	protected String description3 = "Beschreibung3";
 	
-	protected Image image;
+	protected Image image = null;
 	
 	protected SU su = SU.PIECE;
 	
@@ -48,6 +49,8 @@ public class Article {
 	}
 
 	public Image getImage() {
+		
+		if (image == null) loadImage();
 		return image;
 	}
 
@@ -81,6 +84,10 @@ public class Article {
 
 	public void setDescription3(String description3) {
 		this.description3 = description3;
+	}
+	
+	public void loadImage(){
+		this.image = new Image(Configuration.getInstance().imageBasePath+this.getNumber()+".png", true);
 	}
 
 	public void setImage(Image image) {

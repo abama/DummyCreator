@@ -9,10 +9,6 @@ public class CSV {
 	
 	private List<List<String>> rows = new ArrayList<List<String>>();
 	
-	private String keyName;
-	
-	private int keyIndex;
-	
 	public int getLength(){
 		return rows.size();
 	}
