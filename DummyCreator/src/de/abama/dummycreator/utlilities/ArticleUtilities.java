@@ -1,16 +1,8 @@
 package de.abama.dummycreator.utlilities;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.entities.Article;
@@ -18,9 +10,11 @@ import de.abama.dummycreator.entities.ListArticle;
 
 public class ArticleUtilities {
 	
-	private static String imageBasePath = Configuration.imageBasePath;
+	private static Configuration configuration = Configuration.getInstance();
 	
-	public static List<ListArticle> createProtoArticles(final CSV csv){
+	private static String imageBasePath = configuration.imageBasePath;
+	
+	public static List<ListArticle> createListArticles(final CSV csv){
 		List<ListArticle> articles = new ArrayList<ListArticle>();
 		for(int i = 0; i<csv.getRowCount();i++){
 			try {
@@ -40,25 +34,9 @@ public class ArticleUtilities {
 		}
 		return articles;
 	}
-	
-	public ObservableList<HBox> createListItems(List<Article> articles) throws IOException{
-		List<HBox> list = new ArrayList<HBox>();
-		
-		for(final Article article : articles){
-			HBox articleBox = FXMLLoader.load(getClass().getResource("../gui/fxml/article.fxml"));
-			((Label) articleBox.lookup("#title")).setText(article.getTitle());
-			((Label) articleBox.lookup("#number")).setText(article.getNumber());
-			((Label) articleBox.lookup("#description")).setText(article.getDescription());
-			((ImageView) articleBox.lookup("#image")).setImage(new Image(imageBasePath+article.getNumber()+".png", true));
-			list.add(articleBox);
-		}
-		
-		ObservableList<HBox> observableList = FXCollections.observableList(list);
-		return observableList;
-	}
 
 	public static Article createArticle(List<String> row) {
-		// TODO Auto-generated method stub
+		// TODO createArticle(List<String> row)
 		return null;
 	}
 }

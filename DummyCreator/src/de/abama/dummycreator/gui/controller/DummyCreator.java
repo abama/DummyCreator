@@ -2,30 +2,39 @@ package de.abama.dummycreator.gui.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import de.abama.dummycreator.CatalogueManager;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
 import de.abama.dummycreator.entities.Catalogue;
 import de.abama.dummycreator.entities.CataloguePage;
 import de.abama.dummycreator.masterdata.MasterData;
 import de.abama.dummycreator.utlilities.ArticleUtilities;
-import de.abama.dummycreator.utlilities.ControllerUtilities;
+import de.abama.dummycreator.utlilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class DummyCreator {
 
+	private MasterData masterData = new MasterData();
+	private Configuration configuration = Configuration.getInstance();
+	
 	private CatalogueManager catalogueManager = new CatalogueManager();
 	private Catalogue catalogue = catalogueManager.newFile();
 
@@ -53,14 +62,24 @@ public class DummyCreator {
 	@FXML
 	private Label info_catalogue_pages;
 
-	private MasterData masterData = new MasterData();
-	/*
-	 * @FXML private MenuItem menu_file_new;
-	 * 
-	 * @FXML private MenuItem menu_file_open;
-	 * 
-	 * @FXML private MenuItem menu_masterdata_import;
-	 */
+	@FXML 
+	private MenuItem menu_file_new;
+	 
+	@FXML 
+	private MenuItem menu_file_open;
+	
+	@FXML 
+	private MenuItem menu_file_save;
+	
+	@FXML 
+	private MenuItem menu_file_saveas;
+	
+	@FXML 
+	private MenuItem menu_file_properties;
+	
+	@FXML 
+	private MenuItem menu_masterdata_import;
+	
 	@FXML
 	private Button pages_next_btn;
 
@@ -99,6 +118,15 @@ public class DummyCreator {
 
 	@FXML
 	private ScrollPane view_Spread;
+	
+    @FXML
+    private TextArea search_by_number;
+    
+    @FXML
+    private TextArea search_by_description;
+    
+    @FXML
+    private TextArea search_by_keywords;
 
 	@FXML
 	private void addArticle(ActionEvent event) {
@@ -108,6 +136,32 @@ public class DummyCreator {
 
 		updateSpreadView();
 	}
+	
+	@FXML
+	private void searchByNumber(KeyEvent event) throws IOException {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	String text = search_by_number.getText().replaceAll(".$", "");
+	    	search_by_number.clear();
+	    	//System.out.println(text);
+	    	search_by_number.setText(text);
+	    	
+	    	search_result.setItems(masterData.searchByNumber(search_by_number.getText()));
+	    }
+	}
+	
+	@FXML
+	private void searchByDescription(KeyEvent event) throws IOException {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	search_result.setItems(masterData.searchByDescription(search_by_description.getText()));
+	    }
+	}
+	
+	@FXML
+	private void searchByKeywords(KeyEvent event) {
+	    if (event.getCode() == KeyCode.ENTER) {
+	    	search_result.setItems(masterData.searchByKeywords(search_by_keywords.getText()));
+	    }
+	}
 
 	@FXML
 	private void closeFile(ActionEvent event) {
@@ -116,16 +170,13 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void importCSV(ActionEvent event) throws IOException {
-		final File file = ControllerUtilities.chooseCsvFile();
+	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
+		final File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
 		if (file != null) {
 			final CSV csv = CsvFileUtility.read(file);
-			masterData.add(ArticleUtilities.createProtoArticles(csv));
+			masterData.add(ArticleUtilities.createListArticles(csv));
 			updateInfoPanel();
-			// search_result.setItems(FXCollections.observableArrayList(masterData.getArticleNumbers()));
-
-			search_result.setItems(new ArticleUtilities()
-					.createListItems(masterData.getArticles()));
+			search_result.setItems(masterData.getAll(false));
 		}
 	}
 
@@ -172,8 +223,8 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void openFile(ActionEvent event) throws IOException {
-		File file = ControllerUtilities.chooseCsvFile();
+	private void openFile(ActionEvent event) throws IOException, URISyntaxException {
+		File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
 		if (file != null) {
 			catalogue = catalogueManager.openFile(file);
 			for(final CataloguePage page : catalogue.getPages()){

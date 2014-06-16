@@ -25,7 +25,7 @@ public class CatalogueManager {
 	public Catalogue openFile(final File file) {
 		final CSV csv = CsvFileUtility.read(file);
 		
-		final List<ListArticle> articles = ArticleUtilities.createProtoArticles(csv);
+		final List<ListArticle> articles = ArticleUtilities.createListArticles(csv);
 		Collections.sort(articles);
 		
 		for(final ListArticle article : articles){

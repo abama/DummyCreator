@@ -1,28 +1,33 @@
 package de.abama.dummycreator.entities;
 
-import java.io.Serializable;
-
+import de.abama.dummycreator.constants.SU;
 import javafx.scene.image.Image;
 
 public class Article {
-		
-	private String description1 = "Beschreibung1";
-	private String description2 = "Beschreibung2";
-	private String description3 = "Beschreibung3";
 	
-	private Image image;
+	protected String number = "Artikelnummer";
 	
-	private String number = "Artikelnummer";
-
-	private float price;
+	protected String title = "Titel";
 	
-	private String title = "Titel";
+	protected String description1 = "Beschreibung1";
+	protected String description2 = "Beschreibung2";
+	protected String description3 = "Beschreibung3";
 	
+	protected Image image;
+	
+	protected SU su = SU.PIECE;
+	
+	protected float singlePrice;
+	protected float suPrice;
+	
+	// Generischer Konstruktor
 	public Article(){
-		
+		super();
 	}
-
+	
+	// Konstruktor mit Artikelnummer
 	public Article(final String number){
+		this();
 		this.number = number;
 	}
 	
@@ -51,7 +56,15 @@ public class Article {
 	}
 	
 	public float getPrice() {
-		return price;
+		return singlePrice;
+	}
+	
+	public SU getSu() {
+		return su;
+	}
+	
+	public float getSuPrice() {
+		return suPrice;
 	}
 	
 	public String getTitle() {
@@ -61,11 +74,11 @@ public class Article {
 	public void setDescription1(String description1) {
 		this.description1 = description1;
 	}
-	
+
 	public void setDescription2(String description2) {
 		this.description2 = description2;
 	}
-	
+
 	public void setDescription3(String description3) {
 		this.description3 = description3;
 	}
@@ -78,8 +91,16 @@ public class Article {
 		this.number = number;
 	}
 
-	public void setPrice(float price) {
-		this.price = price;
+	public void setSinglePrice(float price) {
+		this.singlePrice = price;
+	}
+
+	public void setSu(SU su) {
+		this.su = su;
+	}
+
+	public void setSuPrice(float suPrice) {
+		this.suPrice = suPrice;
 	}
 
 	public void setTitle(final String title){

@@ -31,14 +31,6 @@ public class CatalogueGroup implements Serializable {
 		return description;
 	}
 	
-	/*
-	public char getIndex(){
-		int offset = page.getGroups().indexOf(this);
-		char index = (char)(Character.getNumericValue('A')+offset); 
-		return index;
-	}
-	*/
-	
 	public char getIndex() {
 		return index;
 	}

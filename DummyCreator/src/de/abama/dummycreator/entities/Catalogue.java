@@ -36,7 +36,7 @@ public class Catalogue {
 	}
 
 	public List<Article> getGroups() {
-		// TODO Auto-generated method stub
+		// TODO getGroups()
 		return null;
 	}
 

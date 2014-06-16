@@ -23,11 +23,11 @@
                   <items>
                     <MenuItem fx:id="menu_file_new" mnemonicParsing="false" onAction="#newFile" text="Neu" />
                         <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openFile" text="Öffnen" />
-                        <MenuItem mnemonicParsing="false" text="Speichern" />
-                        <MenuItem mnemonicParsing="false" text="Speichern als..." />
-                        <MenuItem mnemonicParsing="false" onAction="#closeFile" text="Schließen" />
+                        <MenuItem fx:id="menu_file_save" mnemonicParsing="false" text="Speichern" />
+                        <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" text="Speichern als..." />
+                        <MenuItem fx:id="menu_file_close" mnemonicParsing="false" onAction="#closeFile" text="Schließen" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Eigenschaften" />
+                        <MenuItem fx:id="menu_file_properties" mnemonicParsing="false" text="Eigenschaften" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Bearbeiten">
@@ -55,7 +55,7 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Artikeldaten">
                      <items>
-                        <MenuItem fx:id="menu_masterdata_import" mnemonicParsing="false" onAction="#importCSV" text="Importieren..." />
+                        <MenuItem fx:id="menu_masterdata_import" mnemonicParsing="false" onAction="#importMasterData" text="Importieren..." />
                      </items>
                   </Menu>
               </menus>
@@ -74,7 +74,7 @@
                                              <children>
                                                 <HBox>
                                                    <children>
-                                                      <TextArea minHeight="24.0" promptText="Artikelnummer(n)" />
+                                                      <TextArea fx:id="search_by_number" minHeight="24.0" onKeyPressed="#searchByNumber" promptText="Artikelnummer(n)" />
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" />
@@ -82,7 +82,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="26.0" VBox.vgrow="NEVER">
                                                    <children>
-                                                      <TextArea minHeight="24.0" promptText="Name / Beschreibung" />
+                                                      <TextArea fx:id="search_by_description" minHeight="24.0" onKeyPressed="#searchByDescription" promptText="Name / Beschreibung" />
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" />
@@ -90,7 +90,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="46.0" VBox.vgrow="NEVER">
                                                    <children>
-                                                      <TextArea minHeight="24.0" promptText="Schlagworte" />
+                                                      <TextArea fx:id="search_by_keywords" minHeight="24.0" onKeyPressed="#searchByKeywords" promptText="Schlagworte" />
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" />
@@ -131,53 +131,64 @@
                                             </columnConstraints>
                                             <rowConstraints>
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="Verfügbare Artikel" GridPane.rowIndex="4">
+                                                <Label text="Verfügbare Artikel" GridPane.rowIndex="5">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label layoutX="10.0" layoutY="25.0" text="Gruppen:" GridPane.rowIndex="2">
+                                                <Label layoutX="10.0" layoutY="25.0" text="Gruppen:" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label fx:id="info_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <Label fx:id="info_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label fx:id="info_catalogue_groups" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <Label fx:id="info_catalogue_groups" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label text="Seiten:" GridPane.rowIndex="1">
+                                                <Label text="Seiten:" GridPane.rowIndex="2">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label fx:id="info_catalogue_pages" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <Label fx:id="info_catalogue_pages" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label text="Kapitel:">
+                                                <Label text="Kapitel:" GridPane.rowIndex="1">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label fx:id="info_catalogue_chapters" text="0" GridPane.columnIndex="1">
+                                                <Label fx:id="info_catalogue_chapters" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label text="Artikel:" GridPane.rowIndex="3">                                                   
+                                                <Label text="Artikel:" GridPane.rowIndex="4">                                                   
                                                 	<font>
                                                       <Font size="11.0" />
                                                    </font></Label>
                                                 
-                                                <Label fx:id="info_catalogue_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <Label fx:id="info_catalogue_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
+                                                <Label layoutX="10.0" layoutY="41.0" text="Datei">
+                                                   <font>
+                                                      <Font name="System Bold" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="info_catalogue_filename" layoutX="10.0" layoutY="16.0" text="Dateiname" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="11.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </GridPane>
                                        </children>

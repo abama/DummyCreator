@@ -1,5 +1,16 @@
 package de.abama.dummycreator.entities;
 
-public class CatalogueChapter {
+import java.util.ArrayList;
+import java.util.List;
 
+public class CatalogueChapter {
+	private List<CataloguePage> pages = new ArrayList<CataloguePage>();
+	
+	public void addPage(final CataloguePage page){
+		pages.add(page);
+	}
+	
+	public void removePage(final CataloguePage page){
+		pages.remove(page);
+	}
 }

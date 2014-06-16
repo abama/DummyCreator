@@ -18,7 +18,7 @@ public class ListArticle extends Article implements Comparable<ListArticle> {
 		if(this.page<other.page) return -1;
 		if(this.group>other.group) return 1;
 		if(this.group<other.group) return -1;	
-		return 0;
+		return this.description1.compareTo(other.description1);
 	}
 
 	public int getPage(){

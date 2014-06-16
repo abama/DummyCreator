@@ -14,11 +14,5 @@ public class CatalogueArticle extends Article  implements Serializable {
 	
 	public CataloguePage getPage(){
 		return group.getPage();
-	}
-	
-	public void setGroup(final CatalogueGroup group){
-		this.group = group;
-	}
-	
-	
+	}	
 }
