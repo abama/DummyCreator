@@ -7,7 +7,9 @@ import java.net.URISyntaxException;
 import de.abama.dummycreator.CatalogueManager;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.entities.Catalogue;
+import de.abama.dummycreator.entities.CatalogueArticle;
 import de.abama.dummycreator.entities.CataloguePage;
+import de.abama.dummycreator.entities.ListArticle;
 import de.abama.dummycreator.masterdata.MasterData;
 import de.abama.dummycreator.utlilities.GuiUtilities;
 import javafx.collections.ObservableList;
@@ -38,7 +40,7 @@ public class DummyCreator {
 	private CataloguePage currentPage;
 	// Aktuelle Position in der Seiten�bersicht
 	private int currentPageRange;
-
+	
 	@FXML
 	private Label info_articles;
 
@@ -91,9 +93,15 @@ public class DummyCreator {
 
 	@FXML
     private TextArea search_by_number;
+	
+	@FXML
+    private Button search_all;
 
 	@FXML
 	private ListView<HBox> search_result;
+	
+	@FXML
+	private VBox spread_left_page;
 
 	@FXML
 	private ListView<HBox> spread_left_groups;
@@ -109,6 +117,9 @@ public class DummyCreator {
 
 	@FXML
 	private Button spread_prev_btn;
+	
+	@FXML
+	private VBox spread_right_page;
 
 	@FXML
 	private ListView<HBox> spread_right_groups;
@@ -124,10 +135,17 @@ public class DummyCreator {
     
     @FXML
 	private ScrollPane view_Spread;
+    
+    @FXML
+    public void initialize() throws IOException {
+    	updateUiViews();
+    }
 
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
-		search_result.getSelectionModel().getSelectedItem();
+		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
+		final ListArticle article = masterData.get(articleNumber);
+		catalogueManager.addArticle(article, null, null);
 		updateSpreadView();
 	}
 	
@@ -141,7 +159,7 @@ public class DummyCreator {
 		final File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
 		masterData.importCsv(file);
 		updateInfoPanel();
-		search_result.setItems(masterData.createArticleListGroupEntries(false));
+		//searchAll(null);
 	}
 
 	@FXML
@@ -205,6 +223,11 @@ public class DummyCreator {
 		//System.out.println("Artikel löschen");
 		updateSpreadView();
 	}
+	
+	@FXML
+	private void searchAll(ActionEvent event) throws IOException {
+		search_result.setItems(masterData.searchAll());
+	}
 
 	@FXML
 	private void searchByDescription(KeyEvent event) throws IOException {
@@ -212,6 +235,13 @@ public class DummyCreator {
 	    	search_result.setItems(masterData.searchByDescription(search_by_description.getText()));
 	    }
 	}
+
+	@FXML
+	private void searchByGroupSignature(ActionEvent event) throws IOException {
+		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
+		search_result.setItems(masterData.searchByGroupSignature(articleNumber));
+	}
+	
 
 	@FXML
 	private void searchByKeywords(KeyEvent event) {
@@ -256,12 +286,16 @@ public class DummyCreator {
 	}
 
 	private void updateSpreadView() throws IOException {
-		final ObservableList<HBox> list = catalogueManager.getCurrentLeftPageGroups();
-		//System.out.println(list);
-		spread_left_groups.setItems(list);
-		spread_left_number.setText(Integer.toString(catalogueManager.getCurrentLeftPage().getNumber()));
+		// Linke Seite
+		spread_left_groups.setItems(catalogueManager.getCurrentLeftPageGroups());
+		spread_left_number.setText(catalogueManager.getCurrentLeftPageNumber());
+		//spread_left_keywords.setText(catalogueManager.getCurrentLeftPageKeywords());
+		// Rechte Seite
 		spread_right_groups.setItems(catalogueManager.getCurrentRightPageGroups());
-		spread_right_number.setText(Integer.toString(catalogueManager.getCurrentRightPage().getNumber()));
+		spread_right_number.setText(catalogueManager.getCurrentRightPageNumber());
+		// Navigation
+		spread_prev_btn.setDisable(catalogueManager.getCurrentLeftPage().getNumber()<0);
+		spread_next_btn.setDisable(catalogueManager.getCurrentRightPage().getNumber()<0);
 		
 	}
 

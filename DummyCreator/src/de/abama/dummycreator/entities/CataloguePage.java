@@ -15,8 +15,8 @@ public class CataloguePage implements Serializable {
 	
 	private Set<String> keywords = new HashSet<String>();
 	
-	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
-	
+	private final List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
+
 	public int getNumber(){
 		//System.out.println(catalogue);
 		//System.out.println(catalogue.getPages().indexOf(this));
@@ -36,9 +36,10 @@ public class CataloguePage implements Serializable {
 		return groups;
 	}
 	
-	public void addGroup(final CatalogueGroup group){
+	public CatalogueGroup addGroup(final CatalogueGroup group){
 		final CatalogueGroup[] groups = {group};
 		addGroups(groups);
+		return group;
 	}
 	
 	public void addGroups(final CatalogueGroup[] groups){

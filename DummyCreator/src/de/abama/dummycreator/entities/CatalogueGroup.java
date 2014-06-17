@@ -83,7 +83,7 @@ public class CatalogueGroup implements Serializable {
 	}
 
 	public Image getImage() {
-		if(articles.size()!=0) return articles.get(0).getImage();
+		if(articles.size()!=0) return articles.get(0).getImage(true);
 		return null;
 	}
 

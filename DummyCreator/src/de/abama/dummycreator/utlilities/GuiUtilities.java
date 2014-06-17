@@ -80,7 +80,9 @@ public class GuiUtilities {
 		((Label) articleBox.lookup("#title")).setText(article.getTitle());
 		((Label) articleBox.lookup("#number")).setText(article.getNumber());
 		((Label) articleBox.lookup("#description")).setText(article.getDescription());
-		if(loadImage) ((ImageView) articleBox.lookup("#image")).setImage(article.getImage());
+		if(article.getImage(false) != null || loadImage) {
+			((ImageView) articleBox.lookup("#image")).setImage(article.getImage(true));
+		}
 		return articleBox;
 	}
 	
@@ -88,6 +90,7 @@ public class GuiUtilities {
 	public static HBox createGroupListEntry(final CatalogueGroup group) throws IOException{
 		
 		HBox articleGroupBox = FXMLLoader.load(group.getClass().getResource("../gui/fxml/ArticleGroupListEntry.fxml"));
+		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));
 		((Label) articleGroupBox.lookup("#title")).setText(group.getTitle());
 		((Label) articleGroupBox.lookup("#description")).setText(group.getDescription());
 		if(group.getImage() != null) ((ImageView) articleGroupBox.lookup("#image")).setImage(group.getImage());

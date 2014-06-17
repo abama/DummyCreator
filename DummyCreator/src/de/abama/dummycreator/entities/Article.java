@@ -33,7 +33,7 @@ public class Article {
 	}
 	
 	public String getDescription(){
-		return description1 + description2 + description3;
+		return description1 + description2;
 	}
 
 	public String getDescription1() {
@@ -47,10 +47,10 @@ public class Article {
 	public String getDescription3() {
 		return description3;
 	}
-
-	public Image getImage() {
+	
+	public Image getImage(boolean load) {
 		
-		if (image == null) loadImage();
+		if (image == null && load) loadImage();
 		return image;
 	}
 
@@ -72,6 +72,10 @@ public class Article {
 	
 	public String getTitle() {
 		return title;
+	}
+	
+	public String getGroupSignature(){
+		return title+description1;
 	}
 	
 	public void setDescription1(String description1) {

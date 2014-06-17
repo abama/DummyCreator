@@ -33,7 +33,7 @@ public class Catalogue {
 			return pages.get(number - firstPageNumber);
 		}
 		catch(Exception e){
-			return null;
+			return new CataloguePageStub();
 		}
 	}
 
@@ -60,12 +60,11 @@ public class Catalogue {
 
 	public CataloguePage getOrCreatePage(int number) {
 		if(pages.size()==0) firstPageNumber = number;
-		//System.out.println("Suche Seite: " + number);
 		while(pages.size()+firstPageNumber-1 < number){
 			final CataloguePage page = new CataloguePage();
 			page.setCatalogue(this);
 			this.add(page);
-			//System.out.println("Erstelle neue Seite.");
+			System.out.println("Erstelle Seite " + number);
 		}
 		return pages.get(number-firstPageNumber);
 	}
@@ -96,5 +95,10 @@ public class Catalogue {
 
 	public int getChaptersCount() {
 		return chapters.size();
+	}
+
+	public CataloguePage addPage() {
+		final CataloguePage page = getOrCreatePage(firstPageNumber);
+		return page;
 	}
 }
