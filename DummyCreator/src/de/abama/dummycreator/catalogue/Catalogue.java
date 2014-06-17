@@ -1,4 +1,4 @@
-package de.abama.dummycreator.entities;
+package de.abama.dummycreator.catalogue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class Catalogue {
 			final CataloguePage page = new CataloguePage();
 			page.setCatalogue(this);
 			this.add(page);
-			System.out.println("Erstelle Seite " + number);
+			System.out.println("Erstelle Seite " + page.getNumber());
 		}
 		return pages.get(number-firstPageNumber);
 	}

@@ -1,4 +1,4 @@
-package de.abama.dummycreator.utlilities;
+package de.abama.dummycreator.gui.utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +21,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import de.abama.dummycreator.entities.Catalogue;
-import de.abama.dummycreator.entities.CatalogueArticle;
-import de.abama.dummycreator.entities.CatalogueGroup;
-import de.abama.dummycreator.entities.ListArticle;
+import de.abama.dummycreator.catalogue.Catalogue;
+import de.abama.dummycreator.catalogue.CatalogueArticle;
+import de.abama.dummycreator.catalogue.CatalogueGroup;
+import de.abama.dummycreator.catalogue.ListArticle;
 
 public class GuiUtilities {
 	
@@ -93,10 +93,10 @@ public class GuiUtilities {
 		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));
 		((Label) articleGroupBox.lookup("#title")).setText(group.getTitle());
 		((Label) articleGroupBox.lookup("#description")).setText(group.getDescription());
-		if(group.getImage() != null) ((ImageView) articleGroupBox.lookup("#image")).setImage(group.getImage());
+		if(group.getImage(true) != null) ((ImageView) articleGroupBox.lookup("#image")).setImage(group.getImage(true));
 		final List<String> articles = new ArrayList<String>();
 		for(final CatalogueArticle article : group.getArticles()){
-			articles.add(article.getNumber() + " " + article.getDescription3());
+			articles.add(article.getNumber() + " " /*+ article.getDescription2() */+ " " + article.getDescription3());
 		}
 		((ListView<String>) articleGroupBox.lookup("#articles")).setItems(FXCollections.observableArrayList(articles));
 		//System.out.println(group.getTitle() + group.getDescription());

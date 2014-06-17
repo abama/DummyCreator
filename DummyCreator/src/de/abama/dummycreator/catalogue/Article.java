@@ -1,4 +1,4 @@
-package de.abama.dummycreator.entities;
+package de.abama.dummycreator.catalogue;
 
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;

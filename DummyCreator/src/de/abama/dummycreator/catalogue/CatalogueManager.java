@@ -1,4 +1,4 @@
-package de.abama.dummycreator;
+package de.abama.dummycreator.catalogue;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,17 +8,15 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
-import de.abama.dummycreator.entities.CatalogueGroup;
-import de.abama.dummycreator.entities.Catalogue;
-import de.abama.dummycreator.entities.CataloguePage;
-import de.abama.dummycreator.entities.CataloguePageStub;
-import de.abama.dummycreator.entities.ListArticle;
-import de.abama.dummycreator.masterdata.MasterData;
-import de.abama.dummycreator.utlilities.ArticleUtilities;
-import de.abama.dummycreator.utlilities.GuiUtilities;
+import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class CatalogueManager {
 	
@@ -36,6 +34,8 @@ public class CatalogueManager {
 		
 		final List<ListArticle> articles = ArticleUtilities.createListArticles(csv);
 		Collections.sort(articles);
+		
+		catalogue = new Catalogue();
 		
 		catalogue.setFirstPage(articles.get(0).getPage());
 		
@@ -123,11 +123,33 @@ public class CatalogueManager {
 		return getCurrentRightPage().getKeywords().toString();
 	}
 
-	public void addArticle(final ListArticle article, CataloguePage page, CatalogueGroup group) {
+	public void addArticle(final ListArticle listArticle, CataloguePage page, CatalogueGroup group) {
 		if(page == null) page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
 		
 		if(group == null) group = page.addGroup(new CatalogueGroup());
-		//group.add(article);
+		group.add(new CatalogueArticle(listArticle));
+	}
+
+	public void addGroup(Object object) {
+		CataloguePage page = currentPage;
+		if(page == null) page = currentPage = catalogue.addPage();
+		page.addGroup(new CatalogueGroup());
+	}
+
+	public CataloguePage addPage(CataloguePage previousPage) {
+		currentPage = catalogue.newPage(previousPage);
+		return currentPage;
+	}
+
+	public ObservableList<VBox> createPageThumbnails() throws IOException {
+		final List<VBox> pages = new ArrayList<VBox>();
+		for(final CataloguePage page : catalogue.getPages()){
+			VBox pageThumbnail = FXMLLoader.load(getClass().getResource("../gui/fxml/PageThumbnail.fxml"));
+			((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(page.getNumber()));
+			if(page.getImage(true)!=null) ((ImageView) pageThumbnail.lookup("#image")).setImage(page.getImage(true));
+			pages.add(pageThumbnail);
+		}		
+		return FXCollections.observableList(pages);
 	}
 }

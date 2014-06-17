@@ -9,7 +9,7 @@
 
 <HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-         <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+         <ImageView fx:id="image" fitHeight="105.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
 			 <image>
 				<Image url="@../git/DummyCreator/DummyCreator/src/de/abama/dummycreator/gui/image/icon_artikel.png" />
 			 </image>

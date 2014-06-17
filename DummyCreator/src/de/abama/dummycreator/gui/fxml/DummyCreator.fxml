@@ -126,27 +126,28 @@
                                        <children>
                                           <GridPane prefWidth="300.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnConstraints>
-                                              <ColumnConstraints minWidth="10.0" prefWidth="150.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints prefWidth="115.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                              <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                              <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                                              <RowConstraints minHeight="10.0" vgrow="NEVER" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="Verfügbare Artikel" GridPane.rowIndex="5">
+                                                <Label text="Verfügbare Artikel:" GridPane.rowIndex="6">
+                                                   <font>
+                                                      <Font name="System Bold" size="11.0" />
+                                                   </font></Label>
+                                                <Label text="Gruppen:" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
-                                                <Label layoutX="10.0" layoutY="25.0" text="Gruppen:" GridPane.rowIndex="3">
-                                                   <font>
-                                                      <Font size="11.0" />
-                                                   </font></Label>
-                                                <Label fx:id="info_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                <Label fx:id="info_articles" text="0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font></Label>
@@ -276,23 +277,16 @@
                   </SplitPane>
                   <SplitPane dividerPositions="0.25" orientation="VERTICAL">
                     <items>
-                        <HBox SplitPane.resizableWithParent="false">
+                        <HBox minHeight="160.0" maxHeight="160.0" SplitPane.resizableWithParent="false">
                            <children>
                               <AnchorPane>
                                  <children>
                                     <Button fx:id="pages_prev_btn" disable="true" mnemonicParsing="false" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="100.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <content>
-                                          <HBox fx:id="view_Pages" />
-                                       </content>
-<!--                                        <padding> -->
-<!--                                           <Insets top="10.0" /> -->
-<!--                                        </padding> -->
-                                    </ScrollPane>
+                                    <ListView fx:id="view_Pages" orientation="HORIZONTAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="10.0" layoutY="10.0">
@@ -302,18 +296,18 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox>
                            <children>
                               <AnchorPane>
                                  <children>
                                     <Button fx:id="spread_prev_btn" mnemonicParsing="false" onAction="#spreadDown" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox prefHeight="577.0" prefWidth="776.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <VBox fx:id="spread_left_page" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                          <VBox fx:id="spread_left_page" alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <HBox>
                                                    <children>
@@ -352,7 +346,12 @@
                                              <children>
                                                 <HBox>
                                                    <children>
-                                                      <Label fx:id="spread_right_number" prefWidth="50.0" text="3">
+                                                      <TextField fx:id="spread_right_keywords" alignment="TOP_LEFT" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;" HBox.hgrow="ALWAYS">
+                                                         <HBox.margin>
+                                                            <Insets />
+                                                         </HBox.margin>
+                                                      </TextField>
+                                                      <Label fx:id="spread_right_number" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="50.0" text="3" textAlignment="RIGHT">
                                                          <font>
                                                             <Font name="System Bold" size="18.0" />
                                                          </font>
@@ -360,11 +359,6 @@
                                                             <Insets />
                                                          </HBox.margin>
                                                       </Label>
-                                                      <TextField fx:id="spread_right_keywords" alignment="TOP_LEFT" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;" HBox.hgrow="ALWAYS">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets bottom="5.0" />

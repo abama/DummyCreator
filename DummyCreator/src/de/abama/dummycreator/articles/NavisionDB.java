@@ -1,4 +1,4 @@
-package de.abama.dummycreator.masterdata;
+package de.abama.dummycreator.articles;
 
 public class NavisionDB {
 	private String name;

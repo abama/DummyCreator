@@ -1,4 +1,4 @@
-package de.abama.dummycreator.masterdata;
+package de.abama.dummycreator.articles;
 
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;

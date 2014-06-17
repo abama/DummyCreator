@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import de.abama.dummycreator.CatalogueManager;
+import de.abama.dummycreator.articles.ArticleManager;
+import de.abama.dummycreator.catalogue.Catalogue;
+import de.abama.dummycreator.catalogue.CatalogueManager;
+import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.config.Configuration;
-import de.abama.dummycreator.entities.Catalogue;
-import de.abama.dummycreator.entities.CatalogueArticle;
-import de.abama.dummycreator.entities.CataloguePage;
-import de.abama.dummycreator.entities.ListArticle;
-import de.abama.dummycreator.masterdata.MasterData;
-import de.abama.dummycreator.utlilities.GuiUtilities;
-import javafx.collections.ObservableList;
+import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +20,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -34,19 +32,19 @@ public class DummyCreator {
 	private CatalogueManager catalogueManager = new CatalogueManager();
 	private Catalogue catalogue = catalogueManager.newFile();
 	
+	@SuppressWarnings("unused")
 	private Clipboard clipboard = Clipboard.getSystemClipboard();
 	private Configuration configuration = Configuration.getInstance();
 
-	private CataloguePage currentPage;
-	// Aktuelle Position in der Seiten�bersicht
-	private int currentPageRange;
-	
 	@FXML
 	private Label info_articles;
 
 	// Aktuell angezeigte Doppelseite
 	// private int currentPage;
 
+	@FXML
+	private Label info_catalogue_filename;
+	
 	@FXML
 	private Label info_catalogue_articles;
 
@@ -59,7 +57,7 @@ public class DummyCreator {
 	@FXML
 	private Label info_catalogue_pages;
 
-	private MasterData masterData = new MasterData();
+	private ArticleManager masterData = new ArticleManager();
 
 	@FXML 
 	private MenuItem menu_file_new;
@@ -131,7 +129,7 @@ public class DummyCreator {
 	private Label spread_right_number;
     
     @FXML
-	private HBox view_Pages;
+	private ListView<VBox> view_Pages;
     
     @FXML
 	private ScrollPane view_Spread;
@@ -144,13 +142,13 @@ public class DummyCreator {
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
 		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
-		final ListArticle article = masterData.get(articleNumber);
-		catalogueManager.addArticle(article, null, null);
+		catalogueManager.addArticle(masterData.get(articleNumber), null, null);
 		updateSpreadView();
 	}
 	
 	@FXML
 	private void closeFile(ActionEvent event) throws IOException {
+		
 		updateUiViews();
 	}
 	
@@ -184,23 +182,14 @@ public class DummyCreator {
 	@FXML
 	private void newGroup(ActionEvent event) throws IOException {
 		System.out.println("Neue Gruppe");
+		catalogueManager.addGroup(null);
 		updateSpreadView();
 	}
 
 	@FXML
 	private void newPage(ActionEvent event) throws IOException {
 		System.out.println("Neue Seite");
-		currentPage = catalogue.newPage(currentPage);
-
-		VBox pageThumbnail = FXMLLoader.load(getClass().getResource("../fxml/PageThumbnail.fxml"));
-		((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(currentPage.getNumber()));
-		view_Pages.getChildren().add(pageThumbnail);
-		
-		// PageThumbnail controller = (PageThumbnail)
-		// pageThumbnail.getController();
-
-		
-
+		catalogueManager.addPage(null);
 		updateUiViews();
 	}
 
@@ -208,12 +197,8 @@ public class DummyCreator {
 	private void openFile(ActionEvent event) throws IOException, URISyntaxException {
 		File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
 		if (file != null) {
+			info_catalogue_filename.setText(file.getName());
 			catalogue = catalogueManager.openFile(file);
-			for(final CataloguePage page : catalogue.getPages()){
-				VBox pageThumbnail = FXMLLoader.load(getClass().getResource("../fxml/PageThumbnail.fxml"));
-				((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(page.getNumber()));
-				view_Pages.getChildren().add(pageThumbnail);
-			}
 			updateUiViews();
 		}
 	}
@@ -281,8 +266,8 @@ public class DummyCreator {
 
 	}
 
-	private void updatePagesView() {
-
+	private void updatePagesView() throws IOException {
+		view_Pages.setItems(catalogueManager.createPageThumbnails());;
 	}
 
 	private void updateSpreadView() throws IOException {

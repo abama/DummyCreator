@@ -9,12 +9,19 @@
 
 <VBox alignment="CENTER" prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.abama.dummycreator.gui.controller.PageThumbnail">
    <children>
-      <TextField fx:id="label" promptText="..." />
-      <ImageView fx:id="image" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/icon_seite.png" />
-         </image>
-      </ImageView>
+      <StackPane>
+         <children>
+            <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="21.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/icon_seite.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="image" fitHeight="90.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <StackPane.margin>
+                  <Insets top="5.0" />
+               </StackPane.margin></ImageView>
+         </children>
+      </StackPane>
       <Label fx:id="number" text="1" />
    </children>
 </VBox>

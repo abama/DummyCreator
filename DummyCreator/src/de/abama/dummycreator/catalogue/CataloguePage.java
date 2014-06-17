@@ -1,4 +1,4 @@
-package de.abama.dummycreator.entities;
+package de.abama.dummycreator.catalogue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javafx.scene.image.Image;
 
 public class CataloguePage implements Serializable {
 	
@@ -75,7 +77,6 @@ public class CataloguePage implements Serializable {
 			if(group.getIndex()==index) return group;
 		}
 		final CatalogueGroup group = new CatalogueGroup();
-		group.setIndex(index);
 		addGroup(group);
 
 		return group;
@@ -83,5 +84,10 @@ public class CataloguePage implements Serializable {
 
 	public int getGroupsCount() {
 		return groups.size();
+	}
+
+	public Image getImage(boolean loadImage) {
+		if(groups.size()>0)	return groups.get(0).getImage(loadImage);
+		return null;
 	}
 }

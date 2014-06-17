@@ -1,4 +1,4 @@
-package de.abama.dummycreator.entities;
+package de.abama.dummycreator.catalogue;
 
 import java.util.ArrayList;
 import java.util.List;

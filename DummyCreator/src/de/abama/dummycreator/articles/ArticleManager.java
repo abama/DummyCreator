@@ -1,4 +1,4 @@
-package de.abama.dummycreator.masterdata;
+package de.abama.dummycreator.articles;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,19 +9,17 @@ import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
+import de.abama.dummycreator.catalogue.Article;
+import de.abama.dummycreator.catalogue.CatalogueGroup;
+import de.abama.dummycreator.catalogue.ListArticle;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
-import de.abama.dummycreator.entities.Article;
-import de.abama.dummycreator.entities.CatalogueGroup;
-import de.abama.dummycreator.entities.ListArticle;
-import de.abama.dummycreator.utlilities.ArticleUtilities;
-import de.abama.dummycreator.utlilities.GuiUtilities;
+import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
-public class MasterData {
+public class ArticleManager {
 	
 	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
 	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();

@@ -1,11 +1,11 @@
-package de.abama.dummycreator.utlilities;
+package de.abama.dummycreator.articles.utlilities;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.abama.dummycreator.catalogue.CatalogueArticle;
+import de.abama.dummycreator.catalogue.ListArticle;
 import de.abama.dummycreator.csv.CSV;
-import de.abama.dummycreator.entities.CatalogueArticle;
-import de.abama.dummycreator.entities.ListArticle;
 
 public class ArticleUtilities {
 	
