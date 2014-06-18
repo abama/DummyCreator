@@ -6,22 +6,22 @@ import java.util.List;
 
 import javafx.scene.image.Image;
 
-public class ArticleGroup implements Serializable {
+public class CatalogueGroup implements Serializable {
 	
 	private static final String INDEX = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	private static final long serialVersionUID = -5891268528749563927L;
 	
-	private List<Article> articles = new ArrayList<Article>();
+	private List<CatalogueArticle> articles = new ArrayList<CatalogueArticle>();
 		
 	private CataloguePage page;
 	
-	public void add(final Article article){
+	public void add(final CatalogueArticle article){
 		articles.add(article);
 	}	
 	
-	public void addAll(final Article[] articles){
-		for(Article article : articles){
+	public void addAll(final CatalogueArticle[] articles){
+		for(CatalogueArticle article : articles){
 			add(article);
 		}
 		//updateGroupData();
@@ -83,7 +83,7 @@ public class ArticleGroup implements Serializable {
 		return null;
 	}
 
-	public List<Article> getArticles() {
+	public List<CatalogueArticle> getArticles() {
 		return articles;
 	}
 }

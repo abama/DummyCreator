@@ -6,29 +6,29 @@ import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 import javafx.scene.image.Image;
 
-public class Article implements Comparable<Article>, Serializable{
+public class Article implements Serializable{
 	
 	private static final long serialVersionUID = 4904155239691627018L;
 
-	protected String number = "Artikelnummer";
-	
-	protected String title = "Titel";
-	
 	protected String description1 = "Beschreibung1";
-	protected String description2 = "Beschreibung2";
-	protected String description3 = "Beschreibung3";
 	
+	protected String description2 = "Beschreibung2";
+	
+	protected String description3 = "Beschreibung3";
+	protected char groupIndex;
 	protected Image image = null;
 	
-	protected SU su = SU.PIECE;
+	protected String number = "Artikelnummer";
+	
+	protected int pageNumber;
 	
 	protected float singlePrice;
+	protected SU su = SU.PIECE;
+
 	protected float suPrice;
+	protected String title = "Titel";
 
-	protected int pageNumber;
-	protected char groupIndex;
-
-	private ArticleGroup group;
+	private CatalogueGroup group;
 	
 	// Generischer Konstruktor
 	public Article(){
@@ -41,6 +41,14 @@ public class Article implements Comparable<Article>, Serializable{
 		this.number = number;
 	}
 	
+	public int compareTo(Article other) {
+		if(this.pageNumber>other.pageNumber) return 1;
+		if(this.pageNumber<other.pageNumber) return -1;
+		if(this.groupIndex>other.groupIndex) return 1;
+		if(this.groupIndex<other.groupIndex) return -1;	
+		return this.description1.compareTo(other.description1);
+	}
+
 	public String getDescription(){
 		return description1 + description2;
 	}
@@ -52,9 +60,21 @@ public class Article implements Comparable<Article>, Serializable{
 	public String getDescription2() {
 		return description2;
 	}
-
+	
 	public String getDescription3() {
 		return description3;
+	}
+
+	public CatalogueGroup getGroup() {
+		return group;
+	}
+	
+	public char getGroupIndex() {
+		return groupIndex;
+	}
+	
+	public String getGroupSignature(){
+		return title+description1;
 	}
 	
 	public Image getImage(boolean load) {
@@ -62,15 +82,23 @@ public class Article implements Comparable<Article>, Serializable{
 		if (image == null && load) loadImage();
 		return image;
 	}
-
+	
 	public String getNumber(){
 		return number;
 	}
 	
-	public float getPrice() {
-		return singlePrice;
+	public CataloguePage getPage() {
+		return group.getPage();
 	}
 	
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public float getSinglePrice() {
+		return singlePrice;
+	}
+
 	public SU getSu() {
 		return su;
 	}
@@ -78,15 +106,15 @@ public class Article implements Comparable<Article>, Serializable{
 	public float getSuPrice() {
 		return suPrice;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
-	public String getGroupSignature(){
-		return title+description1;
+
+	public void loadImage(){
+		this.image = new Image(Configuration.getInstance().imageBasePath+this.getNumber()+".png", true);
 	}
-	
+
 	public void setDescription1(String description1) {
 		this.description1 = description1;
 	}
@@ -98,9 +126,10 @@ public class Article implements Comparable<Article>, Serializable{
 	public void setDescription3(String description3) {
 		this.description3 = description3;
 	}
-	
-	public void loadImage(){
-		this.image = new Image(Configuration.getInstance().imageBasePath+this.getNumber()+".png", true);
+
+	public void setGroupIndex(String group) throws Exception {
+		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
+		else throw new Exception();
 	}
 
 	public void setImage(Image image) {
@@ -109,6 +138,10 @@ public class Article implements Comparable<Article>, Serializable{
 
 	public void setNumber(final String number) {
 		this.number = number;
+	}
+
+	public void setPageNumber(String page) throws Exception {
+		this.pageNumber = Integer.parseInt(page);
 	}
 
 	public void setSinglePrice(float price) {
@@ -125,38 +158,5 @@ public class Article implements Comparable<Article>, Serializable{
 
 	public void setTitle(final String title){
 		this.title = title;
-	}
-
-	public void setPageNumber(String page) throws Exception {
-		this.pageNumber = Integer.parseInt(page);
-	}
-
-	public void setGroupIndex(String group) throws Exception {
-		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
-		else throw new Exception();
-	}
-
-	public int compareTo(Article other) {
-		if(this.pageNumber>other.pageNumber) return 1;
-		if(this.pageNumber<other.pageNumber) return -1;
-		if(this.groupIndex>other.groupIndex) return 1;
-		if(this.groupIndex<other.groupIndex) return -1;	
-		return this.description1.compareTo(other.description1);
-	}
-
-	public int getPageNumber() {
-		return pageNumber;
-	}
-
-	public char getGroupIndex() {
-		return groupIndex;
-	}
-
-	public ArticleGroup getGroup() {
-		return group;
-	}
-
-	public CataloguePage getPage() {
-		return group.getPage();
 	}
 }

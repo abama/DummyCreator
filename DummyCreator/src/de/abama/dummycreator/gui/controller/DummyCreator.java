@@ -6,13 +6,12 @@ import java.net.URISyntaxException;
 
 import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.catalogue.Catalogue;
+import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
-import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -20,7 +19,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,7 +28,7 @@ import javafx.scene.layout.VBox;
 
 public class DummyCreator {
 
-	private CatalogueManager catalogueManager = new CatalogueManager();
+	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	private Catalogue catalogue = catalogueManager.newFile();
 	
 	@SuppressWarnings("unused")
@@ -58,7 +56,7 @@ public class DummyCreator {
 	@FXML
 	private Label info_catalogue_pages;
 
-	private ArticleManager masterData = new ArticleManager();
+	private ArticleManager masterData = ArticleManager.getInstance();
 
 	@FXML 
 	private MenuItem menu_file_new;
@@ -152,6 +150,7 @@ public class DummyCreator {
     private void pageListKeyPressed(KeyEvent event) throws IOException{
     	if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
     		catalogueManager.deletePage(((Label) view_pages.getSelectionModel().getSelectedItem().lookup("#number")).getText());
+    		// TODO NullPointer exception
     		updateUiViews();
     	}
     }    
@@ -159,7 +158,7 @@ public class DummyCreator {
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
 		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
-		catalogueManager.addArticle(masterData.get(articleNumber), null, null);
+		catalogueManager.addArticle(new CatalogueArticle(masterData.get(articleNumber)), null, null);
 		updateSpreadView();
 	}
 	

@@ -23,7 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.catalogue.Catalogue;
-import de.abama.dummycreator.catalogue.ArticleGroup;
+import de.abama.dummycreator.catalogue.CatalogueGroup;
 
 public class GuiUtilities {
 	
@@ -88,7 +88,7 @@ public class GuiUtilities {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static HBox createGroupListEntry(final ArticleGroup group) throws IOException{
+	public static HBox createGroupListEntry(final CatalogueGroup group) throws IOException{
 		
 		HBox articleGroupBox = FXMLLoader.load(group.getClass().getResource("../gui/fxml/ArticleGroupListEntry.fxml"));
 		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));

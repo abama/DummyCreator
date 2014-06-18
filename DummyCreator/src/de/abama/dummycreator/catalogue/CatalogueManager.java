@@ -20,24 +20,33 @@ import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class CatalogueManager {
 	
+	private static CatalogueManager instance = null;
+	
+	private CatalogueManager(){ super(); }
+	
+	public static CatalogueManager getInstance(){
+		if(instance==null) instance = new CatalogueManager();
+		return instance;
+	}
+	
 	private Catalogue catalogue = new Catalogue();
 	
 	private CataloguePage currentPage = null;
-	private ArticleGroup currentGroup = null;
-	private Article currentArticle = null;
+	private CatalogueGroup currentGroup = null;
+	private CatalogueArticle currentCatalogueArticle = null;
 		
-	public void addArticle(final Article article, CataloguePage page, ArticleGroup group) {
+	public void addArticle(final CatalogueArticle article, CataloguePage page, CatalogueGroup group) {
 		if(page == null) page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
 		
-		if(group == null) group = page.addGroup(new ArticleGroup());
+		if(group == null) group = page.addGroup(new CatalogueGroup());
 		group.add(article);
 	}
 	
 	public void newGroup(Object object) {
 		CataloguePage page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
-		page.addGroup(new ArticleGroup());
+		page.addGroup(new CatalogueGroup());
 	}
 	
 	public CataloguePage addPage(CataloguePage previousPage) {
@@ -115,21 +124,25 @@ public class CatalogueManager {
 	}
 
 	public Catalogue openFile(final File file) {
+		
+		
+		
+		
 		final CSV csv = CsvFileUtility.read(file);
 		
-		final List<Article> articles = ArticleUtilities.createArticles(csv);
+		final List<ListArticle> articles = ArticleUtilities.createListArticles(csv);
 		Collections.sort(articles);
 		
 		catalogue = new Catalogue();
 		
 		catalogue.setFirstPage(articles.get(0).getPageNumber());
 		
-		for(final Article article : articles){
+		for(final ListArticle article : articles){
 			final CataloguePage page = catalogue.getOrCreatePage(article.getPageNumber());
 			//System.out.println("Page: " + page);
-			final ArticleGroup group = page.getOrCreateGroup(article.getGroupIndex());
+			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
 			//System.out.println("Group: " + group);
-			group.add(article);
+			group.add(new CatalogueArticle(article));
 		}
 		
 		currentPage = catalogue.getFirstPage();
@@ -157,7 +170,7 @@ public class CatalogueManager {
 		final List<HBox> groupEntries = new ArrayList<HBox>();
 		//System.out.println("Suche Artikelgruppen für Seite " + page);
 		//System.out.println("Seite " + page.getNumber());
-		for(final ArticleGroup group : page.getGroups()){
+		for(final CatalogueGroup group : page.getGroups()){
 			groupEntries.add(GuiUtilities.createGroupListEntry(group));
 			//System.out.println("Suche Gruppen für Seite " + page.getNumber());
 		}
