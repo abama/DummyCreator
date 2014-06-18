@@ -34,11 +34,8 @@ public class Catalogue {
 	}
 	
 	public CataloguePage getPage(final int number){
-		int index = number - firstPageNumber;
-		if(index < 0) index = 0;
-		if(index > pages.size()-1) index = pages.size()-1;
 		try {
-			return pages.get(index);
+			return pages.get(number - firstPageNumber);
 		}
 		catch(IndexOutOfBoundsException e){
 			return new CataloguePageStub();

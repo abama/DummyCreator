@@ -11,13 +11,14 @@ public class CatalogueGroup implements Serializable {
 	private static final String INDEX = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	private static final long serialVersionUID = -5891268528749563927L;
-	
+		
 	private List<CatalogueArticle> articles = new ArrayList<CatalogueArticle>();
 		
 	private CataloguePage page;
 	
 	public void add(final CatalogueArticle article){
-		articles.add(article);
+		if(!articles.contains(article)) articles.add(article);
+		System.out.println("Füge Artikel hinzu: " + article.getNumber());
 	}	
 	
 	public void addAll(final CatalogueArticle[] articles){

@@ -91,6 +91,7 @@ public class GuiUtilities {
 	public static HBox createGroupListEntry(final CatalogueGroup group) throws IOException{
 		
 		HBox articleGroupBox = FXMLLoader.load(group.getClass().getResource("../gui/fxml/ArticleGroupListEntry.fxml"));
+		articleGroupBox.setId(group.getPage().getNumber()+"_"+group.getIndex());
 		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));
 		((Label) articleGroupBox.lookup("#title")).setText(group.getTitle());
 		((Label) articleGroupBox.lookup("#description")).setText(group.getDescription());
@@ -100,6 +101,7 @@ public class GuiUtilities {
 			articles.add(article.getNumber() + " " /*+ article.getDescription2() */+ " " + article.getDescription3());
 		}
 		((ListView<String>) articleGroupBox.lookup("#articles")).setItems(FXCollections.observableArrayList(articles));
+		((ListView<String>) articleGroupBox.lookup("#articles")).setId(group.getPage().getNumber()+"_"+group.getIndex());
 		//System.out.println(group.getTitle() + group.getDescription());
 		return articleGroupBox;
 	}	

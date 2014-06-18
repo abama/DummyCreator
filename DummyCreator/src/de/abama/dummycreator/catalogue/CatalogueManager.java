@@ -14,9 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import de.abama.dummycreator.articles.ArticleManager;
-import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
-import de.abama.dummycreator.csv.CSV;
-import de.abama.dummycreator.csv.CsvFileUtility;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class CatalogueManager {
@@ -171,5 +168,9 @@ public class CatalogueManager {
 			//System.out.println("Suche Gruppen für Seite " + page.getNumber());
 		}
 		return FXCollections.observableList(groupEntries);
+	}
+	
+	public Catalogue getCatalogue(){
+		return catalogue;
 	}
 }

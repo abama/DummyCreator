@@ -159,4 +159,9 @@ public class Article implements Serializable{
 	public void setTitle(final String title){
 		this.title = title;
 	}
+	
+	@Override
+	public boolean equals(final Object other){
+		return(getNumber().equals(((Article)other).getNumber()));
+	}
 }

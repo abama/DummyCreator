@@ -26,7 +26,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class DummyCreator {
+public class DummyCreator implements IController{
+	
+	@SuppressWarnings("unused")
+	private ControllerContext context;
 
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	private Catalogue catalogue = catalogueManager.newFile();
@@ -134,8 +137,8 @@ public class DummyCreator {
 	private ScrollPane view_Spread;
     
     @FXML
-    public void initialize() throws IOException {
-    	updateUiViews();
+    protected void initialize() throws IOException {
+    	context = ControllerContext.getInstance(this);
     }
     
     @FXML
@@ -304,5 +307,33 @@ public class DummyCreator {
 		updateSpreadView();
 		updatePagesView();
 		updateInfoPanel();
+	}
+
+	public void removeArticle(ArticleGroupListEntry articleGroupListEntry, HBox lookup) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@FXML
+	public void leftPageGroupsKeyPressed(KeyEvent event) throws IOException{
+		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
+			final int index = spread_left_groups.getSelectionModel().getSelectedIndex();
+			if(index>=0)
+				catalogueManager.getCurrentLeftPage().getGroups().remove(spread_left_groups.getSelectionModel().getSelectedIndex());
+				try{ 
+					// TODO Funktioniert nicht
+					spread_left_groups.getSelectionModel().select(index);
+				} catch (IndexOutOfBoundsException e) { System.out.println("Möööp");};
+		}
+		updateSpreadView();
+	}
+	
+	@FXML
+	public void rightPageGroupsKeyPressed(KeyEvent event) throws IOException{
+		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
+			if(spread_right_groups.getSelectionModel().getSelectedIndex()>=0)
+				catalogueManager.getCurrentRightPage().getGroups().remove(spread_right_groups.getSelectionModel().getSelectedIndex());
+		}
+		updateSpreadView();
 	}
 }

@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 public class CataloguePage implements Serializable {
 	
 	private static final long serialVersionUID = -1333912371214942887L;
+	
+	private static final String INDEX = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	private Catalogue catalogue;
 	
@@ -78,6 +80,7 @@ public class CataloguePage implements Serializable {
 		}
 		final CatalogueGroup group = new CatalogueGroup();
 		addGroup(group);
+		System.out.println("Erstelle Gruppe " + group.getIndex());
 
 		return group;
 	}
@@ -89,5 +92,9 @@ public class CataloguePage implements Serializable {
 	public Image getImage(boolean loadImage) {
 		if(groups.size()>0)	return groups.get(0).getImage(loadImage);
 		return null;
+	}
+	
+	public CatalogueGroup getGroup(final char groupIndex){
+		return groups.get(INDEX.indexOf(groupIndex));
 	}
 }
