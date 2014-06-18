@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
@@ -60,6 +61,8 @@ public class CatalogueManager {
 			VBox pageThumbnail = FXMLLoader.load(getClass().getResource("../gui/fxml/PageThumbnail.fxml"));
 			((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(page.getNumber()));
 			if(page.getImage(true)!=null) ((ImageView) pageThumbnail.lookup("#image")).setImage(page.getImage(true));
+			((ImageView) pageThumbnail.lookup("#linke_seite")).setVisible(page.getNumber()%2==0);
+			((ImageView) pageThumbnail.lookup("#rechte_seite")).setVisible(page.getNumber()%2!=0);
 			pages.add(pageThumbnail);
 		}		
 		return FXCollections.observableList(pages);
@@ -123,17 +126,10 @@ public class CatalogueManager {
 		}
 	}
 
-	public Catalogue openFile(final File file) {
-		
-		
-		
-		
-		final CSV csv = CsvFileUtility.read(file);
-		
-		final List<ListArticle> articles = ArticleUtilities.createListArticles(csv);
+	public Catalogue loadFile(final File file) {
+				
+		final List<ListArticle> articles = ArticleManager.getInstance().loadCsv(file);
 		Collections.sort(articles);
-		
-		catalogue = new Catalogue();
 		
 		catalogue.setFirstPage(articles.get(0).getPageNumber());
 		

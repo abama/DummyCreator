@@ -36,12 +36,18 @@ public class ArticleManager {
 	@SuppressWarnings("unused")
 	private Configuration configuration = Configuration.getInstance();
 	
-	public void add(final List<ListArticle> list){
+	public List<ListArticle> addArticles(final List<ListArticle> list){
+		final List<ListArticle> linkedArticles = new ArrayList<ListArticle>();
+		
 		for(final ListArticle article : list){
-			this.articles.put(article.getNumber(), article);
-			this.articles = new TreeMap<String, ListArticle>(this.articles);
+			linkedArticles.add(getOrCreateArticle(article));
 		}
-		System.out.println("Artikel: " + list.size());
+		return linkedArticles;
+	}
+
+	public ListArticle getOrCreateArticle(final ListArticle article){
+		if(!articles.containsKey(article.getNumber())) articles.put(article.getNumber(), article);
+		return articles.get(article.getNumber());
 	}
 	
 	public void clear(){
@@ -88,11 +94,12 @@ public class ArticleManager {
 		return groups.size();
 	}
 
-	public void importCsv(final File file) {
+	public List<ListArticle> loadCsv(final File file) {
 		if (file != null) {
 			final CSV csv = CsvFileUtility.read(file);
-			add(ArticleUtilities.createListArticles(csv));
+			return addArticles(ArticleUtilities.createListArticles(csv));
 		}
+		return new ArrayList<ListArticle>();
 	}
 	
 	public ObservableList<HBox> searchAll() throws IOException {

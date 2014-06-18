@@ -229,7 +229,7 @@
                                                          <children>
                                                             <ImageView fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
-                                                                  <Image url="@../image/icon_seite.png" />
+                                                                  <Image url="@../image/icon_seite_links.png" />
                                                                </image>
                                                             </ImageView>
                                                          </children>

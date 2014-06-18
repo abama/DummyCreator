@@ -171,7 +171,7 @@ public class DummyCreator {
 	@FXML
 	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
 		final File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
-		masterData.importCsv(file);
+		masterData.loadCsv(file);
 		updateInfoPanel();
 		//searchAll(null);
 	}
@@ -214,7 +214,7 @@ public class DummyCreator {
 		File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
 		if (file != null) {
 			info_catalogue_filename.setText(file.getName());
-			catalogue = catalogueManager.openFile(file);
+			catalogue = catalogueManager.loadFile(file);
 			updateUiViews();
 		}
 	}
