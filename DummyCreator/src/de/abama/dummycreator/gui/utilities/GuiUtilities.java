@@ -21,10 +21,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.catalogue.Catalogue;
-import de.abama.dummycreator.catalogue.CatalogueArticle;
-import de.abama.dummycreator.catalogue.CatalogueGroup;
-import de.abama.dummycreator.catalogue.ListArticle;
+import de.abama.dummycreator.catalogue.ArticleGroup;
 
 public class GuiUtilities {
 	
@@ -42,8 +41,10 @@ public class GuiUtilities {
 	}
 	
 	public static File chooseCsvFile(final String startFolderPath) throws MalformedURLException, URISyntaxException{
+		File startDir = new File(new URI("file:/Volumes/Marketing/Artikel/Listen/Kataloge/"));
+		if(!startDir.exists()) startDir = null;
         FileChooser fileChooser = new FileChooser();    
-        fileChooser.setInitialDirectory(new File(new URI("file:/Volumes/Marketing/Artikel/Listen/Kataloge/")));
+        fileChooser.setInitialDirectory(startDir);
         
         //Set extension filter
         FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV-Datei (*.csv)", "*.csv");
@@ -74,7 +75,7 @@ public class GuiUtilities {
 		return stage;
 	}
 
-	public static HBox createArticleListEntry(final ListArticle article, boolean loadImage) throws IOException{
+	public static HBox createArticleListEntry(final Article article, boolean loadImage) throws IOException{
 		
 		HBox articleBox = FXMLLoader.load(article.getClass().getResource("../gui/fxml/article.fxml"));
 		((Label) articleBox.lookup("#title")).setText(article.getTitle());
@@ -87,7 +88,7 @@ public class GuiUtilities {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static HBox createGroupListEntry(final CatalogueGroup group) throws IOException{
+	public static HBox createGroupListEntry(final ArticleGroup group) throws IOException{
 		
 		HBox articleGroupBox = FXMLLoader.load(group.getClass().getResource("../gui/fxml/ArticleGroupListEntry.fxml"));
 		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));
@@ -95,7 +96,7 @@ public class GuiUtilities {
 		((Label) articleGroupBox.lookup("#description")).setText(group.getDescription());
 		if(group.getImage(true) != null) ((ImageView) articleGroupBox.lookup("#image")).setImage(group.getImage(true));
 		final List<String> articles = new ArrayList<String>();
-		for(final CatalogueArticle article : group.getArticles()){
+		for(final Article article : group.getArticles()){
 			articles.add(article.getNumber() + " " /*+ article.getDescription2() */+ " " + article.getDescription3());
 		}
 		((ListView<String>) articleGroupBox.lookup("#articles")).setItems(FXCollections.observableArrayList(articles));

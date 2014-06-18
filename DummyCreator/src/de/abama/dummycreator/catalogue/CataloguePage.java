@@ -17,7 +17,7 @@ public class CataloguePage implements Serializable {
 	
 	private Set<String> keywords = new HashSet<String>();
 	
-	private final List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
+	private final List<ArticleGroup> groups = new ArrayList<ArticleGroup>();
 
 	public int getNumber(){
 		//System.out.println(catalogue);
@@ -34,25 +34,25 @@ public class CataloguePage implements Serializable {
 		this.keywords = new HashSet<String>(Arrays.asList(keywords.split("[\\W]")));
 	}
 	
-	public List<CatalogueGroup> getGroups(){
+	public List<ArticleGroup> getGroups(){
 		return groups;
 	}
 	
-	public CatalogueGroup addGroup(final CatalogueGroup group){
-		final CatalogueGroup[] groups = {group};
+	public ArticleGroup addGroup(final ArticleGroup group){
+		final ArticleGroup[] groups = {group};
 		addGroups(groups);
 		return group;
 	}
 	
-	public void addGroups(final CatalogueGroup[] groups){
-		for(CatalogueGroup group : groups){
+	public void addGroups(final ArticleGroup[] groups){
+		for(ArticleGroup group : groups){
 			group.setPage(this);
 			this.groups.add(group);
 		}
 		updatePageData();
 	}	
 	
-	public void removeGroup(final CatalogueGroup group){
+	public void removeGroup(final ArticleGroup group){
 		
 	}
 	
@@ -66,17 +66,17 @@ public class CataloguePage implements Serializable {
 	
 	public int getArticlesCount(){
 		int articleCount = 0;
-		for(CatalogueGroup group : groups){
+		for(ArticleGroup group : groups){
 			articleCount+=group.getArticlesCount();
 		}
 		return articleCount;
 	}
 
-	public CatalogueGroup getOrCreateGroup(char index) {		
-		for(CatalogueGroup group : groups){
+	public ArticleGroup getOrCreateGroup(char index) {		
+		for(ArticleGroup group : groups){
 			if(group.getIndex()==index) return group;
 		}
-		final CatalogueGroup group = new CatalogueGroup();
+		final ArticleGroup group = new ArticleGroup();
 		addGroup(group);
 
 		return group;

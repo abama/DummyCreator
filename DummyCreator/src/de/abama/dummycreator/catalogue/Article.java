@@ -1,11 +1,15 @@
 package de.abama.dummycreator.catalogue;
 
+import java.io.Serializable;
+
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 import javafx.scene.image.Image;
 
-public class Article {
+public class Article implements Comparable<Article>, Serializable{
 	
+	private static final long serialVersionUID = 4904155239691627018L;
+
 	protected String number = "Artikelnummer";
 	
 	protected String title = "Titel";
@@ -20,6 +24,11 @@ public class Article {
 	
 	protected float singlePrice;
 	protected float suPrice;
+
+	protected int pageNumber;
+	protected char groupIndex;
+
+	private ArticleGroup group;
 	
 	// Generischer Konstruktor
 	public Article(){
@@ -116,5 +125,38 @@ public class Article {
 
 	public void setTitle(final String title){
 		this.title = title;
+	}
+
+	public void setPageNumber(String page) throws Exception {
+		this.pageNumber = Integer.parseInt(page);
+	}
+
+	public void setGroupIndex(String group) throws Exception {
+		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
+		else throw new Exception();
+	}
+
+	public int compareTo(Article other) {
+		if(this.pageNumber>other.pageNumber) return 1;
+		if(this.pageNumber<other.pageNumber) return -1;
+		if(this.groupIndex>other.groupIndex) return 1;
+		if(this.groupIndex<other.groupIndex) return -1;	
+		return this.description1.compareTo(other.description1);
+	}
+
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public char getGroupIndex() {
+		return groupIndex;
+	}
+
+	public ArticleGroup getGroup() {
+		return group;
+	}
+
+	public CataloguePage getPage() {
+		return group.getPage();
 	}
 }

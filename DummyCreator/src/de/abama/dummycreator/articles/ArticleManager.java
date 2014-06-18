@@ -12,8 +12,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.catalogue.Article;
-import de.abama.dummycreator.catalogue.CatalogueGroup;
-import de.abama.dummycreator.catalogue.ListArticle;
+import de.abama.dummycreator.catalogue.ArticleGroup;
+import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
@@ -21,16 +21,16 @@ import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class ArticleManager {
 	
-	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
-	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
+	private TreeMap<String, Article> articles = new TreeMap<String, Article>();
+	private List<ArticleGroup> groups = new ArrayList<ArticleGroup>();
 		
 	@SuppressWarnings("unused")
 	private Configuration configuration = Configuration.getInstance();
 	
-	public void add(final List<ListArticle> list){
-		for(final ListArticle article : list){
+	public void add(final List<Article> list){
+		for(final Article article : list){
 			this.articles.put(article.getNumber(), article);
-			this.articles = new TreeMap<String, ListArticle>(this.articles);
+			this.articles = new TreeMap<String, Article>(this.articles);
 		}
 		System.out.println("Artikel: " + list.size());
 	}
@@ -40,7 +40,7 @@ public class ArticleManager {
 		groups.clear();
 	}
 	
-	public ObservableList<HBox> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
+	public ObservableList<HBox> createArticleListGroupEntries(final Collection<Article> articles, boolean loadImages) throws IOException {
 		List<HBox> list = new ArrayList<HBox>();
 		
 		//TODO Progress Window
@@ -50,7 +50,7 @@ public class ArticleManager {
 		
 		//int i=0;
 			
-		for(final ListArticle article : articles){
+		for(final Article article : articles){
 			//i++;
 			//progressWindow.setProgress(i);
 			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
@@ -82,7 +82,7 @@ public class ArticleManager {
 	public void importCsv(final File file) {
 		if (file != null) {
 			final CSV csv = CsvFileUtility.read(file);
-			add(ArticleUtilities.createListArticles(csv));
+			add(ArticleUtilities.createArticles(csv));
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class ArticleManager {
 	public ObservableList<HBox> searchByDescription(String text) throws IOException {
 		text = text.toLowerCase();
 		List<HBox> list = new ArrayList<HBox>();
-		for(final ListArticle article : articles.values()){
+		for(final Article article : articles.values()){
 			if(article.getTitle().toLowerCase().contains(text)){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
@@ -107,7 +107,7 @@ public class ArticleManager {
 	public ObservableList<HBox> searchByGroupSignature(String articleNumber) throws IOException {
 		;
 		List<HBox> list = new ArrayList<HBox>();
-		for(final ListArticle article : articles.values()){
+		for(final Article article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
@@ -124,7 +124,7 @@ public class ArticleManager {
 		List<HBox> list = new ArrayList<HBox>();
 		for(final String key : articles.keySet()){
 			if(key.contains(text) || text.contains(key)){
-				final ListArticle article = articles.get(key);
+				final Article article = articles.get(key);
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
 		}
@@ -132,7 +132,7 @@ public class ArticleManager {
 		return observableList;
 	}
 
-	public ListArticle get(String articleNumber) {
+	public Article get(String articleNumber) {
 		if(articles.containsKey(articleNumber))	return articles.get(articleNumber);
 		return null;
 	}

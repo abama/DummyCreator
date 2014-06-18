@@ -28,11 +28,19 @@ public class Catalogue {
 		return insertPage;
 	}
 	
+	public CataloguePage removePage(final int number){
+		try { pages.remove(getPage(number)); } catch(Exception e) {};
+		return getPage(number);
+	}
+	
 	public CataloguePage getPage(final int number){
+		int index = number - firstPageNumber;
+		if(index < 0) index = 0;
+		if(index > pages.size()-1) index = pages.size()-1;
 		try {
-			return pages.get(number - firstPageNumber);
+			return pages.get(index);
 		}
-		catch(Exception e){
+		catch(IndexOutOfBoundsException e){
 			return new CataloguePageStub();
 		}
 	}

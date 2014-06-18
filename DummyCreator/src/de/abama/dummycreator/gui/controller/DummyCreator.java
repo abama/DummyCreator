@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -129,7 +130,7 @@ public class DummyCreator {
 	private Label spread_right_number;
     
     @FXML
-	private ListView<VBox> view_Pages;
+	private ListView<VBox> view_pages;
     
     @FXML
 	private ScrollPane view_Spread;
@@ -138,6 +139,22 @@ public class DummyCreator {
     public void initialize() throws IOException {
     	updateUiViews();
     }
+    
+    @FXML
+    private void pageListClicked(MouseEvent event) throws IOException{
+    	if(event.getClickCount() >= 2){
+    		catalogueManager.setCurrentPage(((Label) view_pages.getSelectionModel().getSelectedItem().lookup("#number")).getText());
+    		updateSpreadView();
+    	}
+    }
+    
+    @FXML
+    private void pageListKeyPressed(KeyEvent event) throws IOException{
+    	if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
+    		catalogueManager.deletePage(((Label) view_pages.getSelectionModel().getSelectedItem().lookup("#number")).getText());
+    		updateUiViews();
+    	}
+    }    
 
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
@@ -182,7 +199,7 @@ public class DummyCreator {
 	@FXML
 	private void newGroup(ActionEvent event) throws IOException {
 		System.out.println("Neue Gruppe");
-		catalogueManager.addGroup(null);
+		catalogueManager.newGroup(null);
 		updateSpreadView();
 	}
 
@@ -267,7 +284,7 @@ public class DummyCreator {
 	}
 
 	private void updatePagesView() throws IOException {
-		view_Pages.setItems(catalogueManager.createPageThumbnails());;
+		view_pages.setItems(catalogueManager.createPageThumbnails());;
 	}
 
 	private void updateSpreadView() throws IOException {
