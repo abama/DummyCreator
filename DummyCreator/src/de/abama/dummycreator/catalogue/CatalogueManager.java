@@ -20,8 +20,6 @@ public class CatalogueManager {
 	
 	private static CatalogueManager instance = null;
 	
-	private CatalogueManager(){ super(); }
-	
 	public static CatalogueManager getInstance(){
 		if(instance==null) instance = new CatalogueManager();
 		return instance;
@@ -29,9 +27,11 @@ public class CatalogueManager {
 	
 	private Catalogue catalogue = new Catalogue();
 	
-	private CataloguePage currentPage = null;
-	private CatalogueGroup currentGroup = null;
 	private CatalogueArticle currentCatalogueArticle = null;
+	
+	private CatalogueGroup currentGroup = null;
+	private CataloguePage currentPage = null;
+	private CatalogueManager(){ super(); }
 		
 	public void addArticle(final CatalogueArticle article, CataloguePage page, CatalogueGroup group) {
 		if(page == null) page = currentPage;
@@ -41,17 +41,11 @@ public class CatalogueManager {
 		group.add(article);
 	}
 	
-	public void newGroup(Object object) {
-		CataloguePage page = currentPage;
-		if(page == null) page = currentPage = catalogue.addPage();
-		page.addGroup(new CatalogueGroup());
-	}
-	
 	public CataloguePage addPage(CataloguePage previousPage) {
 		currentPage = catalogue.newPage(previousPage);
 		return currentPage;
 	}
-
+	
 	public ObservableList<VBox> createPageThumbnails() throws IOException {
 		final List<VBox> pages = new ArrayList<VBox>();
 		for(final CataloguePage page : catalogue.getPages()){
@@ -64,9 +58,21 @@ public class CatalogueManager {
 		}		
 		return FXCollections.observableList(pages);
 	}
-	
+
 	public void deletePage(String text) {
 		currentPage = catalogue.removePage(Integer.valueOf(text));
+	}
+	
+	public Catalogue getCatalogue(){
+		return catalogue;
+	}
+
+	public CatalogueArticle getCurrentCatalogueArticle() {
+		return currentCatalogueArticle;
+	}
+
+	public CatalogueGroup getCurrentGroup() {
+		return currentGroup;
 	}
 
 	public CataloguePage getCurrentLeftPage() {
@@ -91,7 +97,7 @@ public class CatalogueManager {
 	public int getCurrentPageNumber() {
 		return currentPage.getNumber();
 	}
-
+	
 	public CataloguePage getCurrentRightPage() {
 		if(currentPage == null) return new CataloguePageStub();
 		if(currentPage.getNumber() %2 != 1) return catalogue.getPage(currentPage.getNumber()+1);
@@ -109,18 +115,6 @@ public class CatalogueManager {
 	public String getCurrentRightPageNumber() {
 		if(getCurrentRightPage().getNumber()<0) return "--";
 		else return Integer.toString(getCurrentRightPage().getNumber());
-	}
-	
-	public Catalogue newFile() {
-		catalogue = new Catalogue();
-		return catalogue;
-	}
-
-	public void nextSpread() {
-		if(catalogue != null) {
-			final int currentPageNumber = Math.min(catalogue.getLastPageNumber(), currentPage.getNumber()+2);
-			currentPage = catalogue.getPage(currentPageNumber);
-		}
 	}
 
 	public Catalogue loadFile(final File file) {
@@ -143,15 +137,41 @@ public class CatalogueManager {
 		return catalogue;
 	}
 
+	public Catalogue newFile() {
+		catalogue = new Catalogue();
+		return catalogue;
+	}
+
+	public void newGroup(Object object) {
+		CataloguePage page = currentPage;
+		if(page == null) page = currentPage = catalogue.addPage();
+		page.addGroup(new CatalogueGroup());
+	}
+
+	public void nextSpread() {
+		if(catalogue != null) {
+			final int currentPageNumber = Math.min(catalogue.getLastPageNumber(), currentPage.getNumber()+2);
+			currentPage = catalogue.getPage(currentPageNumber);
+		}
+	}
+
 	public void previousSpread() {
 		if(catalogue != null) {
 			final int currentPageNumber = Math.max(catalogue.getFirstPageNumber(), currentPage.getNumber()-2);
 			currentPage = catalogue.getPage(currentPageNumber);
 		}
 	}
-
+	
 	public void save(){
 		
+	}
+
+	public void setCurrentCatalogueArticle(CatalogueArticle currentCatalogueArticle) {
+		this.currentCatalogueArticle = currentCatalogueArticle;
+	}
+
+	public void setCurrentGroup(CatalogueGroup currentGroup) {
+		this.currentGroup = currentGroup;
 	}
 
 	public void setCurrentPage(String text) {
@@ -168,9 +188,5 @@ public class CatalogueManager {
 			//System.out.println("Suche Gruppen für Seite " + page.getNumber());
 		}
 		return FXCollections.observableList(groupEntries);
-	}
-	
-	public Catalogue getCatalogue(){
-		return catalogue;
 	}
 }
