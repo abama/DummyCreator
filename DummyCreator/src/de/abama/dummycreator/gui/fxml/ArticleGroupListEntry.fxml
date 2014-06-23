@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.abama.dummycreator.gui.controller.ArticleGroupListEntry">
+<fx:root type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
          <ImageView fx:id="image" fitHeight="105.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
 			 <image>
@@ -38,4 +38,4 @@
          </children>
       </VBox>
    </children>
-</HBox>
+</fx:root>

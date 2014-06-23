@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefWidth="80.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.abama.dummycreator.gui.controller.PageThumbnail">
+<fx:root type="javafx.scene.layout.VBox" alignment="CENTER" prefWidth="80.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane>
          <children>
@@ -29,4 +29,4 @@
       </StackPane>
       <Label fx:id="number" text="1" />
    </children>
-</VBox>
+</fx:root>

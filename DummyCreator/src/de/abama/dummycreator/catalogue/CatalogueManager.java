@@ -8,12 +8,9 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import de.abama.dummycreator.articles.ArticleManager;
+import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
+import de.abama.dummycreator.gui.fxml.PageThumbnail;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class CatalogueManager {
@@ -46,14 +43,10 @@ public class CatalogueManager {
 		return currentPage;
 	}
 	
-	public ObservableList<VBox> createPageThumbnails() throws IOException {
-		final List<VBox> pages = new ArrayList<VBox>();
+	public ObservableList<PageThumbnail> createPageThumbnails() throws IOException {
+		final List<PageThumbnail> pages = new ArrayList<PageThumbnail>();
 		for(final CataloguePage page : catalogue.getPages()){
-			VBox pageThumbnail = FXMLLoader.load(getClass().getResource("../gui/fxml/PageThumbnail.fxml"));
-			((Label) pageThumbnail.lookup("#number")).setText(Integer.toString(page.getNumber()));
-			if(page.getImage(true)!=null) ((ImageView) pageThumbnail.lookup("#image")).setImage(page.getImage(true));
-			((ImageView) pageThumbnail.lookup("#linke_seite")).setVisible(page.getNumber()%2==0);
-			((ImageView) pageThumbnail.lookup("#rechte_seite")).setVisible(page.getNumber()%2!=0);
+			PageThumbnail pageThumbnail = new PageThumbnail(page);
 			pages.add(pageThumbnail);
 		}		
 		return FXCollections.observableList(pages);
@@ -81,7 +74,7 @@ public class CatalogueManager {
 		else return currentPage;
 	}
 
-	public ObservableList<HBox> getCurrentLeftPageGroups() throws IOException {
+	public ObservableList<ArticleGroupListEntry> getCurrentLeftPageGroups() throws IOException {
 		return createPageGroupEntries(getCurrentLeftPage());
 	}
 
@@ -104,7 +97,7 @@ public class CatalogueManager {
 		else return currentPage;
 	}
 
-	public ObservableList<HBox> getCurrentRightPageGroups() throws IOException {
+	public ObservableList<ArticleGroupListEntry> getCurrentRightPageGroups() throws IOException {
 		return createPageGroupEntries(getCurrentRightPage());
 	}
 	
@@ -179,14 +172,14 @@ public class CatalogueManager {
 		
 	}
 
-	private ObservableList<HBox> createPageGroupEntries(CataloguePage page) throws IOException {
-		final List<HBox> groupEntries = new ArrayList<HBox>();
+	private ObservableList<ArticleGroupListEntry> createPageGroupEntries(CataloguePage page) throws IOException {
+		final List<ArticleGroupListEntry> groupEntries = new ArrayList<ArticleGroupListEntry>();
 		//System.out.println("Suche Artikelgruppen für Seite " + page);
 		//System.out.println("Seite " + page.getNumber());
 		for(final CatalogueGroup group : page.getGroups()){
 			groupEntries.add(GuiUtilities.createGroupListEntry(group));
 			//System.out.println("Suche Gruppen für Seite " + page.getNumber());
 		}
-		return FXCollections.observableList(groupEntries);
+		return FXCollections.observableArrayList(groupEntries);
 	}
 }

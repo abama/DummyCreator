@@ -9,6 +9,9 @@ import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.config.Configuration;
+import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
+import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
+import de.abama.dummycreator.gui.fxml.PageThumbnail;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -98,13 +101,13 @@ public class DummyCreator implements IController{
     private Button search_all;
 
 	@FXML
-	private ListView<HBox> search_result;
+	private ListView<ArticleSearchBoxEntry> search_result;
 	
 	@FXML
 	private VBox spread_left_page;
 
 	@FXML
-	private ListView<HBox> spread_left_groups;
+	private ListView<ArticleGroupListEntry> spread_left_groups;
 
 	@FXML
 	private TextField spread_left_keywords;
@@ -122,7 +125,7 @@ public class DummyCreator implements IController{
 	private VBox spread_right_page;
 
 	@FXML
-	private ListView<HBox> spread_right_groups;
+	private ListView<ArticleGroupListEntry> spread_right_groups;
 
 	@FXML
 	private TextField spread_right_keywords;
@@ -131,7 +134,7 @@ public class DummyCreator implements IController{
 	private Label spread_right_number;
     
     @FXML
-	private ListView<VBox> view_pages;
+	private ListView<PageThumbnail> view_pages;
     
     @FXML
 	private ScrollPane view_Spread;
@@ -144,7 +147,7 @@ public class DummyCreator implements IController{
     @FXML
     private void pageListClicked(MouseEvent event) throws IOException{
     	if(event.getClickCount() >= 2){
-    		catalogueManager.setCurrentPage(((Label) view_pages.getSelectionModel().getSelectedItem().lookup("#number")).getText());
+    		catalogueManager.setCurrentPage(view_pages.getSelectionModel().getSelectedItem().getNumber());
     		updateSpreadView();
     	}
     }
@@ -152,7 +155,7 @@ public class DummyCreator implements IController{
     @FXML
     private void pageListKeyPressed(KeyEvent event) throws IOException{
     	if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-    		catalogueManager.deletePage(((Label) view_pages.getSelectionModel().getSelectedItem().lookup("#number")).getText());
+    		catalogueManager.deletePage(view_pages.getSelectionModel().getSelectedItem().getNumber());
     		// TODO NullPointer exception
     		updateUiViews();
     	}
@@ -160,7 +163,7 @@ public class DummyCreator implements IController{
 
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
-		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
+		final String articleNumber = search_result.getSelectionModel().getSelectedItem().getNumber();
 		catalogueManager.addArticle(new CatalogueArticle(masterData.get(articleNumber)), null, null);
 		updateSpreadView();
 	}
@@ -242,6 +245,7 @@ public class DummyCreator implements IController{
 
 	@FXML
 	private void searchByGroupSignature(ActionEvent event) throws IOException {
+		// TODO articleSelection?
 		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
 		search_result.setItems(masterData.searchByGroupSignature(articleNumber));
 	}

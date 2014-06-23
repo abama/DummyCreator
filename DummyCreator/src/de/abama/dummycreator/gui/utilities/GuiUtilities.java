@@ -8,15 +8,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -24,6 +19,8 @@ import javafx.stage.Stage;
 import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
+import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
+import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
 
 public class GuiUtilities {
 	
@@ -75,34 +72,24 @@ public class GuiUtilities {
 		return stage;
 	}
 
-	public static HBox createArticleListEntry(final Article article, boolean loadImage) throws IOException{
+	public static ArticleSearchBoxEntry createArticleListEntry(final Article article, boolean loadImage) throws IOException{
 		
-		HBox articleBox = FXMLLoader.load(article.getClass().getResource("../gui/fxml/article.fxml"));
-		((Label) articleBox.lookup("#title")).setText(article.getTitle());
-		((Label) articleBox.lookup("#number")).setText(article.getNumber());
-		((Label) articleBox.lookup("#description")).setText(article.getDescription());
-		if(article.getImage(false) != null || loadImage) {
-			((ImageView) articleBox.lookup("#image")).setImage(article.getImage(true));
-		}
-		return articleBox;
+		return new ArticleSearchBoxEntry(article, loadImage);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static HBox createGroupListEntry(final CatalogueGroup group) throws IOException{
+	public static ArticleGroupListEntry createGroupListEntry(final CatalogueGroup group) throws IOException{
 		
-		HBox articleGroupBox = FXMLLoader.load(group.getClass().getResource("../gui/fxml/ArticleGroupListEntry.fxml"));
-		articleGroupBox.setId(group.getPage().getNumber()+"_"+group.getIndex());
-		((Label) articleGroupBox.lookup("#index")).setText(String.valueOf(group.getIndex()));
-		((Label) articleGroupBox.lookup("#title")).setText(group.getTitle());
-		((Label) articleGroupBox.lookup("#description")).setText(group.getDescription());
-		if(group.getImage(true) != null) ((ImageView) articleGroupBox.lookup("#image")).setImage(group.getImage(true));
+		ArticleGroupListEntry articleGroupBox = new ArticleGroupListEntry(group.getPage());
+		articleGroupBox.setIndex(String.valueOf(group.getIndex()));
+		articleGroupBox.setTitle(String.valueOf(group.getTitle()));
+		articleGroupBox.setDescription(String.valueOf(group.getDescription()));
+		articleGroupBox.setImage(group.getImage(true));
+		
 		final List<String> articles = new ArrayList<String>();
 		for(final Article article : group.getArticles()){
 			articles.add(article.getNumber() + " " /*+ article.getDescription2() */+ " " + article.getDescription3());
 		}
-		((ListView<String>) articleGroupBox.lookup("#articles")).setItems(FXCollections.observableArrayList(articles));
-		((ListView<String>) articleGroupBox.lookup("#articles")).setId(group.getPage().getNumber()+"_"+group.getIndex());
-		//System.out.println(group.getTitle() + group.getDescription());
+		articleGroupBox.setArticles(articles);
 		return articleGroupBox;
 	}	
 }

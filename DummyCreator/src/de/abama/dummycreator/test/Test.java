@@ -1,16 +1,24 @@
 package de.abama.dummycreator.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import de.abama.dummycreator.catalogue.CataloguePage;
+import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
 
-public class Test {
+public class Test extends Application{
 
-	public static void main(String[] args) {
-		List<String> testList = new ArrayList<String>();
-		//testList.add("a");
-		testList.add(1, "b");
-		
-		System.out.println(testList);
+	@Override
+	public void start(Stage stage) throws Exception {
+		ArticleGroupListEntry test = new ArticleGroupListEntry(new CataloguePage());
+		stage.setScene(new Scene(test));
+		stage.setTitle("Custom Control");
+		stage.setWidth(300);
+		stage.setHeight(200);
+		stage.show();
 	}
-
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

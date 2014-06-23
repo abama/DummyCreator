@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.HBox;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
@@ -17,6 +16,7 @@ import de.abama.dummycreator.catalogue.ListArticle;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
+import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class ArticleManager {
@@ -55,8 +55,8 @@ public class ArticleManager {
 		groups.clear();
 	}
 	
-	public ObservableList<HBox> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
-		List<HBox> list = new ArrayList<HBox>();
+	public ObservableList<ArticleSearchBoxEntry> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
+		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
 		
 		//TODO Progress Window
 			
@@ -71,7 +71,7 @@ public class ArticleManager {
 			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
 		}
 		
-		ObservableList<HBox> observableList = FXCollections.observableList(list);
+		ObservableList<ArticleSearchBoxEntry> observableList = FXCollections.observableList(list);
 		
 		//progressWindow.close();
 		
@@ -102,13 +102,13 @@ public class ArticleManager {
 		return new ArrayList<ListArticle>();
 	}
 	
-	public ObservableList<HBox> searchAll() throws IOException {
+	public ObservableList<ArticleSearchBoxEntry> searchAll() throws IOException {
 		return createArticleListGroupEntries(articles.values(), false);
 	}	
 	
-	public ObservableList<HBox> searchByDescription(String text) throws IOException {
+	public ObservableList<ArticleSearchBoxEntry> searchByDescription(String text) throws IOException {
 		text = text.toLowerCase();
-		List<HBox> list = new ArrayList<HBox>();
+		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
 		for(final ListArticle article : articles.values()){
 			if(article.getTitle().toLowerCase().contains(text)){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
@@ -120,9 +120,8 @@ public class ArticleManager {
 		return FXCollections.observableList(list);
 	}
 	
-	public ObservableList<HBox> searchByGroupSignature(String articleNumber) throws IOException {
-		;
-		List<HBox> list = new ArrayList<HBox>();
+	public ObservableList<ArticleSearchBoxEntry> searchByGroupSignature(String articleNumber) throws IOException {
+		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
 		for(final ListArticle article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
@@ -131,21 +130,20 @@ public class ArticleManager {
 		return FXCollections.observableList(list);
 	}
 
-	public ObservableList<HBox> searchByKeywords(String text) {
+	public ObservableList<ArticleSearchBoxEntry> searchByKeywords(String text) {
 		// TODO searchByKeywords
-		return null;
+		return FXCollections.observableArrayList(new ArrayList<ArticleSearchBoxEntry>());
 	}
 
-	public ObservableList<HBox> searchByNumber(String text) throws IOException {
-		List<HBox> list = new ArrayList<HBox>();
+	public ObservableList<ArticleSearchBoxEntry> searchByNumber(String text) throws IOException {
+		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
 		for(final String key : articles.keySet()){
 			if(key.contains(text) || text.contains(key)){
 				final ListArticle article = articles.get(key);
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
 		}
-		ObservableList<HBox> observableList = FXCollections.observableList(list);
-		return observableList;
+		return FXCollections.observableList(list);
 	}
 
 	public ListArticle get(String articleNumber) {

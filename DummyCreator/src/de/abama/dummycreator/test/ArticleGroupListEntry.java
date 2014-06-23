@@ -1,6 +1,7 @@
-package de.abama.dummycreator.gui.controller;
+package de.abama.dummycreator.test;
 
 import de.abama.dummycreator.catalogue.CatalogueManager;
+import de.abama.dummycreator.gui.controller.ControllerContext;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
