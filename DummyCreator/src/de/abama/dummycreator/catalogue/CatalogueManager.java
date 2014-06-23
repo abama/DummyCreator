@@ -52,8 +52,8 @@ public class CatalogueManager {
 		return FXCollections.observableList(pages);
 	}
 
-	public void deletePage(String text) {
-		currentPage = catalogue.removePage(Integer.valueOf(text));
+	public void deletePage(CataloguePage page) {
+		catalogue.getPages().remove(page);
 	}
 	
 	public Catalogue getCatalogue(){

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.abama.dummycreator.gui.controller.ArticleGroupListEntry">
+   <children>
+         <ImageView fx:id="image" fitHeight="105.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+			 <image>
+				<Image url="@../image/icon_artikel.png" />
+			 </image>
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox prefWidth="15.0">
+         <children>
+            <Label fx:id="index" text="A">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="title" layoutX="10.0" layoutY="10.0" text="Titel">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="description" layoutX="10.0" layoutY="27.0" text="Beschreibung" textOverrun="CLIP" />
+            <ListView fx:id="articles" onKeyPressed="#deleteArticle" prefHeight="10.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </children>
+</HBox>

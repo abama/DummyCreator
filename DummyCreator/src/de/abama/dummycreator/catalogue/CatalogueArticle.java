@@ -1,11 +1,9 @@
 package de.abama.dummycreator.catalogue;
 
-import java.io.Serializable;
-
 import javafx.scene.image.Image;
 import de.abama.dummycreator.constants.SU;
 
-public class CatalogueArticle extends Article  implements Serializable {
+public class CatalogueArticle extends Article  implements ICatalogueItem {
 
 	private static final long serialVersionUID = 4624798489378228851L;
 

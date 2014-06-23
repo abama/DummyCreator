@@ -50,7 +50,7 @@ public class Article implements Serializable{
 	}
 
 	public String getDescription(){
-		return description1 + description2;
+		return description1;// + description2;
 	}
 
 	public String getDescription1() {

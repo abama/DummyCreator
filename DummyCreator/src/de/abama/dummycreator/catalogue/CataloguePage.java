@@ -1,6 +1,5 @@
 package de.abama.dummycreator.catalogue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,7 +8,7 @@ import java.util.Set;
 
 import javafx.scene.image.Image;
 
-public class CataloguePage implements Serializable {
+public class CataloguePage implements ICatalogueItem {
 	
 	private static final long serialVersionUID = -1333912371214942887L;
 	

@@ -2,7 +2,10 @@ package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
 
+import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
+import de.abama.dummycreator.gui.controller.ControllerContext;
+import de.abama.dummycreator.gui.controller.DummyCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -13,6 +16,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class CataloguePageUi extends VBox{
+	
+	@SuppressWarnings("unused")
+	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
+	
+	@SuppressWarnings("unused")
+	private DummyCreator controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
     private ImageView image;

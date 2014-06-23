@@ -155,8 +155,7 @@ public class DummyCreator implements IController{
     @FXML
     private void pageListKeyPressed(KeyEvent event) throws IOException{
     	if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-    		catalogueManager.deletePage(view_pages.getSelectionModel().getSelectedItem().getNumber());
-    		// TODO NullPointer exception
+    		catalogueManager.deletePage(view_pages.getSelectionModel().getSelectedItem().getPage());
     		updateUiViews();
     	}
     }    

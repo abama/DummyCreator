@@ -1,10 +1,13 @@
 package de.abama.dummycreator.catalogue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalogue {
+public class Catalogue implements Serializable {
 	
+	private static final long serialVersionUID = -331495837120201589L;
+
 	private int firstPageNumber = 1;
 	
 	private List<CataloguePage> pages = new ArrayList<CataloguePage>();

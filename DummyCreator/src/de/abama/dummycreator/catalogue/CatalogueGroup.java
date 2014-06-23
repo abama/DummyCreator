@@ -1,13 +1,12 @@
 package de.abama.dummycreator.catalogue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.abama.dummycreator.gui.image.ImageResource;
 import javafx.scene.image.Image;
 
-public class CatalogueGroup implements Serializable {
+public class CatalogueGroup implements  ICatalogueItem {
 	
 	private static final String INDEX = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

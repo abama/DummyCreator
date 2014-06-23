@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+         <ImageView fx:id="image" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+			 <image>
+				<Image url="@../image/icon_artikel.png" />
+			 </image>
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox prefHeight="250.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="number" text="Artikelnummer" />
+            <Label fx:id="title" layoutX="10.0" layoutY="10.0" text="Titel">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="description" layoutX="10.0" layoutY="27.0" text="Beschreibung" textOverrun="CLIP" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
