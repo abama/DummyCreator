@@ -10,6 +10,7 @@ import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.ICatalogueUiItem;
 import de.abama.dummycreator.gui.fxml.ListArticleUi;
 import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
@@ -29,7 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class DummyCreator implements IController{
+public class DummyCreator {
 	
 	@SuppressWarnings("unused")
 	private ControllerContext context;
@@ -40,6 +41,9 @@ public class DummyCreator implements IController{
 	@SuppressWarnings("unused")
 	private Clipboard clipboard = Clipboard.getSystemClipboard();
 	private Configuration configuration = Configuration.getInstance();
+	
+	@SuppressWarnings("unused")
+	private ICatalogueUiItem selectedItem = null;
 
 	@FXML
 	private Label info_articles;

@@ -2,7 +2,8 @@ package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
 
-import de.abama.dummycreator.catalogue.Article;
+import de.abama.dummycreator.catalogue.CatalogueArticle;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-public class CatalogueArticleUi extends HBox{
+public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
 	
 	@FXML
 	private Label number;
@@ -25,13 +26,13 @@ public class CatalogueArticleUi extends HBox{
 	@FXML
     private Label title;
 	
-	private Article article;
+	private CatalogueArticle article;
 
 
 	@FXML
 	private Pane selection;
 	
-    public CatalogueArticleUi(final Article article, boolean loadImage) {
+    public CatalogueArticleUi(final CatalogueArticle article, boolean loadImage) {
     	
     	this.setArticle(article);
     	
@@ -84,12 +85,17 @@ public class CatalogueArticleUi extends HBox{
 		return article.getNumber();
 	}
 
-	public void setArticle(Article article) {
+	public void setArticle(CatalogueArticle article) {
 		this.article = article;
 	}
 	
 	public String getNumber(){
 		return article.getNumber();
+	}
+
+	@Override
+	public ICatalogueItem getCatalogueItem() {
+		return article;
 	}
 }
 

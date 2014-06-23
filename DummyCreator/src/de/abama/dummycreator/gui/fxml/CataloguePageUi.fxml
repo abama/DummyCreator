@@ -9,7 +9,7 @@
 
 <fx:root alignment="CENTER" prefWidth="80.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <StackPane onKeyPressed="#deletePage">
+      <StackPane>
          <children>
             <ImageView fx:id="rechte_seite" fitHeight="120.0" fitWidth="100.0" layoutX="21.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
