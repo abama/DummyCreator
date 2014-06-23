@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class PageThumbnail extends VBox{
+public class CataloguePageUi extends VBox{
 	
 	@FXML
     private ImageView image;
@@ -35,11 +35,11 @@ public class PageThumbnail extends VBox{
 	@FXML
 	private Pane selection;
 	
-    public PageThumbnail(final CataloguePage page) {
+    public CataloguePageUi(final CataloguePage page) {
     	
     	this.setPage(page);
     	
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PageThumbnail.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CataloguePageUi.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 

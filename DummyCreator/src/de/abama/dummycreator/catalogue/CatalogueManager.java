@@ -9,8 +9,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import de.abama.dummycreator.articles.ArticleManager;
-import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
-import de.abama.dummycreator.gui.fxml.PageThumbnail;
+import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class CatalogueManager {
@@ -43,10 +43,10 @@ public class CatalogueManager {
 		return currentPage;
 	}
 	
-	public ObservableList<PageThumbnail> createPageThumbnails() throws IOException {
-		final List<PageThumbnail> pages = new ArrayList<PageThumbnail>();
+	public ObservableList<CataloguePageUi> createPageThumbnails() throws IOException {
+		final List<CataloguePageUi> pages = new ArrayList<CataloguePageUi>();
 		for(final CataloguePage page : catalogue.getPages()){
-			PageThumbnail pageThumbnail = new PageThumbnail(page);
+			CataloguePageUi pageThumbnail = new CataloguePageUi(page);
 			pages.add(pageThumbnail);
 		}		
 		return FXCollections.observableList(pages);
@@ -74,7 +74,7 @@ public class CatalogueManager {
 		else return currentPage;
 	}
 
-	public ObservableList<ArticleGroupListEntry> getCurrentLeftPageGroups() throws IOException {
+	public ObservableList<CatalogueGroupUi> getCurrentLeftPageGroups() throws IOException {
 		return createPageGroupEntries(getCurrentLeftPage());
 	}
 
@@ -97,7 +97,7 @@ public class CatalogueManager {
 		else return currentPage;
 	}
 
-	public ObservableList<ArticleGroupListEntry> getCurrentRightPageGroups() throws IOException {
+	public ObservableList<CatalogueGroupUi> getCurrentRightPageGroups() throws IOException {
 		return createPageGroupEntries(getCurrentRightPage());
 	}
 	
@@ -172,8 +172,8 @@ public class CatalogueManager {
 		
 	}
 
-	private ObservableList<ArticleGroupListEntry> createPageGroupEntries(CataloguePage page) throws IOException {
-		final List<ArticleGroupListEntry> groupEntries = new ArrayList<ArticleGroupListEntry>();
+	private ObservableList<CatalogueGroupUi> createPageGroupEntries(CataloguePage page) throws IOException {
+		final List<CatalogueGroupUi> groupEntries = new ArrayList<CatalogueGroupUi>();
 		//System.out.println("Suche Artikelgruppen für Seite " + page);
 		//System.out.println("Seite " + page.getNumber());
 		for(final CatalogueGroup group : page.getGroups()){

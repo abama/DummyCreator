@@ -9,9 +9,9 @@ import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.config.Configuration;
-import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
-import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
-import de.abama.dummycreator.gui.fxml.PageThumbnail;
+import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.ListArticleUi;
+import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -101,13 +101,13 @@ public class DummyCreator implements IController{
     private Button search_all;
 
 	@FXML
-	private ListView<ArticleSearchBoxEntry> search_result;
+	private ListView<ListArticleUi> search_result;
 	
 	@FXML
 	private VBox spread_left_page;
 
 	@FXML
-	private ListView<ArticleGroupListEntry> spread_left_groups;
+	private ListView<CatalogueGroupUi> spread_left_groups;
 
 	@FXML
 	private TextField spread_left_keywords;
@@ -125,7 +125,7 @@ public class DummyCreator implements IController{
 	private VBox spread_right_page;
 
 	@FXML
-	private ListView<ArticleGroupListEntry> spread_right_groups;
+	private ListView<CatalogueGroupUi> spread_right_groups;
 
 	@FXML
 	private TextField spread_right_keywords;
@@ -134,7 +134,7 @@ public class DummyCreator implements IController{
 	private Label spread_right_number;
     
     @FXML
-	private ListView<PageThumbnail> view_pages;
+	private ListView<CataloguePageUi> view_pages;
     
     @FXML
 	private ScrollPane view_Spread;
@@ -313,7 +313,7 @@ public class DummyCreator implements IController{
 		updateInfoPanel();
 	}
 
-	public void removeArticle(ArticleGroupListEntry articleGroupListEntry, HBox lookup) {
+	public void removeArticle(CatalogueGroupUi articleGroupListEntry, HBox lookup) {
 		// TODO Auto-generated method stub
 		
 	}

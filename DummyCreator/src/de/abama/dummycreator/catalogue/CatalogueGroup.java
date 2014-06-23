@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.abama.dummycreator.gui.image.ImageResource;
 import javafx.scene.image.Image;
 
 public class CatalogueGroup implements Serializable {
@@ -46,10 +47,8 @@ public class CatalogueGroup implements Serializable {
 		return ("Leere Artikelgruppe");
 	}
 	
-	public void removeArticle(final Article article){
-		Article[] articles = {article};
-		removeArticles(articles);
-		
+	public void removeArticle(final String number){
+		articles.remove(getArticle(number));	
 	}
 
 	public void removeArticles(final Article[] articles){
@@ -81,10 +80,17 @@ public class CatalogueGroup implements Serializable {
 
 	public Image getImage(boolean loadImage) {
 		if(articles.size()!=0) return articles.get(0).getImage(true);
-		return null;
+		else return new Image(ImageResource.class.getResourceAsStream("no_image.png"));
 	}
 
 	public List<CatalogueArticle> getArticles() {
 		return articles;
+	}
+	
+	public CatalogueArticle getArticle(final String number){
+		for(final CatalogueArticle article : articles){
+			if(article.getNumber()==number) return article;
+		}
+		return null;
 	}
 }

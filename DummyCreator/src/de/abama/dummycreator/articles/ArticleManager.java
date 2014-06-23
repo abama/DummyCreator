@@ -16,7 +16,7 @@ import de.abama.dummycreator.catalogue.ListArticle;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
-import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
+import de.abama.dummycreator.gui.fxml.ListArticleUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class ArticleManager {
@@ -55,8 +55,8 @@ public class ArticleManager {
 		groups.clear();
 	}
 	
-	public ObservableList<ArticleSearchBoxEntry> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
-		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
+	public ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
+		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		
 		//TODO Progress Window
 			
@@ -71,7 +71,7 @@ public class ArticleManager {
 			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
 		}
 		
-		ObservableList<ArticleSearchBoxEntry> observableList = FXCollections.observableList(list);
+		ObservableList<ListArticleUi> observableList = FXCollections.observableList(list);
 		
 		//progressWindow.close();
 		
@@ -102,13 +102,13 @@ public class ArticleManager {
 		return new ArrayList<ListArticle>();
 	}
 	
-	public ObservableList<ArticleSearchBoxEntry> searchAll() throws IOException {
+	public ObservableList<ListArticleUi> searchAll() throws IOException {
 		return createArticleListGroupEntries(articles.values(), false);
 	}	
 	
-	public ObservableList<ArticleSearchBoxEntry> searchByDescription(String text) throws IOException {
+	public ObservableList<ListArticleUi> searchByDescription(String text) throws IOException {
 		text = text.toLowerCase();
-		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
+		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		for(final ListArticle article : articles.values()){
 			if(article.getTitle().toLowerCase().contains(text)){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
@@ -120,8 +120,8 @@ public class ArticleManager {
 		return FXCollections.observableList(list);
 	}
 	
-	public ObservableList<ArticleSearchBoxEntry> searchByGroupSignature(String articleNumber) throws IOException {
-		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
+	public ObservableList<ListArticleUi> searchByGroupSignature(String articleNumber) throws IOException {
+		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		for(final ListArticle article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
@@ -130,13 +130,13 @@ public class ArticleManager {
 		return FXCollections.observableList(list);
 	}
 
-	public ObservableList<ArticleSearchBoxEntry> searchByKeywords(String text) {
+	public ObservableList<ListArticleUi> searchByKeywords(String text) {
 		// TODO searchByKeywords
-		return FXCollections.observableArrayList(new ArrayList<ArticleSearchBoxEntry>());
+		return FXCollections.observableArrayList(new ArrayList<ListArticleUi>());
 	}
 
-	public ObservableList<ArticleSearchBoxEntry> searchByNumber(String text) throws IOException {
-		List<ArticleSearchBoxEntry> list = new ArrayList<ArticleSearchBoxEntry>();
+	public ObservableList<ListArticleUi> searchByNumber(String text) throws IOException {
+		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		for(final String key : articles.keySet()){
 			if(key.contains(text) || text.contains(key)){
 				final ListArticle article = articles.get(key);

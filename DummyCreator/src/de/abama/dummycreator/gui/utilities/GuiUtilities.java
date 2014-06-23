@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -18,9 +20,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import de.abama.dummycreator.catalogue.Article;
 import de.abama.dummycreator.catalogue.Catalogue;
+import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
-import de.abama.dummycreator.gui.fxml.ArticleGroupListEntry;
-import de.abama.dummycreator.gui.fxml.ArticleSearchBoxEntry;
+import de.abama.dummycreator.gui.fxml.CatalogueArticleUi;
+import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.ListArticleUi;
 
 public class GuiUtilities {
 	
@@ -72,24 +76,23 @@ public class GuiUtilities {
 		return stage;
 	}
 
-	public static ArticleSearchBoxEntry createArticleListEntry(final Article article, boolean loadImage) throws IOException{
+	public static ListArticleUi createArticleListEntry(final Article article, boolean loadImage) throws IOException{
 		
-		return new ArticleSearchBoxEntry(article, loadImage);
+		return new ListArticleUi(article, loadImage);
 	}
 	
-	public static ArticleGroupListEntry createGroupListEntry(final CatalogueGroup group) throws IOException{
+	public static CatalogueGroupUi createGroupListEntry(final CatalogueGroup group) throws IOException{
 		
-		ArticleGroupListEntry articleGroupBox = new ArticleGroupListEntry(group.getPage());
-		articleGroupBox.setIndex(String.valueOf(group.getIndex()));
-		articleGroupBox.setTitle(String.valueOf(group.getTitle()));
-		articleGroupBox.setDescription(String.valueOf(group.getDescription()));
-		articleGroupBox.setImage(group.getImage(true));
-		
-		final List<String> articles = new ArrayList<String>();
-		for(final Article article : group.getArticles()){
-			articles.add(article.getNumber() + " " /*+ article.getDescription2() */+ " " + article.getDescription3());
-		}
-		articleGroupBox.setArticles(articles);
+		CatalogueGroupUi articleGroupBox = new CatalogueGroupUi(group);
+
 		return articleGroupBox;
+	}
+
+	public static ObservableList<CatalogueArticleUi> createArticleGroupArticleListEntries(List<CatalogueArticle> articles) {
+		final List<CatalogueArticleUi> articleItems = new ArrayList<CatalogueArticleUi>();
+		for(final CatalogueArticle article : articles){
+			articleItems.add(new CatalogueArticleUi(article, true));
+		}
+		return FXCollections.observableArrayList(articleItems);
 	}	
 }
