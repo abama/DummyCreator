@@ -1,17 +1,11 @@
 package de.abama.dummycreator.catalogue;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import de.abama.dummycreator.articles.ArticleManager;
-import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
-import de.abama.dummycreator.gui.fxml.CataloguePageUi;
-import de.abama.dummycreator.gui.utilities.GuiUtilities;
+import de.abama.dummycreator.articles.ListArticle;
 
 public class CatalogueManager {
 	
@@ -23,13 +17,11 @@ public class CatalogueManager {
 	}
 	
 	private Catalogue catalogue = new Catalogue();
-	
-	private CatalogueArticle currentCatalogueArticle = null;
-	
-	private CatalogueGroup currentGroup = null;
+		
 	private CataloguePage currentPage = null;
 	private CatalogueManager(){ super(); }
-		
+	
+	
 	public void addArticle(final CatalogueArticle article, CataloguePage page, CatalogueGroup group) {
 		if(page == null) page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
@@ -38,18 +30,10 @@ public class CatalogueManager {
 		group.add(article);
 	}
 	
+	
 	public CataloguePage addPage(CataloguePage previousPage) {
 		currentPage = catalogue.newPage(previousPage);
 		return currentPage;
-	}
-	
-	public ObservableList<CataloguePageUi> createPageThumbnails() throws IOException {
-		final List<CataloguePageUi> pages = new ArrayList<CataloguePageUi>();
-		for(final CataloguePage page : catalogue.getPages()){
-			CataloguePageUi pageThumbnail = new CataloguePageUi(page);
-			pages.add(pageThumbnail);
-		}		
-		return FXCollections.observableList(pages);
 	}
 
 	public void deletePage(CataloguePage page) {
@@ -60,54 +44,16 @@ public class CatalogueManager {
 		return catalogue;
 	}
 
-	public CatalogueArticle getCurrentCatalogueArticle() {
-		return currentCatalogueArticle;
-	}
-
-	public CatalogueGroup getCurrentGroup() {
-		return currentGroup;
-	}
-
 	public CataloguePage getCurrentLeftPage() {
 		if(currentPage == null) return new CataloguePageStub();
 		if(currentPage.getNumber() %2 != 0) return catalogue.getPage(currentPage.getNumber()-1);
 		else return currentPage;
-	}
-
-	public ObservableList<CatalogueGroupUi> getCurrentLeftPageGroups() throws IOException {
-		return createPageGroupEntries(getCurrentLeftPage());
-	}
-
-	public String getCurrentLeftPageKeywords() {
-		return getCurrentLeftPage().getKeywords().toString();
-	}
-
-	public String getCurrentLeftPageNumber() {
-		if(getCurrentLeftPage().getNumber()<0) return "--";
-		else return Integer.toString(getCurrentLeftPage().getNumber());
-	}
-
-	public int getCurrentPageNumber() {
-		return currentPage.getNumber();
 	}
 	
 	public CataloguePage getCurrentRightPage() {
 		if(currentPage == null) return new CataloguePageStub();
 		if(currentPage.getNumber() %2 != 1) return catalogue.getPage(currentPage.getNumber()+1);
 		else return currentPage;
-	}
-
-	public ObservableList<CatalogueGroupUi> getCurrentRightPageGroups() throws IOException {
-		return createPageGroupEntries(getCurrentRightPage());
-	}
-	
-	public String getCurrentRightPageKeywords() {
-		return getCurrentRightPage().getKeywords().toString();
-	}
-
-	public String getCurrentRightPageNumber() {
-		if(getCurrentRightPage().getNumber()<0) return "--";
-		else return Integer.toString(getCurrentRightPage().getNumber());
 	}
 
 	public Catalogue loadFile(final File file) {
@@ -159,27 +105,8 @@ public class CatalogueManager {
 		
 	}
 
-	public void setCurrentCatalogueArticle(CatalogueArticle currentCatalogueArticle) {
-		this.currentCatalogueArticle = currentCatalogueArticle;
-	}
-
-	public void setCurrentGroup(CatalogueGroup currentGroup) {
-		this.currentGroup = currentGroup;
-	}
-
-	public void setCurrentPage(String text) {
-		currentPage = catalogue.getPage(Integer.valueOf(text));
+	public void setCurrentPage(CataloguePage cataloguePage) {
+		currentPage = cataloguePage;
 		
-	}
-
-	private ObservableList<CatalogueGroupUi> createPageGroupEntries(CataloguePage page) throws IOException {
-		final List<CatalogueGroupUi> groupEntries = new ArrayList<CatalogueGroupUi>();
-		//System.out.println("Suche Artikelgruppen für Seite " + page);
-		//System.out.println("Seite " + page.getNumber());
-		for(final CatalogueGroup group : page.getGroups()){
-			groupEntries.add(GuiUtilities.createGroupListEntry(group));
-			//System.out.println("Suche Gruppen für Seite " + page.getNumber());
-		}
-		return FXCollections.observableArrayList(groupEntries);
 	}
 }

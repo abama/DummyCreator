@@ -8,11 +8,13 @@ import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
+import de.abama.dummycreator.catalogue.CataloguePage;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.config.Configuration;
-import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.fxml.ICatalogueUiItem;
 import de.abama.dummycreator.gui.fxml.ListArticleUi;
-import de.abama.dummycreator.gui.fxml.CataloguePageUi;
+import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,13 +24,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 
 public class DummyCreator {
 	
@@ -42,8 +42,7 @@ public class DummyCreator {
 	private Clipboard clipboard = Clipboard.getSystemClipboard();
 	private Configuration configuration = Configuration.getInstance();
 	
-	@SuppressWarnings("unused")
-	private ICatalogueUiItem selectedItem = null;
+	private ICatalogueItem selectedItem = null;
 
 	@FXML
 	private Label info_articles;
@@ -108,6 +107,19 @@ public class DummyCreator {
 	private ListView<ListArticleUi> search_result;
 	
 	@FXML
+	private Button spread_next_btn;
+
+	@FXML
+	private Button spread_prev_btn;
+	
+	@FXML
+	private AnchorPane left_page;
+	
+	@FXML
+	private AnchorPane right_page;
+	
+	/*
+	@FXML
 	private VBox spread_left_page;
 
 	@FXML
@@ -118,12 +130,6 @@ public class DummyCreator {
 
 	@FXML
 	private Label spread_left_number;
-
-	@FXML
-	private Button spread_next_btn;
-
-	@FXML
-	private Button spread_prev_btn;
 	
 	@FXML
 	private VBox spread_right_page;
@@ -136,9 +142,10 @@ public class DummyCreator {
 	
     @FXML
 	private Label spread_right_number;
+	*/
     
     @FXML
-	private ListView<CataloguePageUi> view_pages;
+	private ListView<CataloguePageThumbUi> view_pages;
     
     @FXML
 	private ScrollPane view_Spread;
@@ -146,23 +153,7 @@ public class DummyCreator {
     @FXML
     protected void initialize() throws IOException {
     	context = ControllerContext.getInstance(this);
-    }
-    
-    @FXML
-    private void pageListClicked(MouseEvent event) throws IOException{
-    	if(event.getClickCount() >= 2){
-    		catalogueManager.setCurrentPage(view_pages.getSelectionModel().getSelectedItem().getNumber());
-    		updateSpreadView();
-    	}
-    }
-    
-    @FXML
-    private void pageListKeyPressed(KeyEvent event) throws IOException{
-    	if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-    		catalogueManager.deletePage(view_pages.getSelectionModel().getSelectedItem().getPage());
-    		updateUiViews();
-    	}
-    }    
+    }   
 
 	@FXML
 	private void addArticle(ActionEvent event) throws IOException {
@@ -214,7 +205,11 @@ public class DummyCreator {
 	@FXML
 	private void newPage(ActionEvent event) throws IOException {
 		System.out.println("Neue Seite");
-		catalogueManager.addPage(null);
+		try {
+			catalogueManager.addPage((CataloguePage)selectedItem);}
+		catch(final Exception e) {
+			catalogueManager.addPage(null);
+		}
 		updateUiViews();
 	}
 
@@ -226,12 +221,6 @@ public class DummyCreator {
 			catalogue = catalogueManager.loadFile(file);
 			updateUiViews();
 		}
-	}
-
-	@FXML
-	private void removeArticle(ActionEvent event) throws IOException {
-		//System.out.println("Artikel löschen");
-		updateSpreadView();
 	}
 	
 	@FXML
@@ -293,10 +282,18 @@ public class DummyCreator {
 	}
 
 	private void updatePagesView() throws IOException {
-		view_pages.setItems(catalogueManager.createPageThumbnails());;
+		view_pages.setItems(GuiUtilities.createPageThumbnails(catalogue));;
 	}
 
-	private void updateSpreadView() throws IOException {
+	public void updateSpreadView() throws IOException {
+		
+		left_page.getChildren().clear();
+		left_page.getChildren().add(new CataloguePageUi(catalogueManager.getCurrentLeftPage()));
+
+		right_page.getChildren().clear();
+		right_page.getChildren().add(new CataloguePageUi(catalogueManager.getCurrentRightPage()));
+		
+		/*
 		// Linke Seite
 		spread_left_groups.setItems(catalogueManager.getCurrentLeftPageGroups());
 		spread_left_number.setText(catalogueManager.getCurrentLeftPageNumber());
@@ -307,40 +304,38 @@ public class DummyCreator {
 		// Navigation
 		spread_prev_btn.setDisable(catalogueManager.getCurrentLeftPage().getNumber()<0);
 		spread_next_btn.setDisable(catalogueManager.getCurrentRightPage().getNumber()<0);
+		*/
 		
 	}
 
-	private void updateUiViews() throws IOException {
+	public void updateUiViews() throws IOException {
 		updateSpreadView();
 		updatePagesView();
 		updateInfoPanel();
 	}
 
-	public void removeArticle(CatalogueGroupUi articleGroupListEntry, HBox lookup) {
-		// TODO Auto-generated method stub
-		
+	public void setSelectedItem(ICatalogueUiItem catalogueItemUi) {
+		selectedItem = catalogueItemUi.getCatalogueItem();		
 	}
-	
-	@FXML
-	public void leftPageGroupsKeyPressed(KeyEvent event) throws IOException{
-		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-			final int index = spread_left_groups.getSelectionModel().getSelectedIndex();
-			if(index>=0)
-				catalogueManager.getCurrentLeftPage().getGroups().remove(spread_left_groups.getSelectionModel().getSelectedIndex());
-				try{ 
-					// TODO Funktioniert nicht
-					spread_left_groups.getSelectionModel().select(index);
-				} catch (IndexOutOfBoundsException e) { System.out.println("Möööp");};
-		}
-		updateSpreadView();
+
+	public void mouseClick(ICatalogueUiItem catalogueUiItem, MouseEvent event) {
+		selectedItem = catalogueUiItem.getCatalogueItem();
+		System.out.println("Auswahl: " + catalogueUiItem.getCatalogueItem());
 	}
-	
-	@FXML
-	public void rightPageGroupsKeyPressed(KeyEvent event) throws IOException{
-		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-			if(spread_right_groups.getSelectionModel().getSelectedIndex()>=0)
-				catalogueManager.getCurrentRightPage().getGroups().remove(spread_right_groups.getSelectionModel().getSelectedIndex());
+
+	public void removeSelected() {
+		try {
+			// Parent bestimmen
+			final ICatalogueItem parent = selectedItem.getParent();
+			// Ausgewähltes Element löschen und Nachfolger selektieren
+			selectedItem = selectedItem.remove();
+			// Falls kein Nachfolger vorhanden, Parent selektieren
+			if(selectedItem == null) selectedItem = parent;
+			updateUiViews();
 		}
-		updateSpreadView();
+		catch(final Exception e){
+			System.out.println(e);
+			System.out.println("Kein Element ausgewählt");
+		}
 	}
 }

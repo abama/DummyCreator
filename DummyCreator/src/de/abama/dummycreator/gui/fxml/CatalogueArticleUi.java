@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
+import de.abama.dummycreator.gui.controller.ControllerContext;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -36,7 +38,7 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
     	
     	this.setArticle(article);
     	
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListArticleUi.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CatalogueArticleUi.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -96,6 +98,12 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
 	@Override
 	public ICatalogueItem getCatalogueItem() {
 		return article;
+	}
+
+	@Override
+	public void mouseClick(MouseEvent event) throws IOException {
+		ControllerContext.getInstance().getMainController().mouseClick(this, event);
+		
 	}
 }
 

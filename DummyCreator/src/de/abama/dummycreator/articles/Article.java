@@ -1,4 +1,4 @@
-package de.abama.dummycreator.catalogue;
+package de.abama.dummycreator.articles;
 
 import java.io.Serializable;
 
@@ -10,25 +10,23 @@ public class Article implements Serializable{
 	
 	private static final long serialVersionUID = 4904155239691627018L;
 
-	protected String description1 = "Beschreibung1";
-	
-	protected String description2 = "Beschreibung2";
-	
-	protected String description3 = "Beschreibung3";
-	protected char groupIndex;
-	protected Image image = null;
-	
 	protected String number = "Artikelnummer";
 	
+	protected String title = "Titel";
+	protected String description1 = "Beschreibung1";
+	protected String description2 = "Beschreibung2";
+	protected String description3 = "Beschreibung3";
+	
 	protected int pageNumber;
+	protected char groupIndex;
 	
 	protected float singlePrice;
+	protected float suPrice;
+	
 	protected SU su = SU.PIECE;
 
-	protected float suPrice;
-	protected String title = "Titel";
-
-	private CatalogueGroup group;
+	protected Image image = null;
+	
 	
 	// Generischer Konstruktor
 	public Article(){
@@ -50,7 +48,7 @@ public class Article implements Serializable{
 	}
 
 	public String getDescription(){
-		return description1;// + description2;
+		return description1 + description2;
 	}
 
 	public String getDescription1() {
@@ -63,10 +61,6 @@ public class Article implements Serializable{
 	
 	public String getDescription3() {
 		return description3;
-	}
-
-	public CatalogueGroup getGroup() {
-		return group;
 	}
 	
 	public char getGroupIndex() {
@@ -85,10 +79,6 @@ public class Article implements Serializable{
 	
 	public String getNumber(){
 		return number;
-	}
-	
-	public CataloguePage getPage() {
-		return group.getPage();
 	}
 	
 	public int getPageNumber() {

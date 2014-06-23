@@ -1,10 +1,9 @@
 package de.abama.dummycreator.catalogue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalogue implements Serializable {
+public class Catalogue implements ICatalogueItem {
 	
 	private static final long serialVersionUID = -331495837120201589L;
 
@@ -13,6 +12,8 @@ public class Catalogue implements Serializable {
 	private List<CataloguePage> pages = new ArrayList<CataloguePage>();
 	
 	private List<CatalogueChapter> chapters  = new ArrayList<CatalogueChapter>();
+
+	private String name;
 	
 	public List<CataloguePage> getPages(){
 		return pages;
@@ -108,5 +109,32 @@ public class Catalogue implements Serializable {
 	public CataloguePage addPage() {
 		final CataloguePage page = getOrCreatePage(firstPageNumber);
 		return page;
+	}
+
+	@Override
+	public ICatalogueItem getParent() {
+		return null;
+	}
+
+	@Override
+	public ICatalogueItem remove() {
+		System.out.println("Katalog kann nicht gelöscht werden");
+		return null;
+	}
+	
+	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
+		try{
+			System.out.println("Lösche " + catalogueItem);
+			final int index = pages.indexOf(catalogueItem);
+			pages.remove(index);
+			return pages.get(index);
+		}
+		catch(final Exception e){
+			return null;
+		}
+	}
+	
+	public String toString(){
+		return "Katalog " + name;
 	}
 }

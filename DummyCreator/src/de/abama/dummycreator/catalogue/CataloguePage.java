@@ -21,9 +21,6 @@ public class CataloguePage implements ICatalogueItem {
 	private final List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 
 	public int getNumber(){
-		//System.out.println(catalogue);
-		//System.out.println(catalogue.getPages().indexOf(this));
-		//System.out.println(catalogue.getFirstPage());
 		return catalogue.getPages().indexOf(this)+catalogue.getFirstPageNumber();
 	}
 	
@@ -40,26 +37,10 @@ public class CataloguePage implements ICatalogueItem {
 	}
 	
 	public CatalogueGroup addGroup(final CatalogueGroup group){
-		final CatalogueGroup[] groups = {group};
-		addGroups(groups);
+		group.setPage(this);
+		groups.add(group);
 		return group;
-	}
-	
-	public void addGroups(final CatalogueGroup[] groups){
-		for(CatalogueGroup group : groups){
-			group.setPage(this);
-			this.groups.add(group);
-		}
-		updatePageData();
 	}	
-	
-	public void removeGroup(final CatalogueGroup group){
-		
-	}
-	
-	public void updatePageData(){
-		
-	}
 
 	public void setCatalogue(Catalogue catalogue) {
 		this.catalogue = catalogue;
@@ -73,15 +54,12 @@ public class CataloguePage implements ICatalogueItem {
 		return articleCount;
 	}
 
-	public CatalogueGroup getOrCreateGroup(char index) {		
-		for(CatalogueGroup group : groups){
-			if(group.getIndex()==index) return group;
+	public CatalogueGroup getOrCreateGroup(char index) {
+		while(groups.size()-1<INDEX.indexOf(index)){
+			final CatalogueGroup group = addGroup(new CatalogueGroup());
+			System.out.println("Erstelle Gruppe " + group.getIndex());
 		}
-		final CatalogueGroup group = new CatalogueGroup();
-		addGroup(group);
-		System.out.println("Erstelle Gruppe " + group.getIndex());
-
-		return group;
+		return getGroup(index);
 	}
 
 	public int getGroupsCount() {
@@ -95,5 +73,32 @@ public class CataloguePage implements ICatalogueItem {
 	
 	public CatalogueGroup getGroup(final char groupIndex){
 		return groups.get(INDEX.indexOf(groupIndex));
+	}
+
+	@Override
+	public ICatalogueItem getParent() {
+		return catalogue;
+	}
+
+	@Override
+	public ICatalogueItem remove() {
+		return this.getParent().remove(this);		
+	}
+
+	@Override
+	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
+		try {
+			System.out.println("Lösche " + catalogueItem);
+			final int index = groups.indexOf(catalogueItem);
+			groups.remove(index);
+			return groups.get(index);
+		}
+		catch(final Exception e){
+			return null;
+		}
+	}
+	
+	public String toString(){
+		return "Seite " + getNumber();
 	}
 }

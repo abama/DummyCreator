@@ -7,26 +7,23 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root alignment="CENTER" prefWidth="80.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER"  AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-background-color: lightgrey;" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <StackPane>
+      <HBox alignment="CENTER">
          <children>
-            <ImageView fx:id="rechte_seite" fitHeight="120.0" fitWidth="100.0" layoutX="21.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/icon_seite_rechts.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="linke_seite" fitHeight="120.0" fitWidth="100.0" layoutX="21.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/icon_seite_links.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="image" fitHeight="90.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <StackPane.margin>
-                  <Insets top="5.0" />
-               </StackPane.margin></ImageView>
+            <Label fx:id="number" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="3" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
          </children>
-      </StackPane>
-      <Label fx:id="number" text="1" />
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </HBox>
+      <ListView fx:id="groups" VBox.vgrow="ALWAYS" />
    </children>
 </fx:root>

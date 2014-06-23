@@ -11,7 +11,7 @@ public class ControllerContext {
 		if(instance == null){
 			instance = new ControllerContext();
 			instance.mainController = mainController;
-			System.out.println("Controller initialized: " + mainController.getClass().getName());
+			System.out.println("Controller initialisiert: " + mainController.getClass().getName());
 		}
 		return instance;
 	}

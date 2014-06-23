@@ -16,9 +16,13 @@ public class CatalogueGroup implements  ICatalogueItem {
 		
 	private CataloguePage page;
 	
-	public void add(final CatalogueArticle article){
-		if(!articles.contains(article)) articles.add(article);
-		System.out.println("Füge Artikel hinzu: " + article.getNumber());
+	public CatalogueArticle add(final CatalogueArticle article){
+		if(!articles.contains(article)) {
+			System.out.println("Füge Artikel hinzu: " + article.getNumber());
+			article.setGroup(this);
+			articles.add(article);
+		}
+		return article;
 	}	
 	
 	public void addAll(final CatalogueArticle[] articles){
@@ -45,34 +49,11 @@ public class CatalogueGroup implements  ICatalogueItem {
 		if(articles.size()!=0) return articles.get(0).getTitle();
 		return ("Leere Artikelgruppe");
 	}
-	
-	public void removeArticle(final String number){
-		articles.remove(getArticle(number));	
-	}
-
-	public void removeArticles(final Article[] articles){
-		for(Article article : articles){
-			this.articles.remove(article);
-		}
-		//updateGroupData();
-	}
 
 	public void setPage(final CataloguePage page){
 		this.page = page;
 	}
 
-	/*
-	public void updateGroupData(){
-		if(articles.size() == 0) {
-			index = null;
-			title = null;
-		} else {
-			index = articles.get(0).getNumber();
-			title = articles.get(0).getTitle();
-		}
-	}
-	*/
-	
 	public int getArticlesCount(){
 		return articles.size();
 	}
@@ -91,5 +72,32 @@ public class CatalogueGroup implements  ICatalogueItem {
 			if(article.getNumber()==number) return article;
 		}
 		return null;
+	}
+
+	@Override
+	public ICatalogueItem getParent() {
+		return page;
+	}
+
+	@Override
+	public ICatalogueItem remove() {
+		return this.getParent().remove(this);
+	}
+
+	@Override
+	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
+		try {
+			System.out.println("Lösche " + catalogueItem);
+			final int index = articles.indexOf(catalogueItem);
+			articles.remove(index);
+			return articles.get(index);
+		}
+		catch(final Exception e){
+			return null;
+		}
+	}
+	
+	public String toString() {
+		return "Seite " + page.getNumber() + " - Gruppe " + getIndex();
 	}
 }

@@ -1,4 +1,5 @@
-package de.abama.dummycreator.catalogue;
+package de.abama.dummycreator.articles;
+
 
 public class ListArticle extends Article implements Comparable<ListArticle> {
 

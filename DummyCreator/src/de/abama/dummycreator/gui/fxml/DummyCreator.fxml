@@ -264,7 +264,7 @@
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
                                                 </Button>
-                                                <Button layoutX="10.0" layoutY="450.0" mnemonicParsing="false" onAction="#removeArticle" prefWidth="120.0" text="&lt;&lt; Artikel" />
+                                                <Button layoutX="10.0" layoutY="450.0" mnemonicParsing="false" prefWidth="120.0" text="&lt;&lt; Artikel" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -307,62 +307,16 @@
                                  <children>
                                     <HBox style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <VBox fx:id="spread_left_page" alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <HBox>
-                                                   <children>
-                                                      <Label fx:id="spread_left_number" prefWidth="50.0" text="2">
-                                                         <font>
-                                                            <Font name="System Bold" size="18.0" />
-                                                         </font>
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="spread_left_keywords" alignment="TOP_LEFT" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;" HBox.hgrow="ALWAYS">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
-                                                   </children>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" />
-                                                   </VBox.margin>
-                                                </HBox>
-                                                <ListView fx:id="spread_left_groups" onKeyPressed="#leftPageGroupsKeyPressed" VBox.vgrow="ALWAYS" />
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </HBox.margin>
-                                          </VBox>
-                                          <VBox fx:id="spread_right_page" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightgrey;" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <HBox>
-                                                   <children>
-                                                      <TextField fx:id="spread_right_keywords" alignment="TOP_LEFT" promptText="Schlagwort(e)" style="-fx-background-color: #eeeeee;" HBox.hgrow="ALWAYS">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
-                                                      <Label fx:id="spread_right_number" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="50.0" text="3" textAlignment="RIGHT">
-                                                         <font>
-                                                            <Font name="System Bold" size="18.0" />
-                                                         </font>
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                   </children>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" />
-                                                   </VBox.margin>
-                                                </HBox>
-                                                <ListView fx:id="spread_right_groups" onKeyPressed="#rightPageGroupsKeyPressed" VBox.vgrow="ALWAYS" />
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </HBox.margin>
-                                          </VBox>
+                                          <AnchorPane fx:id="left_page" prefWidth="1000.0">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </AnchorPane>
+                                          <AnchorPane fx:id="right_page" prefWidth="1000.0">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </AnchorPane>
                                        </children>
                                     </HBox>
                                  </children>

@@ -7,6 +7,8 @@ import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
+import de.abama.dummycreator.gui.controller.ControllerContext;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +16,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class CatalogueGroupUi extends HBox {
+public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
 	
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
@@ -60,15 +61,6 @@ public class CatalogueGroupUi extends HBox {
         }
     }
 
-	@FXML
-    public void deleteArticle(KeyEvent event){
-		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE){
-			final String number = this.articles.getSelectionModel().getSelectedItem().getNumber();
-			group.removeArticle(number);
-		}
-    	// TODO removeArticle
-    }
-
 	public Label getDescription() {
 		return description;
 	}
@@ -107,10 +99,22 @@ public class CatalogueGroupUi extends HBox {
     
     public void setArticles(final List<CatalogueArticle> articles){
 
-        this.articles.setItems(GuiUtilities.createArticleGroupArticleListEntries(group.getArticles()));
+        this.articles.setItems(GuiUtilities.createCatalogueArticleUis(group.getArticles()));
     }
     
     public ListView<CatalogueArticleUi> getArticleEntries(){
     	return articles;
     }
+
+	@Override
+	public ICatalogueItem getCatalogueItem() {
+		return group;
+	}
+
+	@Override
+	public void mouseClick(MouseEvent event) throws IOException {
+		//System.out.println("Ausgewählte Gruppe: " + group.getPage().getNumber() + group.getIndex());
+		ControllerContext.getInstance().getMainController().mouseClick(this, event);
+		
+	}
 }

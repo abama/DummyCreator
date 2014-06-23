@@ -14,32 +14,20 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import de.abama.dummycreator.catalogue.Article;
+import de.abama.dummycreator.articles.Article;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
+import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.gui.fxml.CatalogueArticleUi;
 import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
+import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
 import de.abama.dummycreator.gui.fxml.ListArticleUi;
 
 public class GuiUtilities {
-	
-	public static int getLeftPage(int page){
-		if(page%2==0) return page; else return page-1;
-	}
-	
-	public static int getRightPage(int page) {
-		if(page%2==0) return page+1; else return page;
-	}
-
-	public static Pane getRightPageContent(Catalogue catalogue, int currentPage) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public static File chooseCsvFile(final String startFolderPath) throws MalformedURLException, URISyntaxException{
 		File startDir = new File(new URI("file:/Volumes/Marketing/Artikel/Listen/Kataloge/"));
@@ -56,6 +44,43 @@ public class GuiUtilities {
         final File test = fileChooser.showOpenDialog(null);
         
         return test;
+	}
+	
+	public static ListArticleUi createArticleListEntry(final Article article, boolean loadImage) throws IOException{
+		
+		return new ListArticleUi(article, loadImage);
+	}
+
+	public static ObservableList<CatalogueArticleUi> createCatalogueArticleUis(List<CatalogueArticle> articles) {
+		final List<CatalogueArticleUi> articleItems = new ArrayList<CatalogueArticleUi>();
+		for(final CatalogueArticle article : articles){
+			articleItems.add(new CatalogueArticleUi(article, true));
+		}
+		return FXCollections.observableArrayList(articleItems);
+	}
+	
+	public static ObservableList<CatalogueGroupUi> createCatalogueGroupUis(CataloguePage page) {
+		final List<CatalogueGroupUi> groupItems = new ArrayList<CatalogueGroupUi>();
+		for(final CatalogueGroup group : page.getGroups()){
+			groupItems.add(new CatalogueGroupUi(group));
+		}
+		return FXCollections.observableArrayList(groupItems);
+	}
+
+	public static CatalogueGroupUi createGroupListEntry(final CatalogueGroup group) throws IOException{
+		
+		CatalogueGroupUi articleGroupBox = new CatalogueGroupUi(group);
+
+		return articleGroupBox;
+	}
+
+	public static ObservableList<CataloguePageThumbUi> createPageThumbnails(final Catalogue catalogue) throws IOException {
+		final List<CataloguePageThumbUi> pages = new ArrayList<CataloguePageThumbUi>();
+		for(final CataloguePage page : catalogue.getPages()){
+			CataloguePageThumbUi pageThumbnail = new CataloguePageThumbUi(page);
+			pages.add(pageThumbnail);
+		}		
+		return FXCollections.observableList(pages);
 	}
 	
 	public static Stage getProgressWindow(final String title, final String text, final int min, final int max){
@@ -75,24 +100,4 @@ public class GuiUtilities {
         scene.setRoot(vb);
 		return stage;
 	}
-
-	public static ListArticleUi createArticleListEntry(final Article article, boolean loadImage) throws IOException{
-		
-		return new ListArticleUi(article, loadImage);
-	}
-	
-	public static CatalogueGroupUi createGroupListEntry(final CatalogueGroup group) throws IOException{
-		
-		CatalogueGroupUi articleGroupBox = new CatalogueGroupUi(group);
-
-		return articleGroupBox;
-	}
-
-	public static ObservableList<CatalogueArticleUi> createArticleGroupArticleListEntries(List<CatalogueArticle> articles) {
-		final List<CatalogueArticleUi> articleItems = new ArrayList<CatalogueArticleUi>();
-		for(final CatalogueArticle article : articles){
-			articleItems.add(new CatalogueArticleUi(article, true));
-		}
-		return FXCollections.observableArrayList(articleItems);
-	}	
 }

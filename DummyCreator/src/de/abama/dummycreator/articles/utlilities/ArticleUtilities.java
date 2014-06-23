@@ -3,7 +3,7 @@ package de.abama.dummycreator.articles.utlilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.abama.dummycreator.catalogue.ListArticle;
+import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.csv.CSV;
 
 public class ArticleUtilities {

@@ -1,9 +1,10 @@
 package de.abama.dummycreator.catalogue;
 
 import javafx.scene.image.Image;
+import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.constants.SU;
 
-public class CatalogueArticle extends Article  implements ICatalogueItem {
+public class CatalogueArticle implements ICatalogueItem {
 
 	private static final long serialVersionUID = 4624798489378228851L;
 
@@ -78,5 +79,28 @@ public class CatalogueArticle extends Article  implements ICatalogueItem {
 
 	public String getTitle() {
 		return article.getTitle();
+	}
+	
+	public ICatalogueItem getParent(){
+		return group;
+	}
+
+	@Override
+	public ICatalogueItem remove() {
+		return this.getParent().remove(this);
+	}
+	
+	@Override
+	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
+		System.out.print("Artikel hat keine Unterelemente");
+		return null;
+	}
+	
+	public String toString(){
+		return "Artikel " + getNumber() + " ("+group+")";
+	}
+
+	public void setGroup(CatalogueGroup catalogueGroup) {
+		this.group = catalogueGroup;		
 	}
 }

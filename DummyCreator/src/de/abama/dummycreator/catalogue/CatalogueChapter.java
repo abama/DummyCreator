@@ -9,11 +9,41 @@ public class CatalogueChapter implements ICatalogueItem {
 
 	private List<CataloguePage> pages = new ArrayList<CataloguePage>();
 	
+	private Catalogue catalogue;
+
+	private String name;
+	
 	public void addPage(final CataloguePage page){
 		pages.add(page);
 	}
 	
 	public void removePage(final CataloguePage page){
 		pages.remove(page);
+	}
+	
+	public ICatalogueItem getParent(){
+		return catalogue;
+	}
+
+	@Override
+	public ICatalogueItem remove() {
+		return this.getParent().remove(this);
+	}
+
+	@Override
+	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
+	try {
+			System.out.println("Lösche " + catalogueItem);
+			final int index = pages.indexOf(catalogueItem);
+			pages.remove(index);
+			return pages.get(index);
+		}
+		catch(final Exception e){
+			return null;
+		}
+	}
+	
+	public String toString(){
+		return "Kapitel " + name;
 	}
 }
