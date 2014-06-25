@@ -29,7 +29,7 @@ public class Main extends Application {
                 {
             		if(keyEvent.getCode() == KeyCode.DELETE || keyEvent.getCode() == KeyCode.BACK_SPACE){
             			try {
-            				controller.removeSelected();
+            				controller.removeSelection();
             			}
             			catch(final Exception e){
             				//System.out.println(e);

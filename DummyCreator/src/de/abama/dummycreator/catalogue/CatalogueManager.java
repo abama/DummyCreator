@@ -57,6 +57,8 @@ public class CatalogueManager {
 	}
 
 	public Catalogue loadFile(final File file) {
+		
+		catalogue = new Catalogue();
 				
 		final List<ListArticle> articles = ArticleManager.getInstance().loadCsv(file);
 		Collections.sort(articles);

@@ -196,6 +196,15 @@
                                     </AnchorPane>
                                 </content>
                               </TitledPane>
+                              <TitledPane animated="false" text="Auswahl">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label fx:id="info_selection" text="Label" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
                            </children>
                         </VBox>
                      </children>
@@ -284,11 +293,7 @@
                                     <Button fx:id="pages_prev_btn" disable="true" mnemonicParsing="false" text="&lt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <ListView fx:id="view_pages" orientation="HORIZONTAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
+                              <AnchorPane fx:id="catalogue_pages" HBox.hgrow="ALWAYS" />
                               <AnchorPane layoutX="10.0" layoutY="10.0">
                                  <children>
                                     <Button fx:id="pages_next_btn" disable="true" mnemonicParsing="false" text="&gt;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -307,12 +312,12 @@
                                  <children>
                                     <HBox style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <AnchorPane fx:id="left_page" prefWidth="1000.0">
+                                          <AnchorPane fx:id="left_page" onMouseClicked="#clearSelection" prefWidth="1000.0">
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </AnchorPane>
-                                          <AnchorPane fx:id="right_page" prefWidth="1000.0">
+                                          <AnchorPane fx:id="right_page" onMouseClicked="#clearSelection" prefWidth="1000.0">
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>

@@ -3,6 +3,7 @@ package de.abama.dummycreator.gui.fxml;
 import java.io.IOException;
 
 import de.abama.dummycreator.articles.Article;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-public class ListArticleUi extends HBox {
+public class ListArticleUi extends HBox implements ICatalogueUiItem {
 	
 	@FXML
 	private Label number;
@@ -35,7 +36,7 @@ public class ListArticleUi extends HBox {
     	
     	this.setArticle(article);
     	
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListArticleUi.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/ListArticleUi.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -92,6 +93,15 @@ public class ListArticleUi extends HBox {
 	
 	public String getNumber(){
 		return article.getNumber();
+	}
+	
+	public String toString(){
+		return article.toString();
+	}
+
+	@Override
+	public ICatalogueItem getCatalogueItem() {
+		return null;
 	}
 }
 

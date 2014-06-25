@@ -13,14 +13,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	
+	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	
+	@SuppressWarnings("unused")
 	private DummyCreator controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
@@ -48,7 +49,7 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
     	
     	this.setPage(page);
     	
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CataloguePageThumbUi.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/CataloguePageThumbUi.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -87,6 +88,7 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 		return page;
 	}
 	
+	/*
 	@FXML
 	public void mouseClick(MouseEvent event) throws IOException{
 		
@@ -98,6 +100,12 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
     		catalogueManager.setCurrentPage(this.getPage());
     		controller.updateSpreadView();
     	}
+	}
+	*/
+	
+	
+	public String toString(){
+		return page.toString();
 	}
 }
 

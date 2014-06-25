@@ -1,20 +1,17 @@
 package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
-
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
-import de.abama.dummycreator.gui.controller.ControllerContext;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
+public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
 	
 	@FXML
 	private Label number;
@@ -38,14 +35,14 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
     	
     	this.setArticle(article);
     	
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CatalogueArticleUi.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/CatalogueArticleMicroUi.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
         try {
             fxmlLoader.load();
         	
-        	if(loadImage) this.setImage(article.getImage(true));
+        	if(loadImage) this.setImage(article.getImage(false));
         	this.number.setText(String.valueOf(article.getNumber()));
         	this.title.setText(article.getTitle());
         	this.description.setText(String.valueOf(article.getDescription()));
@@ -99,11 +96,24 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem{
 	public ICatalogueItem getCatalogueItem() {
 		return article;
 	}
-
-	@Override
+	
+	/*
 	public void mouseClick(MouseEvent event) throws IOException {
 		ControllerContext.getInstance().getMainController().mouseClick(this, event);
-		
 	}
+	*/
+	
+	public String toString(){
+		return article.toString();
+	}
+	
+	/*
+	@FXML
+	public void selection(MouseEvent event) throws IOException {
+		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
+		selection.add(this);
+		ControllerContext.getInstance().getMainController().setSelection(selection);
+	}
+	*/
 }
 

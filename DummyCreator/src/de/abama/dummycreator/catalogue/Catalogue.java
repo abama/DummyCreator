@@ -124,9 +124,11 @@ public class Catalogue implements ICatalogueItem {
 	
 	public ICatalogueItem remove(ICatalogueItem catalogueItem) {
 		try{
+			System.out.println("Seiten: " + pages.size());
 			System.out.println("Lösche " + catalogueItem);
 			final int index = pages.indexOf(catalogueItem);
 			pages.remove(index);
+			System.out.println("Seiten: " + pages.size());
 			return pages.get(index);
 		}
 		catch(final Exception e){
