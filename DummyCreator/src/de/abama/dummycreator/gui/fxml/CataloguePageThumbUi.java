@@ -2,26 +2,25 @@ package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
 
-import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
 import de.abama.dummycreator.gui.controller.DummyCreator;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
-	
-	@SuppressWarnings("unused")
-	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
-	
-	@SuppressWarnings("unused")
+		
 	private DummyCreator controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
@@ -106,6 +105,37 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	
 	public String toString(){
 		return page.toString();
+	}
+	
+	@FXML
+	private void dragDropped(DragEvent event) throws IOException{
+		//System.out.println("Drop.");
+
+		controller.dropItems(this);
+		controller.removeSelection();
+		//controller.setSelection(items);
+		event.setDropCompleted(true);
+		event.consume();
+	}
+	
+	@FXML 
+	private void dragEntered(Event event) throws IOException{
+		
+		this.setBlendMode(BlendMode.DIFFERENCE);
+		controller.setInsertionPoint(this.page);
+		event.consume();
+	}
+	
+	@FXML 
+	private void dragExited(Event event) throws IOException{
+		this.setBlendMode(null);
+		event.consume();
+	}
+	
+	@FXML 
+	private void dragOver(DragEvent event){
+		event.acceptTransferModes(TransferMode.MOVE);
+		event.consume();
 	}
 }
 
