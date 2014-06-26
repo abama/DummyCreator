@@ -139,4 +139,16 @@ public class Catalogue implements ICatalogueItem {
 	public String toString(){
 		return "Katalog " + name;
 	}
+
+	@Override
+	public void add(ICatalogueItem selection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAll(List<ICatalogueItem> selection) {
+		// TODO Auto-generated method stub
+		
+	}
 }

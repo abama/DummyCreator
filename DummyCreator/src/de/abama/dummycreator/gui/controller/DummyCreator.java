@@ -3,9 +3,11 @@ package de.abama.dummycreator.gui.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.abama.dummycreator.articles.ArticleManager;
+import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
@@ -17,15 +19,16 @@ import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.fxml.CatalogueUi;
 import de.abama.dummycreator.gui.fxml.ICatalogueUiItem;
 import de.abama.dummycreator.gui.fxml.ListArticleUi;
+import de.abama.dummycreator.gui.fxml.SearchResultUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
@@ -34,26 +37,27 @@ import javafx.scene.layout.AnchorPane;
 
 public class DummyCreator {
 	
-	List<ICatalogueUiItem> selection = FXCollections.observableArrayList();
+	protected List<ICatalogueUiItem> selection = FXCollections.observableArrayList();
 
-	private Catalogue catalogue;
+	protected ArticleManager articleManager = ArticleManager.getInstance();
 	
+	protected Catalogue catalogue;
+	
+	protected CatalogueManager catalogueManager = CatalogueManager.getInstance();
+	
+	protected Clipboard clipboard = Clipboard.getSystemClipboard();
+		
+	protected Configuration configuration = Configuration.getInstance();
+
 	@FXML
 	private AnchorPane catalogue_pages;
-	
-	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
-	
-	@SuppressWarnings("unused")
-	private Clipboard clipboard = Clipboard.getSystemClipboard();
-		
-	private Configuration configuration = Configuration.getInstance();
 
 	@SuppressWarnings("unused")
 	private ControllerContext context;
-
+	
 	@FXML
 	private Label info_articles;
-	
+
 	@FXML
 	private Label info_catalogue_articles;
 
@@ -64,18 +68,19 @@ public class DummyCreator {
 	private Label info_catalogue_filename;
 
 	@FXML
-	private Label info_catalogue_groups;
-
-	@FXML
-	private Label info_catalogue_pages;	
+	private Label info_catalogue_groups;	
 	
+	@FXML
+	private Label info_catalogue_pages;
+
 	@FXML
 	private Label info_selection;
 
 	@FXML
+	private Label info_insertionpoint;
+	
+	@FXML
 	private AnchorPane left_page;
-	 
-	private ArticleManager masterData = ArticleManager.getInstance();
 	
 	@FXML 
 	private MenuItem menu_file_new;
@@ -117,6 +122,9 @@ public class DummyCreator {
     private TextArea search_by_number;
 	
 	@FXML
+	private AnchorPane search_result_pane;
+	
+	//@FXML
 	private ListView<ListArticleUi> search_result;
 	
 	@FXML
@@ -125,7 +133,27 @@ public class DummyCreator {
     @FXML
 	private Button spread_prev_btn;
     
-    public void removeSelection() throws IOException {
+    public void dropItems(ICatalogueUiItem catalogueUiItem) throws IOException {
+		System.out.println("Drop: " + catalogueUiItem);
+		final List<ICatalogueItem> catalogueItems = getCatalogueItems(selection);
+		try{
+			catalogueUiItem.getCatalogueItem().addAll(catalogueItems);
+		} catch (final Exception e){
+			System.out.println("Das ging daneben :-p");
+		}
+		updateUiViews();
+		//return catalogueItems;
+	}   
+
+	public List<ICatalogueItem> getCatalogueItems(List<ICatalogueUiItem> UIitems) {
+		final List<ICatalogueItem> catalogItems = new ArrayList<ICatalogueItem>();
+		for(final ICatalogueUiItem item : UIitems){
+			catalogItems.add(item.getCatalogueItem());
+		}
+		return catalogItems;
+	}
+	
+	public void removeSelection() throws IOException {
 		for(final ICatalogueUiItem UiItem : selection){
 			try {
 				ICatalogueItem catalogueItem = UiItem.getCatalogueItem();
@@ -137,15 +165,40 @@ public class DummyCreator {
 		}		
 		selection.clear();
 		updateUiViews();
-	}   
+	}
 
+	public void setCurrentPage(CataloguePageThumbUi cataloguePageThumbUi) throws IOException {
+		catalogueManager.setCurrentPage(cataloguePageThumbUi.getPage());
+		updateSpreadView();
+	}
+	
 	public void setSelection(List<ICatalogueUiItem> items) {
-		//System.out.println(items.size());
 		selection = items;
+		System.out.println("Auswahl geändert");
+		if(selection.size()>0) 
+			setInsertionPoint(selection.get(selection.size()-1).getCatalogueItem());
 		updateSelectionInfo();
 	}
 	
-	private void updateSelectionInfo() {
+	public void setInsertionPoint(ICatalogueItem item){
+		catalogueManager.setInsertionPoint(item);
+		info_insertionpoint.setText(catalogueManager.getInsertionPoint().toString());
+	}
+
+	public void updateInfoPanel() {
+		info_articles.setText(Integer.toString(articleManager.getArticleCount()));
+		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
+		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
+		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
+		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
+	}
+
+	public void updatePagesView() throws IOException {
+		catalogue_pages.getChildren().clear();
+		catalogue_pages.getChildren().add(new CatalogueUi(catalogue));
+	}
+
+	public void updateSelectionInfo() {
 		String selectionInfo = "";
 		for(final ICatalogueUiItem item : selection){
 			selectionInfo += item + "\r\n";
@@ -161,7 +214,7 @@ public class DummyCreator {
 		right_page.getChildren().clear();
 		right_page.getChildren().add(new CataloguePageUi(catalogueManager.getCurrentRightPage()));		
 	}
-	
+
 	public void updateUiViews() throws IOException{//(Class<? extends ICatalogueItem> operation) throws IOException {
 		//if (operation == Catalogue.class ||operation == CataloguePage.class || operation == CatalogueChapter.class) 
 		updatePagesView();
@@ -172,27 +225,38 @@ public class DummyCreator {
 
 	@FXML
     protected void initialize() throws IOException {
-		search_result.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    	context = ControllerContext.getInstance(this);
+		context = ControllerContext.getInstance(this);
+		search_result = new SearchResultUi<ListArticleUi>();
+    	search_result_pane.getChildren().add(search_result);
     	newFile(new ActionEvent());
     }
+	
+	@FXML
+	public void addArticles(ActionEvent event) throws IOException {
+		final List<ListArticleUi> listArticles = search_result.getSelectionModel().getSelectedItems();
+		final List<CatalogueArticle> catalogueArticles = ArticleUtilities.createCatalogueArticles(listArticles);
+		//TODO Artikel hinzufügen
+		catalogueManager.addArticles(catalogueArticles);
+		//catalogueManager.addArticle(new CatalogueArticle(articleManager.get(articleNumber)), null, null);
+		updateUiViews();
+	}
 
 	@FXML
-	private void addArticle(ActionEvent event) throws IOException {
-		final String articleNumber = search_result.getSelectionModel().getSelectedItem().getNumber();
-		catalogueManager.addArticle(new CatalogueArticle(masterData.get(articleNumber)), null, null);
-		updateSpreadView();
+	private void clearSelection(){
+		selection.clear();
+		updateSelectionInfo();
 	}
 
 	@FXML
 	private void closeFile(ActionEvent event) throws IOException {
 		updateUiViews();
 	}
+	
 
 	@FXML
 	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
 		final File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
-		masterData.loadCsv(file);
+		articleManager.loadCsv(file);
 		updateInfoPanel();
 	}
 
@@ -201,25 +265,26 @@ public class DummyCreator {
 		System.out.println("Liste - Drag & Drop");
 		updateSpreadView();
 	}
-
+	
 	@FXML
 	private void newChapter(ActionEvent event) throws IOException {
 		System.out.println("Neues Kapitel");
 		// TODO: catalogue.addChapter();
 		updateUiViews();
 	}
-	
+
 	@FXML
 	private void newFile(ActionEvent event) throws IOException {
 		catalogue = catalogueManager.newFile();
 		updateUiViews();
 	}
-
+	
 	@FXML
 	private void newGroup(ActionEvent event) throws IOException {
 		System.out.println("Neue Gruppe");
 		catalogueManager.newGroup(null);
 		updateSpreadView();
+		updateInfoPanel();
 	}
 
 	@FXML
@@ -228,11 +293,10 @@ public class DummyCreator {
 		try {
 			catalogueManager.addPage((CataloguePage) selection.get(0));}
 		catch(final Exception e) {
-			catalogueManager.addPage(null);
+			catalogueManager.setInsertionPoint(catalogueManager.addPage(null));
 		}
 		updateUiViews();
 	}
-	
 
 	@FXML
 	private void openFile(ActionEvent event) throws IOException, URISyntaxException {
@@ -245,38 +309,46 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void searchAll(ActionEvent event) throws IOException {
-		search_result.setItems(masterData.searchAll());
+	private void removeEmptyGroups() throws IOException{
+		catalogueManager.removeEmptyGroups();
+		updateUiViews();
 	}
-	
+
+	@FXML
+	private void searchAll(ActionEvent event) throws IOException {
+		search_result.setItems(articleManager.searchAll());
+	}
+
 	@FXML
 	private void searchByDescription(KeyEvent event) throws IOException {
 	    if (event.getCode() == KeyCode.ENTER) {
-	    	search_result.setItems(masterData.searchByDescription(search_by_description.getText()));
+	    	search_result.setItems(articleManager.searchByDescription(search_by_description.getText()));
 	    }
 	}
 
 	@FXML
 	private void searchByGroupSignature(ActionEvent event) throws IOException {
-		// TODO articleSelection?
-		final String articleNumber = ((Label)(search_result.getSelectionModel().getSelectedItem().lookup("#number"))).getText();
-		search_result.setItems(masterData.searchByGroupSignature(articleNumber));
+		final ObservableList<ListArticleUi> searchResult = search_result.getSelectionModel().getSelectedItems();
+		if(searchResult.size() == 1){
+			final String articleNumber = ((Label)(searchResult.get(0).lookup("#number"))).getText();
+			search_result.setItems(articleManager.searchByGroupSignature(articleNumber));
+		}
 	}
 	
 	@FXML
 	private void searchByKeywords(KeyEvent event) {
 	    if (event.getCode() == KeyCode.ENTER) {
-	    	search_result.setItems(masterData.searchByKeywords(search_by_keywords.getText()));
+	    	search_result.setItems(articleManager.searchByKeywords(search_by_keywords.getText()));
 	    }
 	}
-
+	
 	@FXML
 	private void searchByNumber(KeyEvent event) throws IOException {
 	    if (event.getCode() == KeyCode.ENTER) {
 	    	//String text = search_by_number.getText().replace("\n", "").replace("\r", "");
 	    	//search_by_number.setText(text);
 	    	//search_by_number.clear();
-	    	search_result.setItems(masterData.searchByNumber(search_by_number.getText()));
+	    	search_result.setItems(articleManager.searchByNumber(search_by_number.getText()));
 	    }
 	}
 
@@ -290,29 +362,5 @@ public class DummyCreator {
 	private void spreadUp(ActionEvent event) throws IOException{
 		catalogueManager.nextSpread();
 		updateSpreadView();
-	}
-
-	private void updateInfoPanel() {
-		info_articles.setText(Integer.toString(masterData.getArticleCount()));
-		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
-		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
-		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
-		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
-	}
-
-	private void updatePagesView() throws IOException {
-		catalogue_pages.getChildren().clear();
-		catalogue_pages.getChildren().add(new CatalogueUi(catalogue));
-	}
-
-	public void setCurrentPage(CataloguePageThumbUi cataloguePageThumbUi) throws IOException {
-		catalogueManager.setCurrentPage(cataloguePageThumbUi.getPage());
-		updateSpreadView();
-	}
-	
-	@FXML
-	public void clearSelection(){
-		selection.clear();
-		updateSelectionInfo();
 	}
 }

@@ -103,5 +103,9 @@ public class ListArticleUi extends HBox implements ICatalogueUiItem {
 	public ICatalogueItem getCatalogueItem() {
 		return null;
 	}
+
+	public Article getListArticle() {
+		return article;
+	}
 }
 

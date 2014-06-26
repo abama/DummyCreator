@@ -1,23 +1,30 @@
 package de.abama.dummycreator.catalogue;
 
+import java.util.List;
+
 import javafx.scene.image.Image;
-import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.articles.Article;
 import de.abama.dummycreator.constants.SU;
 
 public class CatalogueArticle implements ICatalogueItem {
 
 	private static final long serialVersionUID = 4624798489378228851L;
 
-	private ListArticle article = null;
+	private Article article = null;
 	
 	private CatalogueGroup group;
 	
-	public CatalogueArticle(ListArticle listArticle) {
+	public CatalogueArticle(Article listArticle) {
 		super();
 		this.article = listArticle;
 	}
 	
-	public ListArticle getArticle() {
+	public CatalogueArticle(CatalogueArticle original) {
+		super();
+		this.article = original.article;
+	}
+
+	public Article getArticle() {
 		return article;
 	}
 	
@@ -102,5 +109,15 @@ public class CatalogueArticle implements ICatalogueItem {
 
 	public void setGroup(CatalogueGroup catalogueGroup) {
 		this.group = catalogueGroup;		
+	}
+
+	@Override
+	public void add(ICatalogueItem selection) {
+		// Hier kann nichts hinzugefügt werden
+	}
+
+	@Override
+	public void addAll(List<ICatalogueItem> selection) {
+		// Hier kann nichts hinzugefügt werden
 	}
 }

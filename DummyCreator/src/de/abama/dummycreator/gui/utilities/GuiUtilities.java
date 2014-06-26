@@ -25,6 +25,7 @@ import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.gui.fxml.CatalogueArticleUi;
 import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
 import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
+import de.abama.dummycreator.gui.fxml.ICatalogueUiItem;
 import de.abama.dummycreator.gui.fxml.ListArticleUi;
 
 public class GuiUtilities {
@@ -53,6 +54,14 @@ public class GuiUtilities {
 
 	public static ObservableList<CatalogueArticleUi> createCatalogueArticleUis(List<CatalogueArticle> articles) {
 		final List<CatalogueArticleUi> articleItems = new ArrayList<CatalogueArticleUi>();
+		for(final CatalogueArticle article : articles){
+			articleItems.add(new CatalogueArticleUi(article, true));
+		}
+		return FXCollections.observableArrayList(articleItems);
+	}
+	
+	public static ObservableList<ICatalogueUiItem> createICatalogueUis(List<CatalogueArticle> articles) {
+		final List<ICatalogueUiItem> articleItems = new ArrayList<ICatalogueUiItem>();
 		for(final CatalogueArticle article : articles){
 			articleItems.add(new CatalogueArticleUi(article, true));
 		}

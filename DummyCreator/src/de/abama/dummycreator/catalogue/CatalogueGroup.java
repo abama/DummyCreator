@@ -15,6 +15,20 @@ public class CatalogueGroup implements  ICatalogueItem {
 	private List<CatalogueArticle> articles = new ArrayList<CatalogueArticle>();
 		
 	private CataloguePage page;
+
+	public String getGroupSignature(){
+		if(articles.size()!=0) return articles.get(0).getArticle().getGroupSignature();
+		return ("Leere Artikelgruppe");
+		}
+	
+	public CatalogueGroup(CataloguePage page){};
+	
+	public CatalogueGroup(CatalogueGroup original){
+		super();
+		for(CatalogueArticle article : original.articles){
+			add(new CatalogueArticle(article));
+		}
+	}
 	
 	public CatalogueArticle add(final CatalogueArticle article){
 		if(!articles.contains(article)) {
@@ -23,13 +37,6 @@ public class CatalogueGroup implements  ICatalogueItem {
 			articles.add(article);
 		}
 		return article;
-	}	
-	
-	public void addAll(final CatalogueArticle[] articles){
-		for(CatalogueArticle article : articles){
-			add(article);
-		}
-		//updateGroupData();
 	}
 	
 	public String getDescription() {
@@ -47,6 +54,11 @@ public class CatalogueGroup implements  ICatalogueItem {
 	
 	public String getTitle() {
 		if(articles.size()!=0) return articles.get(0).getTitle();
+		return ("Leere Artikelgruppe");
+	}
+	
+	public String getDescription1() {
+		if(articles.size()!=0) return articles.get(0).getDescription1();
 		return ("Leere Artikelgruppe");
 	}
 
@@ -99,5 +111,23 @@ public class CatalogueGroup implements  ICatalogueItem {
 	
 	public String toString() {
 		return "Seite " + page.getNumber() + " - Gruppe " + getIndex();
+	}
+
+	@Override
+	public void add(ICatalogueItem item) {
+		try {
+			articles.add((CatalogueArticle)item);
+			System.out.println(this + " - Füge hinzu: " + item);
+		}
+		catch(final ClassCastException e){
+			System.out.println("Objekt kann nicht eingefügt werden");
+		}
+	}
+
+	@Override
+	public void addAll(List<ICatalogueItem> selection) {
+		for(final ICatalogueItem item : selection){
+			this.add(item);
+		}
 	}
 }

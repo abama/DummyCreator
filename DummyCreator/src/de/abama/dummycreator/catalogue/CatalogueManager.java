@@ -1,11 +1,12 @@
 package de.abama.dummycreator.catalogue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.abama.dummycreator.articles.ArticleManager;
-import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.articles.Article;
 
 public class CatalogueManager {
 	
@@ -19,6 +20,8 @@ public class CatalogueManager {
 	private Catalogue catalogue = new Catalogue();
 		
 	private CataloguePage currentPage = null;
+
+	private ICatalogueItem insertionPoint;
 	private CatalogueManager(){ super(); }
 	
 	
@@ -26,7 +29,7 @@ public class CatalogueManager {
 		if(page == null) page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
 		
-		if(group == null) group = page.addGroup(new CatalogueGroup());
+		if(group == null) group = page.add(new CatalogueGroup(page));
 		group.add(article);
 	}
 	
@@ -60,12 +63,12 @@ public class CatalogueManager {
 		
 		catalogue = new Catalogue();
 				
-		final List<ListArticle> articles = ArticleManager.getInstance().loadCsv(file);
+		final List<Article> articles = ArticleManager.getInstance().loadCsv(file);
 		Collections.sort(articles);
 		
 		catalogue.setFirstPage(articles.get(0).getPageNumber());
 		
-		for(final ListArticle article : articles){
+		for(final Article article : articles){
 			final CataloguePage page = catalogue.getOrCreatePage(article.getPageNumber());
 			//System.out.println("Page: " + page);
 			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
@@ -86,13 +89,14 @@ public class CatalogueManager {
 	public void newGroup(Object object) {
 		CataloguePage page = currentPage;
 		if(page == null) page = currentPage = catalogue.addPage();
-		page.addGroup(new CatalogueGroup());
+		page.add(new CatalogueGroup(page));
 	}
 
 	public void nextSpread() {
 		if(catalogue != null) {
 			final int currentPageNumber = Math.min(catalogue.getLastPageNumber(), currentPage.getNumber()+2);
 			currentPage = catalogue.getPage(currentPageNumber);
+			insertionPoint = currentPage;
 		}
 	}
 
@@ -100,6 +104,7 @@ public class CatalogueManager {
 		if(catalogue != null) {
 			final int currentPageNumber = Math.max(catalogue.getFirstPageNumber(), currentPage.getNumber()-2);
 			currentPage = catalogue.getPage(currentPageNumber);
+			insertionPoint = currentPage;
 		}
 	}
 	
@@ -110,5 +115,45 @@ public class CatalogueManager {
 	public void setCurrentPage(CataloguePage cataloguePage) {
 		currentPage = cataloguePage;
 		
+	}
+	
+	public void removeEmptyGroups(){
+		final List<ICatalogueItem> itemsToDelete = new ArrayList<ICatalogueItem>();
+		for(final CataloguePage page : catalogue.getPages()){
+			for(final CatalogueGroup group : page.getGroups()){
+				if (group.getArticlesCount()==0) itemsToDelete.add(group);
+			}
+		}
+		for(final ICatalogueItem group : itemsToDelete){
+			group.remove();
+		}
+	}
+
+
+	public void setInsertionPoint(ICatalogueItem insertionPoint) {
+		this.insertionPoint = insertionPoint;
+	}
+	
+	public ICatalogueItem getInsertionPoint() {
+		return insertionPoint;
+	}
+
+
+	public void addArticles(List<CatalogueArticle> articles) {
+		for(final CatalogueArticle article : articles){
+			final CataloguePage page = getOrCreatePage();
+			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupSignature());
+			//System.out.println("Group: " + group);
+			group.add(new CatalogueArticle(article));
+		}
+		
+	}
+
+	private CataloguePage getOrCreatePage() {
+		if(catalogue.getPagesCount()>0) return currentPage;
+		
+		final CataloguePage page = catalogue.getOrCreatePage(1);
+		currentPage = page;
+		return page;
 	}
 }

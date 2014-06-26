@@ -1,6 +1,7 @@
 package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
+
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import javafx.fxml.FXML;
@@ -42,7 +43,7 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
         try {
             fxmlLoader.load();
         	
-        	if(loadImage) this.setImage(article.getImage(false));
+        	if(loadImage) this.setImage(article.getImage(true));
         	this.number.setText(String.valueOf(article.getNumber()));
         	this.title.setText(article.getTitle());
         	this.description.setText(String.valueOf(article.getDescription()));
@@ -97,23 +98,8 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
 		return article;
 	}
 	
-	/*
-	public void mouseClick(MouseEvent event) throws IOException {
-		ControllerContext.getInstance().getMainController().mouseClick(this, event);
-	}
-	*/
-	
 	public String toString(){
 		return article.toString();
 	}
-	
-	/*
-	@FXML
-	public void selection(MouseEvent event) throws IOException {
-		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-		selection.add(this);
-		ControllerContext.getInstance().getMainController().setSelection(selection);
-	}
-	*/
 }
 

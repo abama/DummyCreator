@@ -2,12 +2,13 @@ package de.abama.dummycreator.articles;
 
 import java.io.Serializable;
 
+import javafx.scene.image.Image;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
-import javafx.scene.image.Image;
 
-public class Article implements Serializable{
-	
+
+public class Article implements Comparable<Article>, Serializable {
+
 	private static final long serialVersionUID = 4904155239691627018L;
 
 	protected String number = "Artikelnummer";
@@ -17,28 +18,25 @@ public class Article implements Serializable{
 	protected String description2 = "Beschreibung2";
 	protected String description3 = "Beschreibung3";
 	
-	protected int pageNumber;
-	protected char groupIndex;
-	
-	protected float singlePrice;
-	protected float suPrice;
-	
-	protected SU su = SU.PIECE;
-
 	protected Image image = null;
 	
+	protected char groupIndex;
+	protected int pageNumber;
 	
-	// Generischer Konstruktor
+	protected float singlePrice;
+	protected SU su = SU.PIECE;
+	
+	protected float suPrice;
+	
 	public Article(){
 		super();
 	}
-	
-	// Konstruktor mit Artikelnummer
+
 	public Article(final String number){
 		this();
 		this.number = number;
 	}
-	
+
 	public int compareTo(Article other) {
 		if(this.pageNumber>other.pageNumber) return 1;
 		if(this.pageNumber<other.pageNumber) return -1;
@@ -46,15 +44,20 @@ public class Article implements Serializable{
 		if(this.groupIndex<other.groupIndex) return -1;	
 		return this.description1.compareTo(other.description1);
 	}
-
+	
+	@Override
+	public boolean equals(final Object other){
+		return(getNumber().equals(((Article)other).getNumber()));
+	}
+	
 	public String getDescription(){
 		return description1 + description2;
 	}
-
+	
 	public String getDescription1() {
 		return description1;
 	}
-
+	
 	public String getDescription2() {
 		return description2;
 	}
@@ -66,7 +69,7 @@ public class Article implements Serializable{
 	public char getGroupIndex() {
 		return groupIndex;
 	}
-	
+
 	public String getGroupSignature(){
 		return title+description1;
 	}
@@ -76,11 +79,11 @@ public class Article implements Serializable{
 		if (image == null && load) loadImage();
 		return image;
 	}
-	
+
 	public String getNumber(){
 		return number;
 	}
-	
+
 	public int getPageNumber() {
 		return pageNumber;
 	}
@@ -92,7 +95,7 @@ public class Article implements Serializable{
 	public SU getSu() {
 		return su;
 	}
-	
+
 	public float getSuPrice() {
 		return suPrice;
 	}
@@ -117,23 +120,30 @@ public class Article implements Serializable{
 		this.description3 = description3;
 	}
 
-	public void setGroupIndex(String group) throws Exception {
+	public void setGroup(String group) throws Exception {
 		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
 		else throw new Exception();
 	}
 
+	public void setGroupIndex(String group) throws Exception {
+		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
+		else throw new Exception();
+	}
+	
 	public void setImage(Image image) {
 		this.image = image; 
-	}
-
+	}	
 	public void setNumber(final String number) {
 		this.number = number;
 	}
-
+	public void setPage(String page) throws Exception {
+		this.pageNumber = Integer.parseInt(page);
+	}
+	
 	public void setPageNumber(String page) throws Exception {
 		this.pageNumber = Integer.parseInt(page);
 	}
-
+	
 	public void setSinglePrice(float price) {
 		this.singlePrice = price;
 	}
@@ -148,10 +158,5 @@ public class Article implements Serializable{
 
 	public void setTitle(final String title){
 		this.title = title;
-	}
-	
-	@Override
-	public boolean equals(final Object other){
-		return(getNumber().equals(((Article)other).getNumber()));
 	}
 }

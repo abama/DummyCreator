@@ -25,6 +25,12 @@
                         <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openFile" text="Öffnen" />
                         <MenuItem fx:id="menu_file_save" mnemonicParsing="false" text="Speichern" />
                         <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" text="Speichern als..." />
+                        <Menu mnemonicParsing="false" text="Export">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Tabelle" />
+                              <MenuItem mnemonicParsing="false" text="XML" />
+                          </items>
+                        </Menu>
                         <MenuItem fx:id="menu_file_close" mnemonicParsing="false" onAction="#closeFile" text="Schließen" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="menu_file_properties" mnemonicParsing="false" text="Eigenschaften" />
@@ -41,22 +47,15 @@
                         <MenuItem mnemonicParsing="false" text="Umbenennen" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Hinzufügen">
-                    <items>
-                      <MenuItem mnemonicParsing="false" onAction="#newChapter" text="Kapitel" />
-                        <MenuItem mnemonicParsing="false" onAction="#newPage" text="Seite" />
-                    </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Export">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Tabelle" />
-                        <MenuItem mnemonicParsing="false" text="XML" />
-                    </items>
-                  </Menu>
                   <Menu mnemonicParsing="false" text="Artikeldaten">
                      <items>
                         <MenuItem fx:id="menu_masterdata_import" mnemonicParsing="false" onAction="#importMasterData" text="Importieren..." />
                      </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Tools">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#removeEmptyGroups" text="Leere Gruppen löschen" />
+                    </items>
                   </Menu>
               </menus>
             </MenuBar>
@@ -111,16 +110,12 @@
                                  <children>
                                     <TitledPane animated="false" collapsible="false" text="Ergebnis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0">
-                                             <children>
-                                                <ListView fx:id="search_result" onDragDetected="#listDrag" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                             </children>
-                                          </AnchorPane>
+                                        <AnchorPane fx:id="search_result_pane" minHeight="0.0" minWidth="0.0" />
                                       </content>
                                     </TitledPane>
                                  </children>
                               </AnchorPane>
-                              <TitledPane animated="false" text="Info">
+                              <TitledPane animated="false" prefHeight="160.0" text="Info">
                                 <content>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                                        <children>
@@ -196,14 +191,46 @@
                                     </AnchorPane>
                                 </content>
                               </TitledPane>
-                              <TitledPane animated="false" text="Auswahl">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <TitledPane animated="false" layoutX="10.0" layoutY="637.0" minHeight="120.0" text="Debug">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                                        <children>
-                                          <Label fx:id="info_selection" text="Label" />
+                                          <GridPane prefWidth="300.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="Auswahl:" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="info_selection" text="Auswahl" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Einfügepunkt:">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="info_insertionpoint" text="Einfügepunkt" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints prefWidth="115.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                                <RowConstraints prefHeight="10.0" vgrow="NEVER" />
+                                             </rowConstraints>
+                                          </GridPane>
                                        </children>
                                     </AnchorPane>
-                                </content>
+                                 </content>
                               </TitledPane>
                            </children>
                         </VBox>
@@ -268,7 +295,7 @@
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
                                                 </Button>
-                                                <Button mnemonicParsing="false" onAction="#addArticle" prefWidth="120.0" text="Artikel &gt;&gt;">
+                                                <Button mnemonicParsing="false" onAction="#addArticles" prefWidth="120.0" text="Artikel &gt;&gt;">
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
                                                    </VBox.margin>

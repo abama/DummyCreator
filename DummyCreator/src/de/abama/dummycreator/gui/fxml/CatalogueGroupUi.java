@@ -12,6 +12,7 @@ import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
 import de.abama.dummycreator.gui.controller.DummyCreator;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -19,8 +20,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
@@ -119,31 +118,13 @@ public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
 	}
 	
 	@FXML
-	public void listSelection(MouseEvent event) throws IOException{
+	public void listSelection(Event event) throws IOException{
 		if(articles.isFocused()){
 			final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
 			for(final ICatalogueUiItem item : articles.getSelectionModel().getSelectedItems()) selection.add(item);
 			controller.setSelection(selection);
 		}
 	}
-	
-	@FXML
-	public void listSelectionAll(KeyEvent event) throws IOException{
-		/*if(event.getCharacter()=="a" && (event.isControlDown() || event.isMetaDown())){
-			final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-			for(final ICatalogueUiItem item : articles.getSelectionModel().getSelectedItems()) selection.add(item);
-			controller.setSelection(selection);
-		}*/
-	}
-	
-	/*
-	@FXML
-	public void itemSelection(MouseEvent event) throws IOException {
-		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-		selection.add(this);
-		ControllerContext.getInstance().getMainController().setSelection(selection);
-	}
-	*/
 	
 	public String toString(){
 		return group.toString();

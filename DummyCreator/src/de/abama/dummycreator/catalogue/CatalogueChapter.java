@@ -46,4 +46,16 @@ public class CatalogueChapter implements ICatalogueItem {
 	public String toString(){
 		return "Kapitel " + name;
 	}
+
+	@Override
+	public void add(ICatalogueItem selection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAll(List<ICatalogueItem> selection) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -26,7 +26,7 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
     
-    private DummyCreator controller = ControllerContext.getInstance().getMainController();
+    private DummyCreator controller;
 
     @FXML 
     private ListView<CataloguePageThumbUi> pages;
@@ -43,6 +43,7 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
             fxmlLoader.load();
             setPages(catalogue);
             pages.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            controller = ControllerContext.getInstance().getMainController();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -65,6 +66,7 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
 	public void listSelection(MouseEvent event) throws IOException{
 		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
 		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item);
+		//System.out.println(ControllerContext.getInstance().getMainController());
 		controller.setSelection(selection);
 		
 		if(event.getClickCount()>=2) {

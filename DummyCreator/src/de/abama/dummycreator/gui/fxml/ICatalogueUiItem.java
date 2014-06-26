@@ -6,6 +6,10 @@ public interface ICatalogueUiItem {
 	
 	ICatalogueItem getCatalogueItem();
 	
+	//void add(ICatalogueItem item);
+
+	//void addAll(List<ICatalogueUiItem> items);
+	
 	//void mouseClick(MouseEvent event)  throws IOException;
 	
 	//void keyPressed(KeyEvent event)  throws IOException;
