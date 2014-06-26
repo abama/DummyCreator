@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root style="-fx-background-color: lightgrey;" type="javafx.scene.layout.VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefWidth="1000.0" style="-fx-background-color: lightgrey;" type="javafx.scene.layout.VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -24,7 +24,11 @@
             <Insets bottom="5.0" />
          </VBox.margin>
       </HBox>
-       	<ListView fx:id="groups" onDragDetected="#dragDetected" onDragDropped="#dragDropped" onDragEntered="#dragEntered" onDragExited="#dragExited" onDragOver="#dragOver" onKeyReleased="#listSelection" onMouseReleased="#listSelection" VBox.vgrow="ALWAYS" />
+      <AnchorPane fx:id="page" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" onDragDropped="#dragDropped" onDragEntered="#dragEntered" onDragExited="#dragExited" onDragOver="#dragOver">
+         <children>
+             	<ListView fx:id="groups"  onKeyReleased="#listSelection" onMouseReleased="#listSelection" onDragDetected="#dragDetected" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
 <!-- <ListView fx:id="groups" onKeyReleased="#listSelection" onMouseReleased="#listSelection" VBox.vgrow="ALWAYS" /> -->
    </children>
 </fx:root>

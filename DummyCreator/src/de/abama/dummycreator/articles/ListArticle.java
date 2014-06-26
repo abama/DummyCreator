@@ -7,7 +7,7 @@ import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 
 
-public class Article implements Comparable<Article>, Serializable {
+public class ListArticle implements Comparable<ListArticle>, Serializable {
 
 	private static final long serialVersionUID = 4904155239691627018L;
 
@@ -28,16 +28,16 @@ public class Article implements Comparable<Article>, Serializable {
 	
 	protected float suPrice;
 	
-	public Article(){
+	public ListArticle(){
 		super();
 	}
 
-	public Article(final String number){
+	public ListArticle(final String number){
 		this();
 		this.number = number;
 	}
 
-	public int compareTo(Article other) {
+	public int compareTo(ListArticle other) {
 		if(this.pageNumber>other.pageNumber) return 1;
 		if(this.pageNumber<other.pageNumber) return -1;
 		if(this.groupIndex>other.groupIndex) return 1;
@@ -47,11 +47,11 @@ public class Article implements Comparable<Article>, Serializable {
 	
 	@Override
 	public boolean equals(final Object other){
-		return(getNumber().equals(((Article)other).getNumber()));
+		return(getNumber().equals(((ListArticle)other).getNumber()));
 	}
 	
 	public String getDescription(){
-		return description1 + description2;
+		return description1 + " " + description2 + " " + description3;
 	}
 	
 	public String getDescription1() {
@@ -158,5 +158,13 @@ public class Article implements Comparable<Article>, Serializable {
 
 	public void setTitle(final String title){
 		this.title = title;
+	}
+	
+	public String toString(){
+		return "Artikel " + getNumber();
+	}
+
+	public String getFullString() {
+		return title+" "+getDescription();
 	}
 }

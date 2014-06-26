@@ -2,7 +2,7 @@ package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
 
-import de.abama.dummycreator.articles.Article;
+import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,25 +14,25 @@ import javafx.scene.layout.Pane;
 
 public class ListArticleUi extends HBox implements ICatalogueUiItem {
 	
+	private ListArticle article;
+	
+	@FXML
+    private Label description;
+
+	@FXML
+    private ImageView image;
+	
 	@FXML
 	private Label number;
 	
 	@FXML
-    private ImageView image;
+	private Pane selection;
 
-	@FXML
-    private Label description;
-	
+
 	@FXML
     private Label title;
 	
-	private Article article;
-
-
-	@FXML
-	private Pane selection;
-	
-    public ListArticleUi(final Article article, boolean loadImage) {
+    public ListArticleUi(final ListArticle article, boolean loadImage) {
     	
     	this.setArticle(article);
     	
@@ -55,48 +55,8 @@ public class ListArticleUi extends HBox implements ICatalogueUiItem {
         }
 	}
 
-    public ImageView getImage() {
-		return image;
-	}
-
-	public void setImage(ImageView image) {
-		this.image = image;
-	}
-
-	public Label getDescription() {
-		return description;
-	}
-
-	public void setDescription(Label description) {
-		this.description = description;
-	}
-
-	public Label getTitle() {
-		return title;
-	}
-
-	public void setTitle(Label title) {
-		this.title = title;
-	}
-
-	private void setImage(Image image) {
-		this.image.setImage(article.getImage(true));
-	}
-
-	public Article getArticle() {
+    public ListArticle getArticle() {
 		return article;
-	}
-
-	public void setArticle(Article article) {
-		this.article = article;
-	}
-	
-	public String getNumber(){
-		return article.getNumber();
-	}
-	
-	public String toString(){
-		return article.toString();
 	}
 
 	@Override
@@ -104,8 +64,48 @@ public class ListArticleUi extends HBox implements ICatalogueUiItem {
 		return null;
 	}
 
-	public Article getListArticle() {
+	public Label getDescription() {
+		return description;
+	}
+
+	public ImageView getImage() {
+		return image;
+	}
+
+	public ListArticle getListArticle() {
 		return article;
+	}
+
+	public String getNumber(){
+		return article.getNumber();
+	}
+
+	public Label getTitle() {
+		return title;
+	}
+
+	public void setArticle(ListArticle article) {
+		this.article = article;
+	}
+
+	public void setDescription(Label description) {
+		this.description = description;
+	}
+	
+	public void setImage(ImageView image) {
+		this.image = image;
+	}
+	
+	public void setTitle(Label title) {
+		this.title = title;
+	}
+
+	public String toString(){
+		return article.toString();
+	}
+
+	private void setImage(Image image) {
+		this.image.setImage(article.getImage(true));
 	}
 }
 

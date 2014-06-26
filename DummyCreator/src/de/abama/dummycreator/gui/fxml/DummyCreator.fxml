@@ -15,8 +15,8 @@
               <menus>
                   <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="DummyCreator">
                     <items>
-                      <MenuItem mnemonicParsing="false" style="-fx-font-weight: normal;" text="Einstellungen" />
-                        <MenuItem mnemonicParsing="false" style="-fx-font-weight: normal;" text="Beenden" />
+                      <MenuItem fx:id="menu_app_settings" mnemonicParsing="false" style="-fx-font-weight: normal;" text="Einstellungen" />
+                        <MenuItem fx:id="menu_app_quit" mnemonicParsing="false" style="-fx-font-weight: normal;" text="Beenden" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Datei">
@@ -25,12 +25,6 @@
                         <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openFile" text="Öffnen" />
                         <MenuItem fx:id="menu_file_save" mnemonicParsing="false" text="Speichern" />
                         <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" text="Speichern als..." />
-                        <Menu mnemonicParsing="false" text="Export">
-                          <items>
-                            <MenuItem mnemonicParsing="false" text="Tabelle" />
-                              <MenuItem mnemonicParsing="false" text="XML" />
-                          </items>
-                        </Menu>
                         <MenuItem fx:id="menu_file_close" mnemonicParsing="false" onAction="#closeFile" text="Schließen" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="menu_file_properties" mnemonicParsing="false" text="Eigenschaften" />
@@ -38,13 +32,12 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Bearbeiten">
                   <items>
+                    <MenuItem fx:id="menu_edit_cut" mnemonicParsing="false" text="Ausschneiden" />
+                        <MenuItem fx:id="menu_edit_copy" mnemonicParsing="false" text="Kopieren" />
+                        <MenuItem fx:id="menu_edit_paste" mnemonicParsing="false" text="Einfügen" />
+                        <MenuItem fx:id="menu_edit_delete" mnemonicParsing="false" text="Löschen" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem mnemonicParsing="false" text="Ausschneiden" />
-                        <MenuItem mnemonicParsing="false" text="Kopieren" />
-                        <MenuItem mnemonicParsing="false" text="Einfügen" />
-                        <MenuItem mnemonicParsing="false" text="Löschen" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Umbenennen" />
+                        <MenuItem fx:id="menu_edit_properties" mnemonicParsing="false" text="Eigenschaften" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Artikeldaten">
@@ -65,57 +58,15 @@
                      <children>
                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TitledPane animated="false" collapsible="false" text="Suche">
+                              <TitledPane animated="false" collapsible="false" prefHeight="1000.0" text="Suche" VBox.vgrow="ALWAYS">
                                 <content>
-                                  <AnchorPane maxHeight="150.0" minHeight="0.0" minWidth="0.0" prefWidth="300.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="300.0">
                                        <children>
-                                          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <HBox>
-                                                   <children>
-                                                      <TextArea fx:id="search_by_number" minHeight="24.0" onKeyPressed="#searchByNumber" promptText="Artikelnummer(n)" />
-                                                   </children>
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </HBox>
-                                                <HBox layoutX="10.0" layoutY="26.0" VBox.vgrow="NEVER">
-                                                   <children>
-                                                      <TextArea fx:id="search_by_description" minHeight="24.0" onKeyPressed="#searchByDescription" promptText="Name / Beschreibung" />
-                                                   </children>
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </HBox>
-                                                <HBox layoutX="10.0" layoutY="46.0" VBox.vgrow="NEVER">
-                                                   <children>
-                                                      <TextArea fx:id="search_by_keywords" minHeight="24.0" onKeyPressed="#searchByKeywords" promptText="Schlagworte" />
-                                                   </children>
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </HBox>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" text="Suche..." AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                                                   </children>
-                                                </AnchorPane>
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </AnchorPane>
+                                          <VBox fx:id="search_panel" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children></AnchorPane>
                                 </content>
                               </TitledPane>
-                            <AnchorPane VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <TitledPane animated="false" collapsible="false" text="Ergebnis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <content>
-                                        <AnchorPane fx:id="search_result_pane" minHeight="0.0" minWidth="0.0" />
-                                      </content>
-                                    </TitledPane>
-                                 </children>
-                              </AnchorPane>
-                              <TitledPane animated="false" prefHeight="160.0" text="Info">
+                              <TitledPane animated="false" maxHeight="120.0" minHeight="120.0" text="Info" VBox.vgrow="NEVER">
                                 <content>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                                        <children>
@@ -191,7 +142,7 @@
                                     </AnchorPane>
                                 </content>
                               </TitledPane>
-                              <TitledPane animated="false" layoutX="10.0" layoutY="637.0" minHeight="120.0" text="Debug">
+                              <TitledPane animated="false" minHeight="120.0" text="Debug">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                                        <children>

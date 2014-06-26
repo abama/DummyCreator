@@ -14,25 +14,24 @@ import javafx.scene.layout.Pane;
 
 public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
 	
-	@FXML
-	private Label number;
+	private CatalogueArticle article;
 	
+	@FXML
+    private Label description;
+
 	@FXML
     private ImageView image;
 
 	@FXML
-    private Label description;
-	
-	@FXML
-    private Label title;
-	
-	private CatalogueArticle article;
-
+	private Label number;
 
 	@FXML
 	private Pane selection;
+
+	@FXML
+    private Label title;
 	
-    public CatalogueArticleUi(final CatalogueArticle article, boolean loadImage) {
+	public CatalogueArticleUi(final CatalogueArticle article, boolean loadImage) {
     	
     	this.setArticle(article);
     	
@@ -52,54 +51,68 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
             throw new RuntimeException(exception);
         }
 	}
+	
+	public CatalogueArticle getCatalogueArticle() {
+		return article;
+	}
+
+
+	@Override
+	public ICatalogueItem getCatalogueItem() {
+		//if(article == null) article = new CatalogueArticle(original)
+		return article;
+	}
+	
+    public Label getDescription() {
+		return description;
+	}
 
     public ImageView getImage() {
 		return image;
 	}
 
-	public void setImage(ImageView image) {
-		this.image = image;
+	public String getNumber(){
+		return article.getNumber();
 	}
 
-	public Label getDescription() {
-		return description;
-	}
-
-	public void setDescription(Label description) {
-		this.description = description;
+	public Pane getSelection() {
+		return selection;
 	}
 
 	public Label getTitle() {
 		return title;
 	}
 
+	public void setArticle(CatalogueArticle article) {
+		this.article = article;
+	}
+
+	public void setDescription(Label description) {
+		this.description = description;
+	}
+
+	public void setImage(ImageView image) {
+		this.image = image;
+	}
+
+	public void setNumber(Label number) {
+		this.number = number;
+	}
+
+	public void setSelection(Pane selection) {
+		this.selection = selection;
+	}
+	
 	public void setTitle(Label title) {
 		this.title = title;
 	}
 
-	private void setImage(Image image) {
-		this.image.setImage(article.getImage(true));
-	}
-
-	public String getArticle() {
-		return article.getNumber();
-	}
-
-	public void setArticle(CatalogueArticle article) {
-		this.article = article;
-	}
-	
-	public String getNumber(){
-		return article.getNumber();
-	}
-
-	@Override
-	public ICatalogueItem getCatalogueItem() {
-		return article;
-	}
-	
 	public String toString(){
 		return article.toString();
+	}
+	
+	private void setImage(Image image) {
+		this.image.setImage(article.getImage(true));
 	}
 }
 

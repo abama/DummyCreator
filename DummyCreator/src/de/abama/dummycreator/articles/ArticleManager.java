@@ -28,22 +28,22 @@ public class ArticleManager {
 		return instance;
 	}
 	
-	private TreeMap<String, Article> articles = new TreeMap<String, Article>();
+	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
 	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 		
 	@SuppressWarnings("unused")
 	private Configuration configuration = Configuration.getInstance();
 	
-	public List<Article> addArticles(final List<Article> list){
-		final List<Article> linkedArticles = new ArrayList<Article>();
+	public List<ListArticle> addArticles(final List<ListArticle> list){
+		final List<ListArticle> linkedArticles = new ArrayList<ListArticle>();
 		
-		for(final Article article : list){
+		for(final ListArticle article : list){
 			linkedArticles.add(getOrCreateArticle(article));
 		}
 		return linkedArticles;
 	}
 
-	public Article getOrCreateArticle(final Article article){
+	public ListArticle getOrCreateArticle(final ListArticle article){
 		if(!articles.containsKey(article.getNumber())) articles.put(article.getNumber(), article);
 		return articles.get(article.getNumber());
 	}
@@ -53,7 +53,7 @@ public class ArticleManager {
 		groups.clear();
 	}
 	
-	public ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<Article> articles, boolean loadImages) throws IOException {
+	public ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
 		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		
 		//TODO Progress Window
@@ -63,7 +63,7 @@ public class ArticleManager {
 		
 		//int i=0;
 			
-		for(final Article article : articles){
+		for(final ListArticle article : articles){
 			//i++;
 			//progressWindow.setProgress(i);
 			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
@@ -84,20 +84,20 @@ public class ArticleManager {
 		return new ArrayList<String>(articles.keySet());
 	}
 
-	public List<Article> getArticles() {
-		return new ArrayList<Article>(articles.values());
+	public List<ListArticle> getArticles() {
+		return new ArrayList<ListArticle>(articles.values());
 	}
 
 	public int getGroupCount(){
 		return groups.size();
 	}
 
-	public List<Article> loadCsv(final File file) {
+	public List<ListArticle> loadCsv(final File file) {
 		if (file != null) {
 			final CSV csv = CsvFileUtility.read(file);
 			return addArticles(ArticleUtilities.createListArticles(csv));
 		}
-		return new ArrayList<Article>();
+		return new ArrayList<ListArticle>();
 	}
 	
 	public ObservableList<ListArticleUi> searchAll() throws IOException {
@@ -105,22 +105,26 @@ public class ArticleManager {
 	}	
 	
 	public ObservableList<ListArticleUi> searchByDescription(String text) throws IOException {
-		text = text.toLowerCase();
+		
 		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
-		for(final Article article : articles.values()){
-			if(article.getTitle().toLowerCase().contains(text)){
-				list.add(GuiUtilities.createArticleListEntry(article, true));
+		final String[] searchTerms = text.toLowerCase().split(" +|, *|; *");
+		for(final ListArticle article : articles.values()){
+			final String articleString = article.getFullString().toLowerCase();
+			boolean match = true;
+			for(final String searchTerm : searchTerms){
+				if(!articleString.contains(searchTerm)) {
+					match = false;
+					break;
+				}
 			}
-			else if(article.getDescription().toLowerCase().contains(text)){
-				list.add(GuiUtilities.createArticleListEntry(article, true));
-			}
+			if(match) list.add(GuiUtilities.createArticleListEntry(article, true));
 		}
 		return FXCollections.observableList(list);
 	}
 	
 	public ObservableList<ListArticleUi> searchByGroupSignature(String articleNumber) throws IOException {
 		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
-		for(final Article article : articles.values()){
+		for(final ListArticle article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
@@ -137,14 +141,14 @@ public class ArticleManager {
 		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
 		for(final String key : articles.keySet()){
 			if(key.contains(text) || text.contains(key)){
-				final Article article = articles.get(key);
+				final ListArticle article = articles.get(key);
 				list.add(GuiUtilities.createArticleListEntry(article, true));
 			}
 		}
 		return FXCollections.observableList(list);
 	}
 
-	public Article get(String articleNumber) {
+	public ListArticle get(String articleNumber) {
 		if(articles.containsKey(articleNumber))	return articles.get(articleNumber);
 		return null;
 	}

@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.HBox" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
          <ImageView fx:id="image" fitHeight="105.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
 			 <image>
@@ -33,7 +33,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="description" layoutX="10.0" layoutY="27.0" text="Beschreibung" textOverrun="CLIP" />
+            <Label fx:id="description" text="Beschreibung" textOverrun="CLIP" />
             <ListView fx:id="articles" onKeyReleased="#listSelection" onMouseReleased="#listSelection" prefHeight="10.0" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>

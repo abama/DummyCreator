@@ -126,6 +126,7 @@ public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
 		}
 	}
 	
+	@Override
 	public String toString(){
 		return group.toString();
 	}

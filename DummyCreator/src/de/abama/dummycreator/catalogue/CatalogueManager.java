@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.abama.dummycreator.articles.ArticleManager;
-import de.abama.dummycreator.articles.Article;
+import de.abama.dummycreator.articles.ListArticle;
 
 public class CatalogueManager {
 	
@@ -63,12 +63,12 @@ public class CatalogueManager {
 		
 		catalogue = new Catalogue();
 				
-		final List<Article> articles = ArticleManager.getInstance().loadCsv(file);
+		final List<ListArticle> articles = ArticleManager.getInstance().loadCsv(file);
 		Collections.sort(articles);
 		
 		catalogue.setFirstPage(articles.get(0).getPageNumber());
 		
-		for(final Article article : articles){
+		for(final ListArticle article : articles){
 			final CataloguePage page = catalogue.getOrCreatePage(article.getPageNumber());
 			//System.out.println("Page: " + page);
 			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
@@ -135,7 +135,8 @@ public class CatalogueManager {
 	}
 	
 	public ICatalogueItem getInsertionPoint() {
-		return insertionPoint;
+		if(insertionPoint==null) insertionPoint = getOrCreatePage();
+		return getOrCreatePage();
 	}
 
 

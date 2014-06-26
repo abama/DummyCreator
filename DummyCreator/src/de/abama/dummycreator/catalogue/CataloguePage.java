@@ -28,21 +28,31 @@ public class CataloguePage implements ICatalogueItem {
 	
 	@Override
 	public void add(ICatalogueItem item) {
+		System.out.println(this + " - Füge hinzu: " + item);
 		try {
-			final CatalogueGroup group = new CatalogueGroup((CatalogueGroup) item);
-			add(group);
+			final CatalogueGroup group = (CatalogueGroup) item;
+			final CatalogueGroup copy = new CatalogueGroup((CatalogueGroup) group);
+			add(copy);
 		}
-		catch(final ClassCastException e){
+		catch(final Exception e){
+			System.out.println("Objekt kann nicht eingefügt werden");
+		}
+		try {
+			final CatalogueArticle article = (CatalogueArticle) item;
+			final CatalogueArticle copy = new CatalogueArticle(article);
+			final CatalogueGroup group = getOrCreateGroup(article.getGroupSignature());
+			group.add(copy);
+		}
+		catch(final Exception e){
 			System.out.println("Objekt kann nicht eingefügt werden");
 		}
 	}
 	
 	@Override
 	public void addAll(List<ICatalogueItem> selection) {
-		System.out.println(this + " - " + selection.size() + " Elemente hinzufügen");
+		System.out.println(this + " - " + selection.size() + " Element(e) hinzufügen");
 		for(final ICatalogueItem item : selection){
-			System.out.println(this + " - Füge hinzu: " + item);
-			this.add(item);
+			this.add(item);	
 		}
 	}
 	

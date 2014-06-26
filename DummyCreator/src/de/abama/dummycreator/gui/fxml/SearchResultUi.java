@@ -1,6 +1,11 @@
 package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.gui.controller.ControllerContext;
 import de.abama.dummycreator.gui.controller.DummyCreator;
 import javafx.event.Event;
@@ -16,7 +21,6 @@ import javafx.scene.input.TransferMode;
 
 public class SearchResultUi<T> extends ListView<T> {
 	
-	@SuppressWarnings("unused")
 	private DummyCreator controller = null;
 	
     public SearchResultUi() {
@@ -36,8 +40,11 @@ public class SearchResultUi<T> extends ListView<T> {
 	}
     
 	@FXML 
-	private void dragDetected(Event event){
-        Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+	private void dragDetected(MouseEvent event){
+		
+		listSelection(event);
+        
+		Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
         ClipboardContent content = new ClipboardContent();
         content.putString("Bla");
         db.setContent(content);
@@ -46,34 +53,24 @@ public class SearchResultUi<T> extends ListView<T> {
 	}
 	
 	@FXML
-	private void listSelection(MouseEvent event){
-		/*
-		final List<ListArticleUi> uiItems = new ArrayList<ListArticleUi>();
-		for(final T item : this.getSelectionModel().getSelectedItems()) uiItems.add((ListArticleUi)item);
-		final List<ICatalogueUiItem> catalogueUis = GuiUtilities.createICatalogueUis(ArticleUtilities.createCatalogueArticles(uiItems));
-		controller.setSelection(catalogueUis);
-		*/
-		// TODO
-		event.consume();
-	}
-	
-	@FXML 
-	private void dragEntered(Event event) throws IOException{
-		/*
-		listSelection(event);
-		this.setFocused(isFocused());
-		groups.setBlendMode(BlendMode.DIFFERENCE);
-		//System.out.println("Drag entered.");
-		*/
+	private void listSelection(Event event){
+		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
+		for(final T listArticleUi : this.getSelectionModel().getSelectedItems()) {
+			final ListArticle listArticle = ((ListArticleUi) listArticleUi).getArticle();
+			final CatalogueArticle catalogueArticle = new CatalogueArticle(listArticle);
+			final CatalogueArticleUi catalogueArticleUi = new CatalogueArticleUi(catalogueArticle, false);
+			selection.add(catalogueArticleUi);
+		}
+		
+		controller.setSelection(selection);
+		
 		event.consume();
 	}
 	
 	@FXML 
 	private void dragDone(DragEvent event) throws IOException{
-		/*
-		controller.removeSelection();
-		System.out.println("Drag done");
-		*/
+		
+		// TODO
 		event.consume();
 	}
 }

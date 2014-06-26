@@ -17,7 +17,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import de.abama.dummycreator.articles.Article;
+import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
@@ -47,7 +47,7 @@ public class GuiUtilities {
         return test;
 	}
 	
-	public static ListArticleUi createArticleListEntry(final Article article, boolean loadImage) throws IOException{
+	public static ListArticleUi createArticleListEntry(final ListArticle article, boolean loadImage) throws IOException{
 		
 		return new ListArticleUi(article, loadImage);
 	}
