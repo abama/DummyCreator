@@ -1,6 +1,7 @@
 package de.abama.dummycreator.csv;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CSV {
@@ -61,6 +62,10 @@ public class CSV {
 		this.headings = headings;		
 	}
 	
+	public void setHeadings(final String headings){
+		setHeadings(new ArrayList<String>(Arrays.asList(headings.split("[,;\t]"))));
+	}
+	
 	public void addRow(final List<String> row){
 		rows.add(row);
 	}
@@ -73,5 +78,21 @@ public class CSV {
 
 	public int getRowCount() {
 		return rows.size();
+	}
+	
+	public String serialize(final String sep, final String br) {
+		StringBuilder content = new StringBuilder();
+		content.append(getHeadings().toString());
+		for(final List<String> row : getRows()){
+			for(final String field : row){
+				content.append(field+sep);
+			}
+			content.append(br);
+		}
+		return content.toString();
+	}
+
+	public String serialize() {
+		return serialize(";","\r\n");
 	}
 }

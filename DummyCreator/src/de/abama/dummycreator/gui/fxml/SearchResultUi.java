@@ -7,7 +7,7 @@ import java.util.List;
 import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.DummyCreator;
+import de.abama.dummycreator.gui.controller.ApplicationUI;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +21,7 @@ import javafx.scene.input.TransferMode;
 
 public class SearchResultUi<T> extends ListView<T> {
 	
-	private DummyCreator controller = null;
+	private ApplicationUI controller = null;
 	
     public SearchResultUi() {
     	
@@ -70,7 +70,8 @@ public class SearchResultUi<T> extends ListView<T> {
 	@FXML 
 	private void dragDone(DragEvent event) throws IOException{
 		
-		// TODO
+		// TODO dragDone
+		
 		event.consume();
 	}
 }

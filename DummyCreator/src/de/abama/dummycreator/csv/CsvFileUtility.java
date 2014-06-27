@@ -15,7 +15,7 @@ public class CsvFileUtility {
 	private static String sep = "\t";
 
 	public static CSV read(final File file) {
-
+		
 		CSV csv = new CSV();
 
 		final List<String> lines = readLines(file);

@@ -1,9 +1,11 @@
 package de.abama.dummycreator.catalogue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.image.Image;
 import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 
 public class CatalogueArticle implements ICatalogueItem {
@@ -120,5 +122,23 @@ public class CatalogueArticle implements ICatalogueItem {
 
 	public String toString(){
 		return "Artikel " + getNumber() + " ("+group+")";
+	}
+
+	public List<String> toCsvRow() {
+		final List<String> headings = new ArrayList<String>();
+		headings.add(getNumber());
+		headings.add(String.valueOf(getPageNumber()));
+		headings.add(String.valueOf(getGroupIndex()));
+		headings.add(getTitle());
+		headings.add(getDescription1());
+		headings.add(getDescription2());
+		headings.add(getDescription3());
+		headings.add(getDescription2());
+		headings.add(getSu().singular());
+		headings.add(Configuration.numberFormat.format(getSinglePrice()));
+		headings.add("€");
+		headings.add(Configuration.numberFormat.format(getSuPrice()));
+		headings.add("€");
+		return headings;
 	}
 }

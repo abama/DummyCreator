@@ -7,22 +7,22 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="230.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
          <ImageView fx:id="image" fitHeight="1.0" fitWidth="1.0" pickOnBounds="true" preserveRatio="true">
          <HBox.margin>
             <Insets right="5.0" />
          </HBox.margin>
       </ImageView>
-      <Label fx:id="number" minWidth="60.0" text="7360000" HBox.hgrow="ALWAYS">
+      <Label fx:id="number" maxWidth="70.0" minWidth="70.0" text="7360000" HBox.hgrow="ALWAYS">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Label fx:id="title" prefWidth="10.0" text="Titel" visible="false" HBox.hgrow="NEVER">
+      <Label fx:id="description" text="Beschreibung" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
+      <Label fx:id="single_price" alignment="CENTER_RIGHT" maxWidth="60.0" minWidth="60.0" text="Preis">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="description" text="Beschreibung" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
    </children>
 </fx:root>

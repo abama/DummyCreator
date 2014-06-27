@@ -8,7 +8,7 @@ import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.DummyCreator;
+import de.abama.dummycreator.gui.controller.ApplicationUI;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	
-	private DummyCreator controller = ControllerContext.getInstance().getMainController();
+	private ApplicationUI controller = ControllerContext.getInstance().getMainController();
 
 	@FXML
 	private Pane page;

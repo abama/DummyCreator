@@ -31,6 +31,9 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
 	@FXML
     private Label title;
 	
+	@FXML
+    private Label single_price;
+	
 	public CatalogueArticleUi(final CatalogueArticle article, boolean loadImage) {
     	
     	this.setArticle(article);
@@ -44,8 +47,9 @@ public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
         	
         	if(loadImage) this.setImage(article.getImage(true));
         	this.number.setText(String.valueOf(article.getNumber()));
-        	this.title.setText(article.getTitle());
-        	this.description.setText(String.valueOf(article.getDescription()));
+        	//this.title.setText(article.getTitle());
+        	this.description.setText(String.valueOf(article.getDescription3()));
+        	this.single_price.setText(String.valueOf(article.getSinglePrice()).replace(".", ",")+" €");
     		
         } catch (IOException exception) {
             throw new RuntimeException(exception);

@@ -1,7 +1,7 @@
 package de.abama.dummycreator;
 
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.DummyCreator;
+import de.abama.dummycreator.gui.controller.ApplicationUI;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +16,12 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		
 		try {
-			Parent fxml = FXMLLoader.load(getClass().getResource("./gui/fxml/DummyCreator.fxml"));
+			Parent fxml = FXMLLoader.load(getClass().getResource("./gui/fxml/ApplicationUI.fxml"));
 			stage.setScene(new Scene(fxml));
 			stage.setTitle("DummyCreator");
 			stage.show();
 			
-			final DummyCreator controller = ControllerContext.getInstance().getMainController();
+			final ApplicationUI controller = ControllerContext.getInstance().getMainController();
 			
 	        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>()
             {

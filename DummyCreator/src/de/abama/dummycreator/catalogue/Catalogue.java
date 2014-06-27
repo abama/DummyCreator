@@ -142,13 +142,13 @@ public class Catalogue implements ICatalogueItem {
 
 	@Override
 	public void add(ICatalogueItem selection) {
-		// TODO Auto-generated method stub
+		// TODO add(ICatalogueItem selection)
 		
 	}
 
 	@Override
 	public void addAll(List<ICatalogueItem> selection) {
-		// TODO Auto-generated method stub
+		// addAll(List<ICatalogueItem> selection)
 		
 	}
 }

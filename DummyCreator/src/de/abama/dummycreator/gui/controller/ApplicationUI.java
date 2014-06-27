@@ -36,15 +36,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
-public class DummyCreator {
+public class ApplicationUI {
 
 	protected ArticleManager articleManager = ArticleManager.getInstance();
 
 	protected Catalogue catalogue;
 
-	protected CatalogueManager catalogueManager = CatalogueManager
-			.getInstance();
+	protected CatalogueManager catalogueManager = CatalogueManager.getInstance();
 
 	protected Clipboard clipboard = Clipboard.getSystemClipboard();
 
@@ -56,8 +56,7 @@ public class DummyCreator {
 
 	protected RestrictiveTextInput search_by_number;
 
-	protected List<ICatalogueUiItem> selection = FXCollections
-			.observableArrayList();
+	protected List<ICatalogueUiItem> selection = FXCollections.observableArrayList();
 
 	@FXML
 	private AnchorPane catalogue_pages;
@@ -133,10 +132,8 @@ public class DummyCreator {
 
 	@FXML
 	public void addArticles(ActionEvent event) throws IOException {
-		final List<ListArticleUi> listArticles = search_result
-				.getSelectionModel().getSelectedItems();
-		final List<CatalogueArticle> catalogueArticles = ArticleUtilities
-				.createCatalogueArticles(listArticles);
+		final List<ListArticleUi> listArticles = search_result.getSelectionModel().getSelectedItems();
+		final List<CatalogueArticle> catalogueArticles = ArticleUtilities.createCatalogueArticles(listArticles);
 		// TODO Artikel hinzufügen
 		catalogueManager.addArticles(catalogueArticles);
 		// catalogueManager.addArticle(new
@@ -180,38 +177,29 @@ public class DummyCreator {
 		updateUiViews();
 	}
 
-	public void setCurrentPage(CataloguePageThumbUi cataloguePageThumbUi)
-			throws IOException {
+	public void setCurrentPage(CataloguePageThumbUi cataloguePageThumbUi) throws IOException {
 		catalogueManager.setCurrentPage(cataloguePageThumbUi.getPage());
 		updateSpreadView();
 	}
 
 	public void setInsertionPoint(ICatalogueItem item) {
 		catalogueManager.setInsertionPoint(item);
-		info_insertionpoint.setText(catalogueManager.getInsertionPoint()
-				.toString());
+		info_insertionpoint.setText(catalogueManager.getInsertionPoint().toString());
 	}
 
 	public void setSelection(List<ICatalogueUiItem> items) {
 		selection = items;
-		System.out.println("Auswahl geändert");
 		if (selection.size() > 0)
-			setInsertionPoint(selection.get(selection.size() - 1)
-					.getCatalogueItem());
+			setInsertionPoint(selection.get(selection.size() - 1).getCatalogueItem());
 		updateSelectionInfo();
 	}
 
 	public void updateInfoPanel() {
-		info_articles
-				.setText(Integer.toString(articleManager.getArticleCount()));
-		info_catalogue_chapters.setText(Integer.toString(catalogue
-				.getChaptersCount()));
-		info_catalogue_pages
-				.setText(Integer.toString(catalogue.getPagesCount()));
-		info_catalogue_groups.setText(Integer.toString(catalogue
-				.getGroupsCount()));
-		info_catalogue_articles.setText(Integer.toString(catalogue
-				.getArticlesCount()));
+		info_articles.setText(Integer.toString(articleManager.getArticleCount()));
+		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
+		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
+		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
+		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
 	}
 
 	public void updatePagesView() throws IOException {
@@ -239,6 +227,7 @@ public class DummyCreator {
 	}
 
 	public void updateUiViews() throws IOException {
+		// TODO UPDATE-PERFORMANCE
 		updatePagesView();
 		updateSpreadView();
 		updateInfoPanel();
@@ -293,10 +282,8 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void importMasterData(ActionEvent event) throws IOException,
-			URISyntaxException {
-		final File file = GuiUtilities
-				.chooseCsvFile(configuration.articleListPath);
+	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
+		final File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
 		articleManager.loadCsv(file);
 		updateInfoPanel();
 	}
@@ -340,13 +327,31 @@ public class DummyCreator {
 	}
 
 	@FXML
-	private void openFile(ActionEvent event) throws IOException,
-			URISyntaxException {
-		File file = GuiUtilities.chooseCsvFile(configuration.articleListPath);
+	private void openFile(ActionEvent event) throws IOException, URISyntaxException {
+		File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
 		if (file != null) {
 			catalogue = catalogueManager.loadFile(file);
 			info_catalogue_filename.setText(file.getName());
 			updateUiViews();
+		}
+	}
+
+	@FXML
+	private void saveFile(ActionEvent event) {
+		if (catalogueManager.getFile() == null)
+			saveFileAs(event);
+		else
+			catalogueManager.saveFile(catalogueManager.getFile());
+	}
+
+	@FXML
+	private void saveFileAs(ActionEvent event) {
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialDirectory(catalogueManager.getFile());
+		final File file = fileChooser.showSaveDialog(null);
+		if (file != null) {
+			catalogueManager.setFile(file);
+			catalogueManager.saveFile(file);
 		}
 	}
 
@@ -371,21 +376,17 @@ public class DummyCreator {
 
 	@FXML
 	private void searchByGroupSignature(ActionEvent event) throws IOException {
-		final ObservableList<ListArticleUi> searchResult = search_result
-				.getSelectionModel().getSelectedItems();
+		final ObservableList<ListArticleUi> searchResult = search_result.getSelectionModel().getSelectedItems();
 		if (searchResult.size() == 1) {
-			final String articleNumber = ((Label) (searchResult.get(0)
-					.lookup("#number"))).getText();
-			search_result.setItems(articleManager
-					.searchByGroupSignature(articleNumber));
+			final String articleNumber = ((Label) (searchResult.get(0).lookup("#number"))).getText();
+			search_result.setItems(articleManager.searchByGroupSignature(articleNumber));
 		}
 	}
 
 	@FXML
 	private void searchByKeywords(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
-			search_result.setItems(articleManager
-					.searchByKeywords(search_by_keywords.getText()));
+			search_result.setItems(articleManager.searchByKeywords(search_by_keywords.getText()));
 		}
 	}
 
@@ -396,8 +397,7 @@ public class DummyCreator {
 			// "").replace("\r", "");
 			// search_by_number.setText(text);
 			// search_by_number.clear();
-			search_result.setItems(articleManager
-					.searchByNumber(search_by_number.getText()));
+			search_result.setItems(articleManager.searchByNumber(search_by_number.getText()));
 			search_by_number.clear();
 		}
 	}

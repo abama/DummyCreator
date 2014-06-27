@@ -40,7 +40,7 @@ public class CatalogueGroup implements  ICatalogueItem {
 	}
 	
 	public String getDescription() {
-		if(articles.size()!=0) return articles.get(0).getDescription();
+		if(articles.size()!=0) return articles.get(0).getDescription1()+articles.get(0).getDescription2();
 		return ("keine Beschreibung verfügbar");
 	}
 	

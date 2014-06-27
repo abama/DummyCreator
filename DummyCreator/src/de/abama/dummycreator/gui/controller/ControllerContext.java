@@ -5,9 +5,9 @@ public class ControllerContext {
 	
 	private ControllerContext(){};
 	
-	private DummyCreator mainController = null;
+	private ApplicationUI mainController = null;
 	
-	public static ControllerContext getInstance(DummyCreator mainController){
+	public static ControllerContext getInstance(ApplicationUI mainController){
 		if(instance == null){
 			instance = new ControllerContext();
 			instance.mainController = mainController;
@@ -23,7 +23,7 @@ public class ControllerContext {
 		return instance;
 	}
 	
-	public DummyCreator getMainController(){
+	public ApplicationUI getMainController(){
 		return mainController;
-	}	
+	}
 }

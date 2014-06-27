@@ -105,7 +105,7 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	}
 
 	public void loadImage(){
-		this.image = new Image(Configuration.getInstance().imageBasePath+this.getNumber()+".png", true);
+		this.image = new Image(Configuration.imageBasePath+this.getNumber()+".png", true);
 	}
 
 	public void setDescription1(String description1) {

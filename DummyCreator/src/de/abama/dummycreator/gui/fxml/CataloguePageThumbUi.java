@@ -5,7 +5,7 @@ import java.io.IOException;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.DummyCreator;
+import de.abama.dummycreator.gui.controller.ApplicationUI;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +15,14 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 		
-	private DummyCreator controller = ControllerContext.getInstance().getMainController();
+	private ApplicationUI controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
     private ImageView image;
@@ -136,6 +137,13 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	private void dragOver(DragEvent event){
 		event.acceptTransferModes(TransferMode.MOVE);
 		event.consume();
+	}
+	
+	@FXML
+	private void mouseClick(MouseEvent event) throws IOException{
+		if(event.getClickCount()>=2) {
+			controller.setCurrentPage(this);
+		}
 	}
 }
 

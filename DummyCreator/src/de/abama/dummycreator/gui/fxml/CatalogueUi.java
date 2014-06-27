@@ -9,7 +9,7 @@ import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.DummyCreator;
+import de.abama.dummycreator.gui.controller.ApplicationUI;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +26,7 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
     
-    private DummyCreator controller;
+    private ApplicationUI controller;
 
     @FXML 
     private ListView<CataloguePageThumbUi> pages;
@@ -68,10 +68,6 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
 		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item);
 		//System.out.println(ControllerContext.getInstance().getMainController());
 		controller.setSelection(selection);
-		
-		if(event.getClickCount()>=2) {
-			controller.setCurrentPage(pages.getSelectionModel().getSelectedItems().get(0));
-		}
 	}
     
 	@FXML
