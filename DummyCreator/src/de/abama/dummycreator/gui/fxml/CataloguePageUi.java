@@ -20,6 +20,7 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -153,6 +154,12 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	
 	private void setNumber(int number) {
 		this.number.setText(number>0 ? String.valueOf(cataloguePage.getNumber()) : "--");
-	}	
+	}
+	
+	@FXML
+	private void mouseClick(MouseEvent event) throws IOException{
+		controller.setInsertionPoint(this.getPage());
+		controller.setCurrentPage(this.getPage());
+	}
 }
 

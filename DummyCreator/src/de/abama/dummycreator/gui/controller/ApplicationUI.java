@@ -14,7 +14,6 @@ import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.config.Configuration;
-import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
 import de.abama.dummycreator.gui.fxml.CataloguePageUi;
 import de.abama.dummycreator.gui.fxml.CatalogueUi;
 import de.abama.dummycreator.gui.fxml.ICatalogueUiItem;
@@ -180,8 +179,8 @@ public class ApplicationUI {
 		updateUiViews();
 	}
 
-	public void setCurrentPage(CataloguePageThumbUi cataloguePageThumbUi) throws IOException {
-		catalogueManager.setCurrentPage(cataloguePageThumbUi.getPage());
+	public void setCurrentPage(CataloguePage page) throws IOException {
+		catalogueManager.setCurrentPage(page);
 		updateSpreadView();
 	}
 
@@ -287,7 +286,7 @@ public class ApplicationUI {
 
 	@FXML
 	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
-		final File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
+		final File file = GuiUtilities.chooseCsvFile(Configuration.getInstance().articleListPath);
 		articleManager.loadCsv(file);
 		updateMasterData();
 	}
@@ -333,7 +332,7 @@ public class ApplicationUI {
 
 	@FXML
 	private void loadFile(ActionEvent event) throws IOException, URISyntaxException {
-		File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
+		File file = GuiUtilities.chooseCsvFile(Configuration.getInstance().articleListPath);
 		
 		if (file != null) {
 			catalogue = catalogueManager.loadFile(file);

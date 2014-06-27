@@ -10,8 +10,6 @@ import org.apache.commons.io.FileUtils;
 
 public class CsvFileUtility {
 
-	private static String sep = "\t";
-
 	public static CSV read(final File file) {
 		
 		CSV csv = new CSV();
@@ -21,7 +19,7 @@ public class CsvFileUtility {
 		detectSeparator(lines.get(0));
 				
 		for(final String line : lines){
-			csv.addRow(Arrays.asList(line.split(sep)));
+			csv.addRow(Arrays.asList(line.split(detectSeparator(line))));
 		}
 
 		if (csv.getRows().size() > 0) {
@@ -54,9 +52,9 @@ public class CsvFileUtility {
 		return rows;
 	}
 	
-	private static void detectSeparator(final String row){
-		if(row.contains("\t")) sep = "\t";
-		else if(row.contains(";")) sep = ";";
-		else if(row.contains(",")) sep = ",";
+	private static String detectSeparator(final String row){
+		if(row.contains("\t")) return "\t";
+		else if(row.contains(";")) return ";";
+		return ",";
 	}
 }

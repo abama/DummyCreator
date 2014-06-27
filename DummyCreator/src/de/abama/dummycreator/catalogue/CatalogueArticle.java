@@ -136,9 +136,9 @@ public class CatalogueArticle implements ICatalogueItem {
 		row.add(getDescription3());
 		row.add(getDescription2());
 		row.add(getSu().singular());
-		row.add(Configuration.numberFormat.format(getSinglePrice()));
+		row.add(Configuration.getInstance().numberFormat.format(getSinglePrice()));
 		row.add(getCurrency());
-		row.add(Configuration.numberFormat.format(getSuPrice()));
+		row.add(Configuration.getInstance().numberFormat.format(getSuPrice()));
 		row.add(getCurrency());
 		
 		return row;

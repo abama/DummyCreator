@@ -31,15 +31,15 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
     private TextField label;
 
 	@FXML
-    private Label number;
+    private ImageView linke_seite;
 	
 	@FXML
-    private ImageView linke_seite;	
+    private Label number;	
 
-	@FXML
-    private ImageView rechte_seite;		
+	private CataloguePage page;		
 	
-	private CataloguePage page;
+	@FXML
+    private ImageView rechte_seite;
 
 
 	@FXML
@@ -67,25 +67,25 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
         }
 	}
 
-    private void setImage(Image image) {
-		this.image.setImage(page.getImage(true));
-	}
-
-	public CataloguePage getPage() {
+    @Override
+	public ICatalogueItem getCatalogueItem() {
 		return page;
 	}
 
-    public void setPage(CataloguePage page) {
-		this.page = page;
-	}
-    
-    public String getNumber(){
+	public String getNumber(){
     	return String.valueOf(page.getNumber());
     }
 
-	@Override
-	public ICatalogueItem getCatalogueItem() {
+    public CataloguePage getPage() {
 		return page;
+	}
+    
+    public void setPage(CataloguePage page) {
+		this.page = page;
+	}
+
+	public String toString(){
+		return page.toString();
 	}
 	
 	/*
@@ -103,10 +103,6 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	}
 	*/
 	
-	
-	public String toString(){
-		return page.toString();
-	}
 	
 	@FXML
 	private void dragDropped(DragEvent event) throws IOException{
@@ -142,8 +138,13 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	@FXML
 	private void mouseClick(MouseEvent event) throws IOException{
 		if(event.getClickCount()>=2) {
-			controller.setCurrentPage(this);
+			controller.setCurrentPage(this.getPage());
+			controller.setInsertionPoint(this.getPage());
 		}
+	}
+	
+	private void setImage(Image image) {
+		this.image.setImage(page.getImage(true));
 	}
 }
 

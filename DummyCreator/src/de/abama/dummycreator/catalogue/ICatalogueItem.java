@@ -14,4 +14,5 @@ public interface ICatalogueItem extends Serializable {
 	void add(ICatalogueItem selection);
 
 	void addAll(List<ICatalogueItem> selection);
+
 }
