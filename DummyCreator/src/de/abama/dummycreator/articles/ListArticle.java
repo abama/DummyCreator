@@ -6,81 +6,95 @@ import javafx.scene.image.Image;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 
-
 public class ListArticle implements Comparable<ListArticle>, Serializable {
 
 	private static final long serialVersionUID = 4904155239691627018L;
 
-	protected String number = "Artikelnummer";
-	
-	protected String title = "Titel";
+	protected String currency;
+
 	protected String description1 = "Beschreibung1";
 	protected String description2 = "Beschreibung2";
 	protected String description3 = "Beschreibung3";
-	
-	protected Image image = null;
-	
 	protected char groupIndex;
+
+	protected Image image = null;
+
+	protected String number = "Artikelnummer";
 	protected int pageNumber;
-	
+
 	protected float singlePrice;
 	protected SU su = SU.PIECE;
-	
+
 	protected float suPrice;
-	
-	public ListArticle(){
+
+	protected String title = "Titel";
+
+	public ListArticle() {
 		super();
 	}
 
-	public ListArticle(final String number){
+	public ListArticle(final String number) {
 		this();
 		this.number = number;
 	}
 
 	public int compareTo(ListArticle other) {
-		if(this.pageNumber>other.pageNumber) return 1;
-		if(this.pageNumber<other.pageNumber) return -1;
-		if(this.groupIndex>other.groupIndex) return 1;
-		if(this.groupIndex<other.groupIndex) return -1;	
+		if (this.pageNumber > other.pageNumber)
+			return 1;
+		if (this.pageNumber < other.pageNumber)
+			return -1;
+		if (this.groupIndex > other.groupIndex)
+			return 1;
+		if (this.groupIndex < other.groupIndex)
+			return -1;
 		return this.description1.compareTo(other.description1);
 	}
-	
+
 	@Override
-	public boolean equals(final Object other){
-		return(getNumber().equals(((ListArticle)other).getNumber()));
+	public boolean equals(final Object other) {
+		return (getNumber().equals(((ListArticle) other).getNumber()));
 	}
-	
-	public String getDescription(){
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public String getDescription() {
 		return description1 + " " + description2 + " " + description3;
 	}
-	
+
 	public String getDescription1() {
 		return description1;
 	}
-	
+
 	public String getDescription2() {
 		return description2;
 	}
-	
+
 	public String getDescription3() {
 		return description3;
 	}
-	
+
+	public String getFullString() {
+		return title + " " + getDescription();
+	}
+
 	public char getGroupIndex() {
 		return groupIndex;
 	}
 
-	public String getGroupSignature(){
-		return title+description1;
+	public String getGroupSignature() {
+		return title + description1;
 	}
-	
+
 	public Image getImage(boolean load) {
-		
-		if (image == null && load) loadImage();
+
+		if (image == null && load)
+			loadImage();
 		return image;
 	}
 
-	public String getNumber(){
+	public String getNumber() {
 		return number;
 	}
 
@@ -104,8 +118,12 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 		return title;
 	}
 
-	public void loadImage(){
-		this.image = new Image(Configuration.imageBasePath+this.getNumber()+".png", true);
+	public void loadImage() {
+		this.image = new Image(Configuration.imageBasePath + this.getNumber() + ".png", true);
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	public void setDescription1(String description1) {
@@ -121,29 +139,35 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	}
 
 	public void setGroup(String group) throws Exception {
-		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
-		else throw new Exception();
+		if (group.matches("[a-zA-Z]"))
+			this.groupIndex = group.toUpperCase().charAt(0);
+		else
+			throw new Exception();
 	}
 
 	public void setGroupIndex(String group) throws Exception {
-		if(group.matches("[a-zA-Z]")) this.groupIndex = group.toUpperCase().charAt(0);
-		else throw new Exception();
+		if (group.matches("[a-zA-Z]"))
+			this.groupIndex = group.toUpperCase().charAt(0);
+		else
+			throw new Exception();
 	}
-	
+
 	public void setImage(Image image) {
-		this.image = image; 
-	}	
+		this.image = image;
+	}
+
 	public void setNumber(final String number) {
 		this.number = number;
 	}
+
 	public void setPage(String page) throws Exception {
 		this.pageNumber = Integer.parseInt(page);
 	}
-	
+
 	public void setPageNumber(String page) throws Exception {
 		this.pageNumber = Integer.parseInt(page);
 	}
-	
+
 	public void setSinglePrice(float price) {
 		this.singlePrice = price;
 	}
@@ -156,15 +180,11 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 		this.suPrice = suPrice;
 	}
 
-	public void setTitle(final String title){
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	
-	public String toString(){
-		return "Artikel " + getNumber();
-	}
 
-	public String getFullString() {
-		return title+" "+getDescription();
+	public String toString() {
+		return "Artikel " + getNumber();
 	}
 }

@@ -332,8 +332,9 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	private void openFile(ActionEvent event) throws IOException, URISyntaxException {
+	private void loadFile(ActionEvent event) throws IOException, URISyntaxException {
 		File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
+		
 		if (file != null) {
 			catalogue = catalogueManager.loadFile(file);
 			updateFile(file);
@@ -358,7 +359,8 @@ public class ApplicationUI {
 	@FXML
 	private void saveFileAs(ActionEvent event) {
 		final FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(catalogueManager.getFile());
+		final File initialDirectory = catalogueManager.getFile().getParentFile();
+		if(catalogueManager.getFile()!=null) fileChooser.setInitialDirectory(initialDirectory);
 		final File file = fileChooser.showSaveDialog(null);
 		if (file != null) {
 			updateFile(file);

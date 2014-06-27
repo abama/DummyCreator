@@ -56,6 +56,13 @@ public class CatalogueChapter implements ICatalogueItem {
 	@Override
 	public void addAll(List<ICatalogueItem> selection) {
 		// TODO addAll(List<ICatalogueItem> selection)
-		
+	}
+	
+	public int getNumber(){
+		return getCatalogue().getChapters().indexOf(this);
+	}
+
+	private Catalogue getCatalogue() {
+		return catalogue;
 	}
 }

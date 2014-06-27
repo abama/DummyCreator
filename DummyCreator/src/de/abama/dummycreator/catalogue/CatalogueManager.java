@@ -153,17 +153,10 @@ public class CatalogueManager {
 		
 		final CSV csv = new CSV();
 		csv.setHeadings("Artikelnummer, Seite, Gruppe, Titel, Subtitle, SubSubTitle, Farbe, VE, Einzelpreis (Kat), PreisEinheit, VE-Preis (Kat), PreisEinheit");
-		
-		for(final CataloguePage page : catalogue.getPages()){
-			for(final CatalogueGroup group : page.getGroups()) {
-				for(final CatalogueArticle article : group.getArticles()){
-					csv.addRow(article.toCsvRow());
-				}
-			}
-		}
+		csv.addRows(catalogue.serialize());
 				
 		try {
-			FileUtils.write(file, csv.serialize(), "UTF-16BE");
+			FileUtils.write(file, csv.serialize());//, "UTF-16LE");
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -192,5 +185,10 @@ public class CatalogueManager {
 		final CataloguePage page = catalogue.getOrCreatePage(1);
 		currentPage = page;
 		return page;
+	}
+	
+	public String serialize(){
+		return null;
+		//TODO
 	}
 }

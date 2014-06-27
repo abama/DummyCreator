@@ -124,21 +124,31 @@ public class CatalogueArticle implements ICatalogueItem {
 		return "Artikel " + getNumber() + " ("+group+")";
 	}
 
-	public List<String> toCsvRow() {
-		final List<String> headings = new ArrayList<String>();
-		headings.add(getNumber());
-		headings.add(String.valueOf(getPageNumber()));
-		headings.add(String.valueOf(getGroupIndex()));
-		headings.add(getTitle());
-		headings.add(getDescription1());
-		headings.add(getDescription2());
-		headings.add(getDescription3());
-		headings.add(getDescription2());
-		headings.add(getSu().singular());
-		headings.add(Configuration.numberFormat.format(getSinglePrice()));
-		headings.add("€");
-		headings.add(Configuration.numberFormat.format(getSuPrice()));
-		headings.add("€");
-		return headings;
+	public List<String> serialize() {
+		final List<String> row = new ArrayList<String>();
+		row.add(getNumber());
+		//values.add(String.valueOf(getChapterNumber()));
+		row.add(String.valueOf(getPageNumber()));
+		row.add(String.valueOf(getGroupIndex()));
+		row.add(getTitle());
+		row.add(getDescription1());
+		row.add(getDescription2());
+		row.add(getDescription3());
+		row.add(getDescription2());
+		row.add(getSu().singular());
+		row.add(Configuration.numberFormat.format(getSinglePrice()));
+		row.add(getCurrency());
+		row.add(Configuration.numberFormat.format(getSuPrice()));
+		row.add(getCurrency());
+		
+		return row;
+	}
+
+	public String getCurrency() {
+		return article.getCurrency();
+	}
+
+	public int getChapterNumber() {
+		return getPage().getChapter().getNumber();
 	}
 }

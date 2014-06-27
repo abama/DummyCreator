@@ -22,7 +22,7 @@
                 <Menu mnemonicParsing="false" text="Datei">
                   <items>
                     <MenuItem fx:id="menu_file_new" mnemonicParsing="false" onAction="#newFile" text="Neu" />
-                        <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openFile" text="Öffnen" />
+                        <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#loadFile" text="Öffnen" />
                         <MenuItem fx:id="menu_file_save" disable="true" mnemonicParsing="false" onAction="#saveFile" text="Speichern" />
                         <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" onAction="#saveFileAs" text="Speichern als..." />
                         <SeparatorMenuItem mnemonicParsing="false" />

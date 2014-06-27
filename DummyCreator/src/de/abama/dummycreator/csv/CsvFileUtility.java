@@ -1,14 +1,12 @@
 package de.abama.dummycreator.csv;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 public class CsvFileUtility {
 
@@ -42,32 +40,13 @@ public class CsvFileUtility {
 		
 		System.out.println("Lese CSV " + file.getPath());
 
-		final List<String> rows = new ArrayList<String>();
+		List<String> rows = new ArrayList<String>();
 		
-		BufferedReader bufferedReader = null;
-		
-		try {		
-			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-16"));			
-
-			String line;
-			
-			while ((line = bufferedReader.readLine()) != null) {
-				//System.out.println(line);
-				rows.add(line);
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		try {
+			rows = FileUtils.readLines(file, "UTF-16");
 		} catch (IOException e) {
+			System.out.println("Datei konnte nicht gelesen werden.");
 			e.printStackTrace();
-		} finally {
-			if (bufferedReader != null) {
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
 		System.out.println("CSV - Zeilen gelesen: " + rows.size());

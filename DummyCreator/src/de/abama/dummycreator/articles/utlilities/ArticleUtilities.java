@@ -25,6 +25,8 @@ public class ArticleUtilities {
 				article.setDescription2(csv.getField(i, "SubSubTitle"));
 				article.setDescription3(csv.getField(i, "Farbe"));
 				article.setSinglePrice(Float.parseFloat(csv.getField(i, "Einzelpreis (Kat)").replace(",", ".")));
+				article.setCurrency(csv.getField(i, "PreisEinheit"));
+				article.setSuPrice(Float.parseFloat(csv.getField(i, "VE-Preis (Kat)").replace(",", ".")));
 				articles.add(article);
 			} catch(final Exception e){
 				System.out.println("Artikel konnte nicht angelegt werden: " + csv.getRow(i));

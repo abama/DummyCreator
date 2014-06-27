@@ -20,6 +20,10 @@ public class CataloguePage implements ICatalogueItem {
 	
 	private Set<String> keywords = new HashSet<String>();
 
+	private CatalogueChapter chapter;
+	
+	private Image image = null;
+
 	public CatalogueGroup add(final CatalogueGroup group){
 		group.setPage(this);
 		groups.add(group);
@@ -77,6 +81,7 @@ public class CataloguePage implements ICatalogueItem {
 	}
 
 	public Image getImage(boolean loadImage) {
+		if(image!=null) return image;
 		if(groups.size()>0)	return groups.get(0).getImage(loadImage);
 		return null;
 	}
@@ -146,5 +151,17 @@ public class CataloguePage implements ICatalogueItem {
 
 	public String toString(){
 		return "Seite " + getNumber();
+	}
+
+	public CatalogueChapter getChapter() {
+		return chapter;
+	}
+
+	public List<List<String>> serialize(){
+		final List<List<String>> rows = new ArrayList<List<String>>();
+		for(final CatalogueGroup group : getGroups()){
+			rows.addAll(group.serialize());
+		}
+		return rows;
 	}
 }

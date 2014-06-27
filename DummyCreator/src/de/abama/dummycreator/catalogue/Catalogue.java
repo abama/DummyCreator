@@ -151,4 +151,16 @@ public class Catalogue implements ICatalogueItem {
 		// addAll(List<ICatalogueItem> selection)
 		
 	}
+
+	public List<CatalogueChapter> getChapters() {
+		return chapters;
+	}
+	
+	public List<List<String>> serialize(){
+		final List<List<String>> rows = new ArrayList<List<String>>();
+		for(final CataloguePage page : getPages()){
+			rows.addAll(page.serialize());
+		}
+		return rows;
+	}
 }

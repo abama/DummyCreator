@@ -130,4 +130,12 @@ public class CatalogueGroup implements  ICatalogueItem {
 			this.add(item);
 		}
 	}
+
+	public List<List<String>> serialize(){
+		final List<List<String>> rows = new ArrayList<List<String>>();
+		for(final CatalogueArticle article : getArticles()){
+			rows.add(article.serialize());
+		}
+		return rows;
+	}
 }

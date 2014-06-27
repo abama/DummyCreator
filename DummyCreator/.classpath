@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="src/de/abama/dummycreator/gui/javafx-dialogs-0.0.4.jar"/>
-	<classpathentry kind="lib" path="commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="commons-io-2.4.jar" sourcepath="/Users/bastian.barton/Downloads/commons-io-2.4-src.zip"/>
+	<classpathentry kind="lib" path="juniversalchardet-1.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
