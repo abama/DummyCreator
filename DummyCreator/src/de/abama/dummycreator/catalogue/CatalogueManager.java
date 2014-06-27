@@ -86,7 +86,7 @@ public class CatalogueManager {
 
 	public Catalogue loadFile(final File file) {
 		
-		// TODO Änderungen speichern?
+		setFile(file);
 		
 		catalogue = new Catalogue();
 				
@@ -108,8 +108,10 @@ public class CatalogueManager {
 		return catalogue;
 	}
 
-	public Catalogue newFile() {
+	public Catalogue newCatalogue() {
 		catalogue = new Catalogue();
+		currentPage = null;
+		file = null;
 		return catalogue;
 	}
 

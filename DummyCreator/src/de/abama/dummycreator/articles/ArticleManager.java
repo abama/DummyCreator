@@ -10,7 +10,6 @@ import java.util.TreeMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
-import de.abama.dummycreator.catalogue.CatalogueGroup;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
@@ -29,7 +28,6 @@ public class ArticleManager {
 	}
 	
 	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
-	private List<CatalogueGroup> groups = new ArrayList<CatalogueGroup>();
 		
 	@SuppressWarnings("unused")
 	private Configuration configuration = Configuration.getInstance();
@@ -50,7 +48,6 @@ public class ArticleManager {
 	
 	public void clear(){
 		articles.clear();
-		groups.clear();
 	}
 	
 	public ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
@@ -86,10 +83,6 @@ public class ArticleManager {
 
 	public List<ListArticle> getArticles() {
 		return new ArrayList<ListArticle>(articles.values());
-	}
-
-	public int getGroupCount(){
-		return groups.size();
 	}
 
 	public List<ListArticle> loadCsv(final File file) {

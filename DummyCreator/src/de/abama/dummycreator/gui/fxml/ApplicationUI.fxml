@@ -42,6 +42,7 @@
                   <Menu mnemonicParsing="false" text="Artikeldaten">
                      <items>
                         <MenuItem fx:id="menu_masterdata_import" mnemonicParsing="false" onAction="#importMasterData" text="Importieren..." />
+                        <MenuItem fx:id="menu_masterdata_clear" disable="true" mnemonicParsing="false" onAction="#clearMasterData" text="Verwerfen" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Tools">

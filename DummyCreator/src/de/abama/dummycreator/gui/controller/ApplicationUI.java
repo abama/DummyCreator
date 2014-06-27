@@ -107,8 +107,11 @@ public class ApplicationUI {
 	private MenuItem menu_file_saveas;
 
 	@FXML
-	private MenuItem menu_masterdata_import;
+	private MenuItem menu_masterdata_clear;
 
+	@FXML
+	private MenuItem menu_masterdata_import;	
+	
 	@FXML
 	private Button pages_next_btn;
 
@@ -271,21 +274,22 @@ public class ApplicationUI {
 	}
 
 	@FXML
+	private void clearMasterData(){
+		articleManager.clear();
+		updateMasterData();
+	}
+
+	@FXML
 	private void clearSelection() {
 		selection.clear();
 		updateSelectionInfo();
 	}
 
 	@FXML
-	private void closeFile(ActionEvent event) throws IOException {
-		updateUiViews();
-	}
-
-	@FXML
 	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
 		final File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
 		articleManager.loadCsv(file);
-		updateInfoPanel();
+		updateMasterData();
 	}
 
 	@FXML
@@ -303,7 +307,8 @@ public class ApplicationUI {
 
 	@FXML
 	private void newFile(ActionEvent event) throws IOException {
-		catalogue = catalogueManager.newFile();
+		catalogue = catalogueManager.newCatalogue();
+		updateFile(null);
 		updateUiViews();
 	}
 
@@ -331,9 +336,15 @@ public class ApplicationUI {
 		File file = GuiUtilities.chooseCsvFile(Configuration.articleListPath);
 		if (file != null) {
 			catalogue = catalogueManager.loadFile(file);
-			info_catalogue_filename.setText(file.getName());
+			updateFile(file);
 			updateUiViews();
 		}
+	}
+
+	@FXML
+	private void removeEmptyGroups() throws IOException {
+		catalogueManager.removeEmptyGroups();
+		updateUiViews();
 	}
 
 	@FXML
@@ -350,15 +361,9 @@ public class ApplicationUI {
 		fileChooser.setInitialDirectory(catalogueManager.getFile());
 		final File file = fileChooser.showSaveDialog(null);
 		if (file != null) {
-			catalogueManager.setFile(file);
+			updateFile(file);
 			catalogueManager.saveFile(file);
 		}
-	}
-
-	@FXML
-	private void removeEmptyGroups() throws IOException {
-		catalogueManager.removeEmptyGroups();
-		updateUiViews();
 	}
 
 	@FXML
@@ -412,5 +417,16 @@ public class ApplicationUI {
 	private void spreadUp(ActionEvent event) throws IOException {
 		catalogueManager.nextSpread();
 		updateSpreadView();
+	}
+	
+	private void updateFile(final File file){
+		catalogueManager.setFile(file);
+		menu_file_save.setDisable(file==null);
+		info_catalogue_filename.setText(file != null ? file.getName() : "");
+	}
+	
+	private void updateMasterData() {
+		menu_masterdata_clear.setDisable(articleManager.getArticleCount()==0);
+		updateInfoPanel();
 	}
 }
