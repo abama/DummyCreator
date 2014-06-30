@@ -1,11 +1,21 @@
 package de.abama.dummycreator.gui.controller;
 
+import javafx.scene.input.DataFormat;
+
 public class ControllerContext {
-	private static ControllerContext instance = null;
+		public static DataFormat catalogueArticleFormat = new DataFormat("de.abama.dummycreator.catalogue.CatalogueArticle");
+	public static DataFormat catalogueGroupFormat = new DataFormat("de.abama.dummycreator.catalogue.CatalogueGroup");
+	public static DataFormat cataloguePageFormat = new DataFormat("de.abama.dummycreator.catalogue.CataloguePage");
 	
-	private ControllerContext(){};
 	
-	private ApplicationUI mainController = null;
+	private static ControllerContext instance = null;;
+	
+	public static ControllerContext getInstance(){
+		if(instance == null){
+			instance = new ControllerContext();
+		}
+		return instance;
+	}
 	
 	public static ControllerContext getInstance(ApplicationUI mainController){
 		if(instance == null){
@@ -16,12 +26,9 @@ public class ControllerContext {
 		return instance;
 	}
 	
-	public static ControllerContext getInstance(){
-		if(instance == null){
-			instance = new ControllerContext();
-		}
-		return instance;
-	}
+	private ApplicationUI mainController = null;
+	
+	private ControllerContext(){}
 	
 	public ApplicationUI getMainController(){
 		return mainController;

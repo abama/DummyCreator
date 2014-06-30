@@ -22,7 +22,6 @@ import de.abama.dummycreator.gui.fxml.ListArticleUi;
 import de.abama.dummycreator.gui.fxml.RestrictiveTextInput;
 import de.abama.dummycreator.gui.fxml.SearchResultUi;
 import de.abama.dummycreator.gui.utilities.GuiUtilities;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -61,7 +60,7 @@ public class ApplicationUI {
 
 	protected RestrictiveTextInput search_by_number;
 
-	protected List<ICatalogueUiItem> selection = FXCollections.observableArrayList();
+	protected List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
 
 	@FXML
 	private AnchorPane catalogue_pages;
@@ -137,7 +136,7 @@ public class ApplicationUI {
 
 	public void dropItems(ICatalogueUiItem catalogueUiItem) {
 		System.out.println("Drop auf: " + catalogueUiItem);
-		final List<ICatalogueItem> catalogueItems = getCatalogueItems(selection);
+		final List<ICatalogueItem> catalogueItems = selection;
 		try {
 			catalogueUiItem.getCatalogueItem().addAll(catalogueItems);
 		} catch (final Exception e) {
@@ -146,8 +145,10 @@ public class ApplicationUI {
 		updateUiViews();
 		// return catalogueItems;
 	}
-
+	
+	/*
 	public void removeSelection() {
+		for
 		for (final ICatalogueUiItem UiItem : selection) {
 			try {
 				ICatalogueItem catalogueItem = UiItem.getCatalogueItem();
@@ -159,6 +160,7 @@ public class ApplicationUI {
 		selection.clear();
 		updateUiViews();
 	}
+	*/
 
 	public void setCurrentPage(CataloguePage page) {
 		catalogueManager.setCurrentPage(page);
@@ -168,13 +170,6 @@ public class ApplicationUI {
 	public void setInsertionPoint(ICatalogueItem item) {
 		catalogueManager.setInsertionPoint(item);
 		info_insertionpoint.setText(catalogueManager.getInsertionPoint().toString());
-	}
-
-	public void setSelection(List<ICatalogueUiItem> items) {
-		selection = items;
-		if (selection.size() > 0)
-			setInsertionPoint(selection.get(selection.size() - 1).getCatalogueItem());
-		updateSelectionInfo();
 	}
 
 	public void updateUiViews() {
@@ -231,20 +226,9 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	private void clearSelection() {
+	public void clearSelection() {
 		selection.clear();
 		updateSelectionInfo();
-	}
-
-	private List<ICatalogueItem> getCatalogueItems(List<ICatalogueUiItem> UIitems) {
-		final List<ICatalogueItem> catalogItems = new ArrayList<ICatalogueItem>();
-		for (final ICatalogueUiItem item : UIitems) {
-			// System.out.println("UI:  " + item);
-			final ICatalogueItem catalogueItem = item.getCatalogueItem();
-			// System.out.println("Cat:  " + catalogueItem);
-			catalogItems.add(catalogueItem);
-		}
-		return catalogItems;
 	}
 
 	@FXML
@@ -412,14 +396,15 @@ public class ApplicationUI {
 	
 	private void updateSelectionInfo() {
 		String selectionInfo = "";
-		for (final ICatalogueUiItem item : selection) {
+		for (final ICatalogueItem item : selection) {
 			selectionInfo += item + "\r\n";
 		}
 		info_selection.setText(selectionInfo);
+		info_insertionpoint.setText(catalogueManager.getInsertionPoint().toString());
 	}
 	
 	private void updateSpreadView() {
-
+		
 		//final CataloguePageUi leftPage = GuiUtilities.createPageUi()
 				
 		final CataloguePageUi leftPage = new CataloguePageUi(catalogueManager.getCurrentLeftPage());
@@ -427,7 +412,7 @@ public class ApplicationUI {
 		left_page.getChildren().add(leftPage);
 		//System.out.println("UPDATE");
 		if(leftPage.getGroups()!=null) {
-			System.out.println(spread_view.getHeight());
+			//System.out.println(spread_view.getHeight());
 			leftPage.getGroups().setPrefHeight(Math.min(leftPage.getGroups().getItems().size() * 115, spread_view.getHeight()-50));
 		}
 		//leftPage.getGroups().setPrefHeight(Math.min(leftPage.getGroups().getItems().size() * 115, left_page.getHeight()));
@@ -436,5 +421,25 @@ public class ApplicationUI {
 		final CataloguePageUi rightPage = new CataloguePageUi(catalogueManager.getCurrentRightPage());
 		right_page.getChildren().clear();
 		right_page.getChildren().add(rightPage);
+	}
+
+	public void setSelection(List<ICatalogueItem> items) {
+		System.out.println("POING");
+		selection = items;
+		catalogueManager.setInsertionPoint(items.get(items.size()-1));
+		updateSelectionInfo();
+	}
+
+	public void removeSelection() {
+		for(final ICatalogueItem item : selection){
+			item.remove();
+		}
+		updateUiViews();
+	}
+
+	public void setSelection(ICatalogueItem item) {
+		final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+		selection.add(item);
+		setSelection(selection);	
 	}
 }

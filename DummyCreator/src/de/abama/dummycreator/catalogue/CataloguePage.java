@@ -28,12 +28,12 @@ public class CataloguePage implements ICatalogueItem {
 		setCatalogue(catalogue);
 	}
 	
+	// Kopierkonstruktor
 	public CataloguePage(Catalogue catalogue, CataloguePage original){
 		setCatalogue(catalogue);
 		groups.addAll(original.groups);
-	}	
-
-	// Kopierkonstruktor
+	}
+	
 	public CatalogueGroup add(final CatalogueGroup group){
 		group.setPage(this);
 		groups.add(group);
@@ -42,31 +42,21 @@ public class CataloguePage implements ICatalogueItem {
 	
 	@Override
 	public void add(ICatalogueItem item) {
-		System.out.println(this + " - Füge hinzu: " + item);
+		
 		try {
-			final CatalogueGroup group = (CatalogueGroup) item;
-			final CatalogueGroup copy = new CatalogueGroup((CatalogueGroup) group);
-			add(copy);
+			add((CatalogueGroup) item);
+			return;
 		}
 		catch(final Exception e){
 			System.out.println("Objekt kann nicht eingefügt werden");
 		}
 		try {
 			final CatalogueArticle article = (CatalogueArticle) item;
-			final CatalogueArticle copy = new CatalogueArticle(article);
 			final CatalogueGroup group = getOrCreateGroup(article.getGroupSignature());
-			group.add(copy);
+			group.add(new CatalogueArticle(group, article));
 		}
 		catch(final Exception e){
 			System.out.println("Objekt kann nicht eingefügt werden");
-		}
-	}
-	
-	@Override
-	public void addAll(List<ICatalogueItem> selection) {
-		System.out.println(this + " - " + selection.size() + " Element(e) hinzufügen");
-		for(final ICatalogueItem item : selection){
-			this.add(item);	
 		}
 	}
 	
@@ -122,8 +112,7 @@ public class CataloguePage implements ICatalogueItem {
 		if(signatures.contains(groupSignature)) 
 			return groups.get(signatures.indexOf(groupSignature));
 		
-		final CatalogueGroup group = new CatalogueGroup(this);
-		this.add(group);
+		final CatalogueGroup group = this.add(new CatalogueGroup(this));
 		System.out.println("Erstelle Gruppe " + group.getIndex());
 		return group; 
 	}	
@@ -173,5 +162,14 @@ public class CataloguePage implements ICatalogueItem {
 			rows.addAll(group.serialize());
 		}
 		return rows;
+	}
+
+	@Override
+	public void addAll(List<ICatalogueItem> selection) {
+		for(final ICatalogueItem item : selection) add(item);
+	}
+
+	public void addGroups(List<CatalogueGroup> groups) {
+		for(final CatalogueGroup item : groups) add(item);
 	}
 }

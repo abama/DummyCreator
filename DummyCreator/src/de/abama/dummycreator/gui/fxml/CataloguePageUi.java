@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.abama.dummycreator.catalogue.CatalogueGroup;
 import de.abama.dummycreator.catalogue.CatalogueManager;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
@@ -32,10 +33,9 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	
-	private ApplicationUI controller = ControllerContext.getInstance().getMainController();
+	private CataloguePage cataloguePage;
 
-	@FXML
-	private Pane page;
+	private ApplicationUI controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
     private ListView<CatalogueGroupUi> groups;
@@ -43,7 +43,8 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	@FXML
     private Label number;	
 	
-	private CataloguePage cataloguePage;
+	@FXML
+	private Pane page;
 
 	
     public CataloguePageUi(final CataloguePage page) {
@@ -78,23 +79,54 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 		return cataloguePage;
 	}
 
-	public String getNumber(){
+	public ListView<CatalogueGroupUi> getGroups() {
+		// TODO Auto-generated method stub
+		return groups;
+	}
+
+    public String getNumber(){
     	return String.valueOf(cataloguePage.getNumber());
     }
-
+    
+    
     public CataloguePage getPage() {
 		return cataloguePage;
 	}
-    
-    @FXML
+	
+
+	public List<CatalogueGroup> getSelectedItems(){
+		final List<CatalogueGroup> selected = new ArrayList<CatalogueGroup>();
+		for(final CatalogueGroupUi groupUi : groups.getSelectionModel().getSelectedItems()) 
+			selected.add(groupUi.getCatalogueGroup());
+		return selected;
+	}
+	
+	@FXML
 	public void listSelection(Event event) throws IOException{
 		if(groups.isFocused()){
-			final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-			for(final ICatalogueUiItem item : groups.getSelectionModel().getSelectedItems()) selection.add(item);
+			final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+			for(final ICatalogueUiItem item : groups.getSelectionModel().getSelectedItems()) selection.add(item.getCatalogueItem());
 			controller.setSelection(selection);
 		}
 	}
-
+	
+	/*
+	@FXML
+	public void keyPressed(KeyEvent event) {
+		if(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE)
+			removeSelection();
+		event.consume();
+	}
+	*/
+	
+	public void removeSelection(){
+		final List<CatalogueGroupUi> selected = groups.getSelectionModel().getSelectedItems();
+		for(final CatalogueGroupUi groupUi : selected){
+			groupUi.getCatalogueGroup().remove();		
+		}
+		controller.updateUiViews();
+	}
+	
 	public void setPage(CataloguePage page) {
 		this.cataloguePage = page;
 	}
@@ -102,72 +134,96 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	public String toString(){
 		return cataloguePage.toString();
 	}
-	
+
 	@FXML 
-	private void dragDetected(Event event) throws IOException{
+	private void dragDetected(MouseEvent event) throws IOException{
 		
-		listSelection(event);
+		//listSelection(event);
 		
-        Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+		Dragboard dragboard;
+		
+        if(event.isShiftDown())	dragboard = this.startDragAndDrop(TransferMode.COPY);
+        else dragboard = this.startDragAndDrop(TransferMode.MOVE);
         
-        //SerialTransferable selection = new SerialTransferable(color);
-        ClipboardContent content = new ClipboardContent();
-        content.putString(getCatalogueItem().toString());
-        db.setContent(content);
+        ClipboardContent content = new ClipboardContent();        
+        content.put(ControllerContext.catalogueGroupFormat, getSelectedItems());        
+        dragboard.setContent(content);
         
         event.consume();
 	}
 	
 	@FXML 
 	private void dragDone(DragEvent event) throws IOException{
-		controller.removeSelection();
 		System.out.println("Drag done");
 		event.consume();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@FXML
 	private void dragDropped(DragEvent event) throws IOException{
-		//System.out.println("Drop.");
-
-		controller.dropItems(this);
-		controller.removeSelection();
-		//controller.setSelection(items);
-		event.setDropCompleted(true);
-		event.consume();
-	}
-	
-	@FXML 
-	private void dragEntered(Event event) throws IOException{
+				
+		List<ICatalogueItem> items = null;
 		
-		page.setBlendMode(BlendMode.DIFFERENCE);
+		if(event.getDragboard().hasContent(ControllerContext.catalogueGroupFormat)){
+			items = (List<ICatalogueItem>) event.getDragboard().getContent(ControllerContext.catalogueGroupFormat);
+		}
+		else if(event.getDragboard().hasContent(ControllerContext.catalogueArticleFormat)) {
+			items = (List<ICatalogueItem>) event.getDragboard().getContent(ControllerContext.catalogueArticleFormat);
+		}
+		
+		if(items!=null){
+			
+			getCataloguePage().addAll(items);
+			
+			if(event.getTransferMode() == TransferMode.MOVE) {
+				((CataloguePageUi) event.getGestureSource()).removeSelection();
+			}
+			final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+			selection.addAll(items);
+			controller.setSelection(selection);
+			controller.updateUiViews();
+			event.setDropCompleted(true);
+		}
 		event.consume();
 	}
 	
 	@FXML 
-	private void dragExited(Event event) throws IOException{
+	private void dragEntered(DragEvent event) throws IOException{
+		if(event.getGestureSource()!=this){
+			page.setBlendMode(BlendMode.DIFFERENCE);
+			event.consume();
+		}
+	}
+	
+	@FXML 
+	private void dragExited(DragEvent event) throws IOException{
 		page.setBlendMode(null);
 		event.consume();
 	}
 	
 	@FXML 
 	private void dragOver(DragEvent event){
-		event.acceptTransferModes(TransferMode.MOVE);
+		if(event.getGestureSource()!=this){
+			if(event.getDragboard().hasContent(ControllerContext.catalogueGroupFormat))
+				event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+			else if(event.getDragboard().hasContent(ControllerContext.catalogueArticleFormat))
+				event.acceptTransferModes(TransferMode.LINK);
+		}
 		event.consume();
+	}
+
+	private CataloguePage getCataloguePage() {
+		return cataloguePage;
+	}
+
+	@FXML
+	private void mouseClick(MouseEvent event) throws IOException{
+		controller.setSelection(getPage());
+		controller.setCurrentPage(getCataloguePage());
 	}
 	
 	private void setNumber(int number) {
 		this.number.setText(number>0 ? String.valueOf(cataloguePage.getNumber()) : "--");
-	}
-	
-	@FXML
-	private void mouseClick(MouseEvent event) throws IOException{
-		controller.setInsertionPoint(this.getPage());
-		controller.setCurrentPage(this.getPage());
-	}
-
-	public ListView<CatalogueGroupUi> getGroups() {
-		// TODO Auto-generated method stub
-		return groups;
 	}
 }
 

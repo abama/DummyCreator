@@ -66,16 +66,16 @@ public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
     
     @FXML
 	public void listSelection(MouseEvent event) throws IOException{
-		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item);
+		final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item.getCatalogueItem());
 		//System.out.println(ControllerContext.getInstance().getMainController());
 		controller.setSelection(selection);
 	}
     
 	@FXML
 	public void listSelectionAll(KeyEvent event) throws IOException{
-		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item);
+		final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+		for(final ICatalogueUiItem item : pages.getSelectionModel().getSelectedItems()) selection.add(item.getCatalogueItem());
 		controller.setSelection(selection);
 	}
 	

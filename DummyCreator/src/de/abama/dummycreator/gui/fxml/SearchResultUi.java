@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.controller.ControllerContext;
-import de.abama.dummycreator.gui.controller.ApplicationUI;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,13 +18,11 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 
-public class SearchResultUi<T> extends ListView<T> {
+public class SearchResultUi<T> extends ListView<ListArticleUi> {
 	
-	private ApplicationUI controller = null;
-	
-    public SearchResultUi() {
+	public SearchResultUi() {
     	
-    	controller = ControllerContext.getInstance().getMainController();
+    	ControllerContext.getInstance().getMainController();
     	
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/SearchResultUi.fxml"));
         fxmlLoader.setRoot(this);
@@ -43,10 +40,12 @@ public class SearchResultUi<T> extends ListView<T> {
 	private void dragDetected(MouseEvent event){
 		
 		listSelection(event);
+		
+		final List<CatalogueArticle> articles = getSelectedItems();
         
-		Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+		Dragboard db = this.startDragAndDrop(TransferMode.LINK);
         ClipboardContent content = new ClipboardContent();
-        content.putString("Bla");
+        content.put(ControllerContext.catalogueArticleFormat, articles);
         db.setContent(content);
         
         event.consume();
@@ -54,24 +53,20 @@ public class SearchResultUi<T> extends ListView<T> {
 	
 	@FXML
 	private void listSelection(Event event){
-		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-		for(final T listArticleUi : this.getSelectionModel().getSelectedItems()) {
-			final ListArticle listArticle = ((ListArticleUi) listArticleUi).getArticle();
-			final CatalogueArticle catalogueArticle = new CatalogueArticle(listArticle.getNumber());
-			final CatalogueArticleUi catalogueArticleUi = new CatalogueArticleUi(catalogueArticle, false);
-			selection.add(catalogueArticleUi);
-		}
-		
-		controller.setSelection(selection);
-		
+		final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+		for(final CatalogueArticle item : getSelectedItems()) selection.add(item);
 		event.consume();
 	}
 	
 	@FXML 
-	private void dragDone(DragEvent event) throws IOException{
-		
-		// TODO dragDone
-		
+	private void dragDone(DragEvent event) throws IOException{		
 		event.consume();
+	}
+	
+	public List<CatalogueArticle> getSelectedItems(){
+		final List<CatalogueArticle> selected = new ArrayList<CatalogueArticle>();
+		for(final ListArticleUi articleUi : getSelectionModel().getSelectedItems()) 
+			selected.add(new CatalogueArticle(articleUi.getNumber()));
+		return selected;
 	}
 }

@@ -17,8 +17,9 @@ public class CatalogueArticle implements ICatalogueItem {
 	private String number;
 	
 	// Kopierkonstruktor
-	public CatalogueArticle(CatalogueArticle original) {
+	public CatalogueArticle(CatalogueGroup group, CatalogueArticle original) {
 		super();
+		this.group = group;
 		this.number = original.number;
 	}	
 	

@@ -23,6 +23,7 @@ import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
 import de.abama.dummycreator.catalogue.CataloguePage;
+import de.abama.dummycreator.catalogue.ICatalogueItem;
 import de.abama.dummycreator.gui.fxml.CatalogueArticleUi;
 import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
 import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
@@ -137,5 +138,16 @@ public class GuiUtilities {
 		//progressWindow.close();
 		
 		return observableList;
+	}
+	
+	public List<ICatalogueItem> getCatalogueItems(List<ICatalogueUiItem> UIitems) {
+		final List<ICatalogueItem> catalogItems = new ArrayList<ICatalogueItem>();
+		for (final ICatalogueUiItem item : UIitems) {
+			// System.out.println("UI:  " + item);
+			final ICatalogueItem catalogueItem = item.getCatalogueItem();
+			// System.out.println("Cat:  " + catalogueItem);
+			catalogItems.add(catalogueItem);
+		}
+		return catalogItems;
 	}
 }

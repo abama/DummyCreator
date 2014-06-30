@@ -21,11 +21,16 @@ public class CatalogueGroup implements  ICatalogueItem {
 		return ("Leere Artikelgruppe");
 		}
 	
-	public CatalogueGroup(CataloguePage page){};
+	public CatalogueGroup(CataloguePage page){
+		super();
+		if(page==null);
+		this.page = page;
+	}
 	
 	// Kopierkonstruktor
-	public CatalogueGroup(CatalogueGroup original){
+	public CatalogueGroup(CataloguePage page, CatalogueGroup original){
 		super();
+		this.page = page;
 		articles.addAll(original.articles);
 	}
 	
@@ -44,7 +49,11 @@ public class CatalogueGroup implements  ICatalogueItem {
 	}
 	
 	public char getIndex() {
-		return INDEX.charAt(page.getGroups().indexOf(this));
+		try{
+			return INDEX.charAt(page.getGroups().indexOf(this));
+		} catch(final IndexOutOfBoundsException e){
+			return '?';
+		}
 	}
 	
 	public CataloguePage getPage(){

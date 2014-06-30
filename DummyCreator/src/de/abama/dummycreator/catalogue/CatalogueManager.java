@@ -45,7 +45,7 @@ public class CatalogueManager {
 			final CataloguePage page = getOrCreatePage();
 			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupSignature());
 			//System.out.println("Group: " + group);
-			group.add(new CatalogueArticle(article));
+			group.add(new CatalogueArticle(group, article));
 		}
 		
 	}
@@ -115,9 +115,9 @@ public class CatalogueManager {
 		return catalogue;
 	}
 
-	public void newGroup(Object object) {
-		CataloguePage page = currentPage;
-		if(page == null) page = currentPage = catalogue.addPage();
+	public void newGroup(CataloguePage page) {
+		if(page == null) page = currentPage;
+		if(page == null) page = catalogue.addPage();
 		page.add(new CatalogueGroup(page));
 	}
 	

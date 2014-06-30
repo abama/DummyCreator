@@ -23,6 +23,7 @@ public class Main extends Application {
 			
 			final ApplicationUI controller = ControllerContext.getInstance().getMainController();
 			
+			
 	        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>()
             {
                 public void handle(KeyEvent keyEvent)
@@ -38,6 +39,7 @@ public class Main extends Application {
             		}
                 }
             });
+            
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -120,15 +120,15 @@ public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
     }
 
 	@Override
-	public ICatalogueItem getCatalogueItem() {
+	public CatalogueGroup getCatalogueItem() {
 		return group;
 	}
 	
 	@FXML
 	public void listSelection(Event event) throws IOException{
 		if(articles.isFocused()){
-			final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
-			for(final ICatalogueUiItem item : articles.getSelectionModel().getSelectedItems()) selection.add(item);
+			final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+			for(final ICatalogueUiItem item : articles.getSelectionModel().getSelectedItems()) selection.add(item.getCatalogueItem());
 			controller.setSelection(selection);
 		}
 	}
@@ -186,5 +186,9 @@ public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
 	private void dragOver(DragEvent event){
 		event.acceptTransferModes(TransferMode.MOVE);
 		event.consume();
+	}
+
+	public CatalogueGroup getCatalogueGroup() {
+		return group;
 	}
 }
