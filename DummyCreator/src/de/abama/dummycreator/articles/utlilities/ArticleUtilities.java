@@ -38,7 +38,7 @@ public class ArticleUtilities {
 	public static List<CatalogueArticle> createCatalogueArticles(List<ListArticleUi> listArticleUis) {
 		final List<CatalogueArticle> catalogueArticles = new ArrayList<CatalogueArticle>();
 		for(final ListArticleUi listArticleUi : listArticleUis){
-			catalogueArticles.add(new CatalogueArticle(listArticleUi.getListArticle()));
+			catalogueArticles.add(new CatalogueArticle(listArticleUi.getListArticle().getNumber()));
 		}
 		return catalogueArticles;
 	}

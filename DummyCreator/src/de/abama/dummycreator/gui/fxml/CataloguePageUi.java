@@ -27,6 +27,8 @@ import javafx.scene.layout.VBox;
 
 public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	
+	private static final long serialVersionUID = 449750810017074485L;
+
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	
@@ -69,7 +71,6 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
     public void adaptSize(){
     	System.out.println(page);
     	System.out.println(groups);
-    	groups.setPrefHeight(Math.min(groups.getItems().size() * 115, page.getHeight()));
     }
 
 	@Override
@@ -108,6 +109,8 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 		listSelection(event);
 		
         Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+        
+        //SerialTransferable selection = new SerialTransferable(color);
         ClipboardContent content = new ClipboardContent();
         content.putString(getCatalogueItem().toString());
         db.setContent(content);
@@ -160,6 +163,11 @@ public class CataloguePageUi extends VBox implements ICatalogueUiItem {
 	private void mouseClick(MouseEvent event) throws IOException{
 		controller.setInsertionPoint(this.getPage());
 		controller.setCurrentPage(this.getPage());
+	}
+
+	public ListView<CatalogueGroupUi> getGroups() {
+		// TODO Auto-generated method stub
+		return groups;
 	}
 }
 

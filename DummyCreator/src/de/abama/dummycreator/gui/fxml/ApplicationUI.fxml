@@ -279,7 +279,7 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <HBox>
+                        <HBox fx:id="spread_view">
                            <children>
                               <AnchorPane>
                                  <children>

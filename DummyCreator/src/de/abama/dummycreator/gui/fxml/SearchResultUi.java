@@ -57,7 +57,7 @@ public class SearchResultUi<T> extends ListView<T> {
 		final List<ICatalogueUiItem> selection = new ArrayList<ICatalogueUiItem>();
 		for(final T listArticleUi : this.getSelectionModel().getSelectedItems()) {
 			final ListArticle listArticle = ((ListArticleUi) listArticleUi).getArticle();
-			final CatalogueArticle catalogueArticle = new CatalogueArticle(listArticle);
+			final CatalogueArticle catalogueArticle = new CatalogueArticle(listArticle.getNumber());
 			final CatalogueArticleUi catalogueArticleUi = new CatalogueArticleUi(catalogueArticle, false);
 			selection.add(catalogueArticleUi);
 		}

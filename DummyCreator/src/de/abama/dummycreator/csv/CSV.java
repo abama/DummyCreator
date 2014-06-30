@@ -58,10 +58,6 @@ public class CSV {
 		return null;
 	}
 	
-	public int getLength(){
-		return rows.size();
-	}
-	
 	public List<String> getRow(final int index){
 		return rows.get(index);
 	}
@@ -112,10 +108,6 @@ public class CSV {
 
 	public void setHeadings(final String headings){
 		setHeadings(new ArrayList<String>(Arrays.asList(headings.split(", *"))));
-	}
-	
-	public void setRows(List<List<String>> rows) {
-		this.rows = rows;
 	}
 
 	public void setSep(String sep) {

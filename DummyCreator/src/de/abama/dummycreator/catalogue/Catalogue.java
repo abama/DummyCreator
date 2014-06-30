@@ -20,7 +20,7 @@ public class Catalogue implements ICatalogueItem {
 	}
 
 	public CataloguePage newPage(final CataloguePage currentPage) {
-		CataloguePage page = new CataloguePage();
+		CataloguePage page = new CataloguePage(this);
 		page.setCatalogue(this);
 		return insertPage(page, currentPage);
 	}
@@ -42,7 +42,7 @@ public class Catalogue implements ICatalogueItem {
 			return pages.get(number - firstPageNumber);
 		}
 		catch(IndexOutOfBoundsException e){
-			return new CataloguePageStub();
+			return new CataloguePageStub(this);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class Catalogue implements ICatalogueItem {
 	public CataloguePage getOrCreatePage(int number) {
 		if(pages.size()==0) firstPageNumber = number;
 		while(pages.size()+firstPageNumber-1 < number){
-			final CataloguePage page = new CataloguePage();
+			final CataloguePage page = new CataloguePage(this);
 			page.setCatalogue(this);
 			this.add(page);
 			System.out.println("Erstelle Seite " + page.getNumber());

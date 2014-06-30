@@ -1,20 +1,14 @@
 package de.abama.dummycreator.articles;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
-import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
-import de.abama.dummycreator.gui.fxml.ListArticleUi;
-import de.abama.dummycreator.gui.utilities.GuiUtilities;
 
 public class ArticleManager {
 	
@@ -28,49 +22,22 @@ public class ArticleManager {
 	}
 	
 	private TreeMap<String, ListArticle> articles = new TreeMap<String, ListArticle>();
-		
-	@SuppressWarnings("unused")
-	private Configuration configuration = Configuration.getInstance();
 	
-	public List<ListArticle> addArticles(final List<ListArticle> list){
-		final List<ListArticle> linkedArticles = new ArrayList<ListArticle>();
-		
+	public List<ListArticle> getOrCreate(final List<ListArticle> list){
+		final List<ListArticle> addedArticles = new ArrayList<ListArticle>();
 		for(final ListArticle article : list){
-			linkedArticles.add(getOrCreateArticle(article));
+			addedArticles.add(getOrCreate(article));
 		}
-		return linkedArticles;
+		return addedArticles;
 	}
 
-	public ListArticle getOrCreateArticle(final ListArticle article){
+	public ListArticle getOrCreate(final ListArticle article){
 		if(!articles.containsKey(article.getNumber())) articles.put(article.getNumber(), article);
 		return articles.get(article.getNumber());
 	}
 	
 	public void clear(){
 		articles.clear();
-	}
-	
-	public ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) throws IOException {
-		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
-		
-		//TODO Progress Window
-			
-		//final ProgressWindow progressWindow = new ProgressWindow("Artikel importieren", "",0,articles.size());
-		//progressWindow.show();
-		
-		//int i=0;
-			
-		for(final ListArticle article : articles){
-			//i++;
-			//progressWindow.setProgress(i);
-			list.add(GuiUtilities.createArticleListEntry(article, loadImages));
-		}
-		
-		ObservableList<ListArticleUi> observableList = FXCollections.observableList(list);
-		
-		//progressWindow.close();
-		
-		return observableList;
 	}
 	
 	public int getArticleCount(){
@@ -88,18 +55,18 @@ public class ArticleManager {
 	public List<ListArticle> loadCsv(final File file) {
 		if (file != null) {
 			final CSV csv = CsvFileUtility.read(file);
-			return addArticles(ArticleUtilities.createListArticles(csv));
+			return getOrCreate(ArticleUtilities.createListArticles(csv));
 		}
 		return new ArrayList<ListArticle>();
 	}
 	
-	public ObservableList<ListArticleUi> searchAll() throws IOException {
-		return createArticleListGroupEntries(articles.values(), false);
-	}	
+	public Collection<ListArticle> getAll() {
+		return articles.values();
+	}
 	
-	public ObservableList<ListArticleUi> searchByDescription(String text) throws IOException {
+	public List<ListArticle> getByDescription(String text){
 		
-		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
+		List<ListArticle> result = new ArrayList<ListArticle>();
 		final String[] searchTerms = text.toLowerCase().split(" +|, *|; *");
 		for(final ListArticle article : articles.values()){
 			final String articleString = article.getFullString().toLowerCase();
@@ -110,41 +77,38 @@ public class ArticleManager {
 					break;
 				}
 			}
-			if(match) list.add(GuiUtilities.createArticleListEntry(article, true));
+			if(match) result.add(article);
 		}
-		return FXCollections.observableList(list);
+		return result;
 	}
 	
-	public ObservableList<ListArticleUi> searchByGroupSignature(String articleNumber) throws IOException {
-		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
+	public List<ListArticle> searchByGroupSignature(String articleNumber){
+		List<ListArticle> result = new ArrayList<ListArticle>();
 		for(final ListArticle article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
-				list.add(GuiUtilities.createArticleListEntry(article, true));
+				result.add(article);
 			}
 		}
-		return FXCollections.observableList(list);
+		return result;
 	}
 
-	public ObservableList<ListArticleUi> searchByKeywords(String text) {
+	public List<ListArticle> searchByKeywords(String text) {
 		// TODO searchByKeywords
-		return FXCollections.observableArrayList(new ArrayList<ListArticleUi>());
+		return new ArrayList<ListArticle>();
 	}
-
-	public ObservableList<ListArticleUi> searchByNumber(String text) throws IOException {
-		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
+	
+	public List<ListArticle> searchByNumber(String number){
+		List<ListArticle> result = new ArrayList<ListArticle>();
 		for(final String key : articles.keySet()){
-			if(key.contains(text) || text.contains(key)){
-				final ListArticle article = articles.get(key);
-				list.add(GuiUtilities.createArticleListEntry(article, true));
+			if(key.contains(number)){
+				result.add(articles.get(key));
 			}
 		}
-		return FXCollections.observableList(list);
+		return result;
 	}
 
 	public ListArticle get(String articleNumber) {
 		if(articles.containsKey(articleNumber))	return articles.get(articleNumber);
 		return null;
 	}
-
-
 }

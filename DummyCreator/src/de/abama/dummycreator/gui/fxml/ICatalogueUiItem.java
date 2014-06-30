@@ -1,8 +1,10 @@
 package de.abama.dummycreator.gui.fxml;
 
+import java.io.Serializable;
+
 import de.abama.dummycreator.catalogue.ICatalogueItem;
 
-public interface ICatalogueUiItem {
+public interface ICatalogueUiItem extends Serializable {
 	
 	ICatalogueItem getCatalogueItem();
 	

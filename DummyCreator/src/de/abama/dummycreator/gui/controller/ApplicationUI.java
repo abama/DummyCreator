@@ -1,12 +1,13 @@
 package de.abama.dummycreator.gui.controller;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.abama.dummycreator.articles.ArticleManager;
+import de.abama.dummycreator.articles.ListArticle;
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
 import de.abama.dummycreator.catalogue.Catalogue;
 import de.abama.dummycreator.catalogue.CatalogueArticle;
@@ -34,10 +35,13 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 public class ApplicationUI {
+
+	@FXML HBox spread_view;
 
 	protected ArticleManager articleManager = ArticleManager.getInstance();
 
@@ -49,6 +53,8 @@ public class ApplicationUI {
 
 	protected Configuration configuration = Configuration.getInstance();
 
+	protected ControllerContext context;
+
 	protected RestrictiveTextInput search_by_description;
 
 	protected RestrictiveTextInput search_by_keywords;
@@ -59,9 +65,6 @@ public class ApplicationUI {
 
 	@FXML
 	private AnchorPane catalogue_pages;
-
-	@SuppressWarnings("unused")
-	private ControllerContext context;
 
 	@FXML
 	private Label info_articles;
@@ -106,11 +109,11 @@ public class ApplicationUI {
 	private MenuItem menu_file_saveas;
 
 	@FXML
-	private MenuItem menu_masterdata_clear;
-
-	@FXML
-	private MenuItem menu_masterdata_import;	
+	private MenuItem menu_masterdata_clear;	
 	
+	@FXML
+	private MenuItem menu_masterdata_import;
+
 	@FXML
 	private Button pages_next_btn;
 
@@ -128,22 +131,11 @@ public class ApplicationUI {
 
 	@FXML
 	private Button spread_next_btn;
-
+	
 	@FXML
 	private Button spread_prev_btn;
 
-	@FXML
-	public void addArticles(ActionEvent event) throws IOException {
-		final List<ListArticleUi> listArticles = search_result.getSelectionModel().getSelectedItems();
-		final List<CatalogueArticle> catalogueArticles = ArticleUtilities.createCatalogueArticles(listArticles);
-		// TODO Artikel hinzufügen
-		catalogueManager.addArticles(catalogueArticles);
-		// catalogueManager.addArticle(new
-		// CatalogueArticle(articleManager.get(articleNumber)), null, null);
-		updateUiViews();
-	}
-
-	public void dropItems(ICatalogueUiItem catalogueUiItem) throws IOException {
+	public void dropItems(ICatalogueUiItem catalogueUiItem) {
 		System.out.println("Drop auf: " + catalogueUiItem);
 		final List<ICatalogueItem> catalogueItems = getCatalogueItems(selection);
 		try {
@@ -155,18 +147,7 @@ public class ApplicationUI {
 		// return catalogueItems;
 	}
 
-	public List<ICatalogueItem> getCatalogueItems(List<ICatalogueUiItem> UIitems) {
-		final List<ICatalogueItem> catalogItems = new ArrayList<ICatalogueItem>();
-		for (final ICatalogueUiItem item : UIitems) {
-			// System.out.println("UI:  " + item);
-			final ICatalogueItem catalogueItem = item.getCatalogueItem();
-			// System.out.println("Cat:  " + catalogueItem);
-			catalogItems.add(catalogueItem);
-		}
-		return catalogItems;
-	}
-
-	public void removeSelection() throws IOException {
+	public void removeSelection() {
 		for (final ICatalogueUiItem UiItem : selection) {
 			try {
 				ICatalogueItem catalogueItem = UiItem.getCatalogueItem();
@@ -179,7 +160,7 @@ public class ApplicationUI {
 		updateUiViews();
 	}
 
-	public void setCurrentPage(CataloguePage page) throws IOException {
+	public void setCurrentPage(CataloguePage page) {
 		catalogueManager.setCurrentPage(page);
 		updateSpreadView();
 	}
@@ -196,39 +177,7 @@ public class ApplicationUI {
 		updateSelectionInfo();
 	}
 
-	public void updateInfoPanel() {
-		info_articles.setText(Integer.toString(articleManager.getArticleCount()));
-		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
-		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
-		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
-		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
-	}
-
-	public void updatePagesView() throws IOException {
-		catalogue_pages.getChildren().clear();
-		catalogue_pages.getChildren().add(new CatalogueUi(catalogue));
-	}
-
-	public void updateSelectionInfo() {
-		String selectionInfo = "";
-		for (final ICatalogueUiItem item : selection) {
-			selectionInfo += item + "\r\n";
-		}
-		info_selection.setText(selectionInfo);
-	}
-
-	public void updateSpreadView() throws IOException {
-
-		final CataloguePageUi leftPage = new CataloguePageUi(catalogueManager.getCurrentLeftPage());
-		left_page.getChildren().clear();
-		left_page.getChildren().add(leftPage);
-
-		final CataloguePageUi rightPage = new CataloguePageUi(catalogueManager.getCurrentRightPage());
-		right_page.getChildren().clear();
-		right_page.getChildren().add(rightPage);
-	}
-
-	public void updateUiViews() throws IOException {
+	public void updateUiViews() {
 		// TODO UPDATE-PERFORMANCE
 		updatePagesView();
 		updateSpreadView();
@@ -237,18 +186,14 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	protected void initialize() throws IOException {
+	protected void initialize() {
 		context = ControllerContext.getInstance(this);
 		search_by_number = new RestrictiveTextInput("Artikelnummer", "[0-9]");
 		search_by_number.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER)) {
-					try {
-						searchByNumber(event);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					searchByNumber(event);
 				}
 			}
 		});
@@ -257,11 +202,7 @@ public class ApplicationUI {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER)) {
-					try {
-						searchByDescription(event);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					searchByDescription(event);
 				}
 			}
 		});
@@ -270,6 +211,17 @@ public class ApplicationUI {
 		search_panel.getChildren().add(search_by_description);
 		search_panel.getChildren().add(search_result);
 		newFile(new ActionEvent());
+	}
+
+	@FXML
+	private void addArticles(ActionEvent event) {
+		final List<ListArticleUi> listArticles = search_result.getSelectionModel().getSelectedItems();
+		final List<CatalogueArticle> catalogueArticles = ArticleUtilities.createCatalogueArticles(listArticles);
+		// TODO Artikel hinzufügen
+		catalogueManager.addArticles(catalogueArticles);
+		// catalogueManager.addArticle(new
+		// CatalogueArticle(articleManager.get(articleNumber)), null, null);
+		updateUiViews();
 	}
 
 	@FXML
@@ -284,35 +236,61 @@ public class ApplicationUI {
 		updateSelectionInfo();
 	}
 
+	private List<ICatalogueItem> getCatalogueItems(List<ICatalogueUiItem> UIitems) {
+		final List<ICatalogueItem> catalogItems = new ArrayList<ICatalogueItem>();
+		for (final ICatalogueUiItem item : UIitems) {
+			// System.out.println("UI:  " + item);
+			final ICatalogueItem catalogueItem = item.getCatalogueItem();
+			// System.out.println("Cat:  " + catalogueItem);
+			catalogItems.add(catalogueItem);
+		}
+		return catalogItems;
+	}
+
 	@FXML
-	private void importMasterData(ActionEvent event) throws IOException, URISyntaxException {
+	private void importMasterData(ActionEvent event) throws URISyntaxException, MalformedURLException {
 		final File file = GuiUtilities.chooseCsvFile(Configuration.getInstance().articleListPath);
 		articleManager.loadCsv(file);
 		updateMasterData();
 	}
 
 	@FXML
-	private void listDrag(ActionEvent event) throws IOException {
+	private void listDrag(ActionEvent event) {
 		System.out.println("Liste - Drag & Drop");
 		updateSpreadView();
 	}
 
 	@FXML
-	private void newChapter(ActionEvent event) throws IOException {
+	private void loadFile(ActionEvent event) {
+		File file;
+		try {
+			file = GuiUtilities.chooseCsvFile(Configuration.getInstance().articleListPath);
+			if (file != null) {
+				catalogue = catalogueManager.loadFile(file);
+				updateFile(file);
+				updateUiViews();
+			}
+		} catch (MalformedURLException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	private void newChapter(ActionEvent event) {
 		System.out.println("Neues Kapitel");
 		// TODO: catalogue.addChapter();
 		updateUiViews();
 	}
 
 	@FXML
-	private void newFile(ActionEvent event) throws IOException {
+	private void newFile(ActionEvent event) {
 		catalogue = catalogueManager.newCatalogue();
 		updateFile(null);
 		updateUiViews();
 	}
 
 	@FXML
-	private void newGroup(ActionEvent event) throws IOException {
+	private void newGroup(ActionEvent event) {
 		System.out.println("Neue Gruppe");
 		catalogueManager.newGroup(null);
 		updateSpreadView();
@@ -320,10 +298,10 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	private void newPage(ActionEvent event) throws IOException {
+	private void newPage(ActionEvent event) {
 		System.out.println("Neue Seite");
 		try {
-			catalogueManager.addPage((CataloguePage) selection.get(0));
+			catalogueManager.addPage(catalogueManager.getCurrentPage());
 		} catch (final Exception e) {
 			catalogueManager.setInsertionPoint(catalogueManager.addPage(null));
 		}
@@ -331,18 +309,7 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	private void loadFile(ActionEvent event) throws IOException, URISyntaxException {
-		File file = GuiUtilities.chooseCsvFile(Configuration.getInstance().articleListPath);
-		
-		if (file != null) {
-			catalogue = catalogueManager.loadFile(file);
-			updateFile(file);
-			updateUiViews();
-		}
-	}
-
-	@FXML
-	private void removeEmptyGroups() throws IOException {
+	private void removeEmptyGroups() {
 		catalogueManager.removeEmptyGroups();
 		updateUiViews();
 	}
@@ -368,66 +335,106 @@ public class ApplicationUI {
 	}
 
 	@FXML
-	private void searchAll(ActionEvent event) throws IOException {
-		search_result.setItems(articleManager.searchAll());
+	private void searchAll(ActionEvent event) {
+		search_result.setItems(GuiUtilities.createArticleListGroupEntries(articleManager.getAll(), false));
 	}
 
 	@FXML
-	private void searchByDescription(KeyEvent event) throws IOException {
+	private void searchByDescription(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
-			search_result.setItems(articleManager.searchByDescription(search_by_description.getText()));
+			final List<ListArticle> articles = articleManager.getByDescription(search_by_description.getText());
+			search_result.setItems(GuiUtilities.createArticleListGroupEntries(articles, true));
 			search_by_description.clear();
 		}
 	}
 
 	@FXML
-	private void searchByGroupSignature(ActionEvent event) throws IOException {
+	private void searchByGroupSignature(ActionEvent event) {
 		final ObservableList<ListArticleUi> searchResult = search_result.getSelectionModel().getSelectedItems();
 		if (searchResult.size() == 1) {
 			final String articleNumber = ((Label) (searchResult.get(0).lookup("#number"))).getText();
-			search_result.setItems(articleManager.searchByGroupSignature(articleNumber));
+			final List<ListArticle> articles = articleManager.searchByGroupSignature(articleNumber);
+			search_result.setItems(GuiUtilities.createArticleListGroupEntries(articles, true));
 		}
 	}
 
 	@FXML
 	private void searchByKeywords(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
-			search_result.setItems(articleManager.searchByKeywords(search_by_keywords.getText()));
+			final List<ListArticle> articles = articleManager.searchByKeywords(search_by_keywords.getText());
+			search_result.setItems(GuiUtilities.createArticleListGroupEntries(articles, true));
 		}
 	}
 
 	@FXML
-	private void searchByNumber(KeyEvent event) throws IOException {
+	private void searchByNumber(KeyEvent event){
 		if (event.getCode() == KeyCode.ENTER) {
-			// String text = search_by_number.getText().replace("\n",
-			// "").replace("\r", "");
-			// search_by_number.setText(text);
-			// search_by_number.clear();
-			search_result.setItems(articleManager.searchByNumber(search_by_number.getText()));
-			search_by_number.clear();
+			final List<ListArticle> articles = articleManager.searchByNumber(search_by_number.getText());
+			search_result.setItems(GuiUtilities.createArticleListGroupEntries(articles, true));
 		}
 	}
 
 	@FXML
-	private void spreadDown(ActionEvent event) throws IOException {
+	private void spreadDown(ActionEvent event){
 		catalogueManager.previousSpread();
 		updateSpreadView();
 	}
 
 	@FXML
-	private void spreadUp(ActionEvent event) throws IOException {
+	private void spreadUp(ActionEvent event) {
 		catalogueManager.nextSpread();
 		updateSpreadView();
 	}
-	
+
 	private void updateFile(final File file){
 		catalogueManager.setFile(file);
 		menu_file_save.setDisable(file==null);
 		info_catalogue_filename.setText(file != null ? file.getName() : "");
 	}
-	
+
+	private void updateInfoPanel() {
+		info_articles.setText(Integer.toString(articleManager.getArticleCount()));
+		info_catalogue_chapters.setText(Integer.toString(catalogue.getChaptersCount()));
+		info_catalogue_pages.setText(Integer.toString(catalogue.getPagesCount()));
+		info_catalogue_groups.setText(Integer.toString(catalogue.getGroupsCount()));
+		info_catalogue_articles.setText(Integer.toString(catalogue.getArticlesCount()));
+	}
+
 	private void updateMasterData() {
 		menu_masterdata_clear.setDisable(articleManager.getArticleCount()==0);
 		updateInfoPanel();
+	}
+
+	private void updatePagesView() {
+		catalogue_pages.getChildren().clear();
+		catalogue_pages.getChildren().add(new CatalogueUi(catalogue));
+	}
+	
+	private void updateSelectionInfo() {
+		String selectionInfo = "";
+		for (final ICatalogueUiItem item : selection) {
+			selectionInfo += item + "\r\n";
+		}
+		info_selection.setText(selectionInfo);
+	}
+	
+	private void updateSpreadView() {
+
+		//final CataloguePageUi leftPage = GuiUtilities.createPageUi()
+				
+		final CataloguePageUi leftPage = new CataloguePageUi(catalogueManager.getCurrentLeftPage());
+		left_page.getChildren().clear();
+		left_page.getChildren().add(leftPage);
+		//System.out.println("UPDATE");
+		if(leftPage.getGroups()!=null) {
+			System.out.println(spread_view.getHeight());
+			leftPage.getGroups().setPrefHeight(Math.min(leftPage.getGroups().getItems().size() * 115, spread_view.getHeight()-50));
+		}
+		//leftPage.getGroups().setPrefHeight(Math.min(leftPage.getGroups().getItems().size() * 115, left_page.getHeight()));
+		//leftPage.getList().setPrefHeight(arg0);
+
+		final CataloguePageUi rightPage = new CataloguePageUi(catalogueManager.getCurrentRightPage());
+		right_page.getChildren().clear();
+		right_page.getChildren().add(rightPage);
 	}
 }

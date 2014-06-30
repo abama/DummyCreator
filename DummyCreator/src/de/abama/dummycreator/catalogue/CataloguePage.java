@@ -23,7 +23,17 @@ public class CataloguePage implements ICatalogueItem {
 	private CatalogueChapter chapter;
 	
 	private Image image = null;
+	
+	public CataloguePage(Catalogue catalogue){
+		setCatalogue(catalogue);
+	}
+	
+	public CataloguePage(Catalogue catalogue, CataloguePage original){
+		setCatalogue(catalogue);
+		groups.addAll(original.groups);
+	}	
 
+	// Kopierkonstruktor
 	public CatalogueGroup add(final CatalogueGroup group){
 		group.setPage(this);
 		groups.add(group);

@@ -14,6 +14,8 @@ import javafx.scene.layout.Pane;
 
 public class CatalogueArticleUi extends HBox implements ICatalogueUiItem {
 	
+	private static final long serialVersionUID = -5112012174320058912L;
+
 	private CatalogueArticle article;
 	
 	@FXML

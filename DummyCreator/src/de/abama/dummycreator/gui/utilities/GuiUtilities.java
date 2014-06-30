@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -108,5 +109,33 @@ public class GuiUtilities {
 
         scene.setRoot(vb);
 		return stage;
+	}
+	
+	public static ObservableList<ListArticleUi> createArticleListGroupEntries(final Collection<ListArticle> articles, boolean loadImages) {
+		List<ListArticleUi> list = new ArrayList<ListArticleUi>();
+		
+		//TODO Progress Window
+			
+		//final ProgressWindow progressWindow = new ProgressWindow("Artikel importieren", "",0,articles.size());
+		//progressWindow.show();
+		
+		//int i=0;
+			
+		for(final ListArticle article : articles){
+			//i++;
+			//progressWindow.setProgress(i);
+			try {
+				list.add(createArticleListEntry(article, loadImages));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		ObservableList<ListArticleUi> observableList = FXCollections.observableList(list);
+		
+		//progressWindow.close();
+		
+		return observableList;
 	}
 }

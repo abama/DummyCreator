@@ -4,29 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.image.Image;
-import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.constants.SU;
 
 public class CatalogueArticle implements ICatalogueItem {
 
 	private static final long serialVersionUID = 4624798489378228851L;
-
-	private ListArticle article = null;
 	
 	private CatalogueGroup group;
 	
+	private String number;
+	
+	// Kopierkonstruktor
 	public CatalogueArticle(CatalogueArticle original) {
 		super();
-		this.article = original.article;
-	}
-
-	public CatalogueArticle(ListArticle original) {
-		super();
-		this.article = original;
+		this.number = original.number;
 	}	
 	
-	
+	public CatalogueArticle(String number) {
+		this.number = number;
+	}
+
 	@Override
 	public void add(ICatalogueItem selection) {
 		// Hier kann nichts hinzugefügt werden
@@ -37,24 +36,20 @@ public class CatalogueArticle implements ICatalogueItem {
 		// Hier kann nichts hinzugefügt werden
 	}
 
-	public ListArticle getArticle() {
-		return article;
-	}
-
 	public String getDescription(){
-		return article.getDescription();
+		return ArticleManager.getInstance().get(number).getDescription();
 	}
 
 	public String getDescription1() {
-		return article.getDescription2();
+		return ArticleManager.getInstance().get(number).getDescription2();
 	}
 
 	public String getDescription2() {
-		return article.getDescription2();
+		return ArticleManager.getInstance().get(number).getDescription2();
 	}
 	
 	public String getDescription3() {
-		return article.getDescription3();
+		return ArticleManager.getInstance().get(number).getDescription3();
 	}
 
 	public CatalogueGroup getGroup(){
@@ -66,15 +61,15 @@ public class CatalogueArticle implements ICatalogueItem {
 	}
 	
 	public String getGroupSignature(){
-		return article.getTitle()+article.getDescription1();
+		return ArticleManager.getInstance().get(number).getGroupSignature();
 	}
 	
 	public Image getImage(boolean load) {
-		return article.getImage(load);
+		return ArticleManager.getInstance().get(number).getImage(load);
 	}
 	
 	public String getNumber(){
-		return article.getNumber();
+		return ArticleManager.getInstance().get(number).getNumber();
 	}
 
 	public CataloguePage getPage(){
@@ -90,19 +85,19 @@ public class CatalogueArticle implements ICatalogueItem {
 	}
 
 	public float getSinglePrice() {
-		return article.getSinglePrice();
+		return ArticleManager.getInstance().get(number).getSinglePrice();
 	}
 	
 	public SU getSu() {
-		return article.getSu();
+		return ArticleManager.getInstance().get(number).getSu();
 	}
 
 	public float getSuPrice() {
-		return article.getSuPrice();
+		return ArticleManager.getInstance().get(number).getSuPrice();
 	}
 	
 	public String getTitle() {
-		return article.getTitle();
+		return ArticleManager.getInstance().get(number).getTitle();
 	}
 	
 	@Override
@@ -145,7 +140,7 @@ public class CatalogueArticle implements ICatalogueItem {
 	}
 
 	public String getCurrency() {
-		return article.getCurrency();
+		return ArticleManager.getInstance().get(number).getCurrency();
 	}
 
 	public int getChapterNumber() {

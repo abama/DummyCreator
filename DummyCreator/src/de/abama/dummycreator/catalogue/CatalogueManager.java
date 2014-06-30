@@ -64,13 +64,13 @@ public class CatalogueManager {
 	}
 	
 	public CataloguePage getCurrentLeftPage() {
-		if(currentPage == null) return new CataloguePageStub();
+		if(currentPage == null) return new CataloguePageStub(catalogue);
 		if(currentPage.getNumber() %2 != 0) return catalogue.getPage(currentPage.getNumber()-1);
 		else return currentPage;
 	}
 
 	public CataloguePage getCurrentRightPage() {
-		if(currentPage == null) return new CataloguePageStub();
+		if(currentPage == null) return new CataloguePageStub(catalogue);
 		if(currentPage.getNumber() %2 != 1) return catalogue.getPage(currentPage.getNumber()+1);
 		else return currentPage;
 	}
@@ -100,7 +100,7 @@ public class CatalogueManager {
 			//System.out.println("Page: " + page);
 			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
 			//System.out.println("Group: " + group);
-			group.add(new CatalogueArticle(article));
+			group.add(new CatalogueArticle(article.getNumber()));
 		}
 		
 		currentPage = catalogue.getFirstPage();
@@ -190,5 +190,10 @@ public class CatalogueManager {
 	public String serialize(){
 		return null;
 		//TODO
+	}
+
+
+	public CataloguePage getCurrentPage() {
+		return currentPage;
 	}
 }

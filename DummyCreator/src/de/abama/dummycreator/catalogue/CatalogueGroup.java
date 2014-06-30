@@ -17,17 +17,16 @@ public class CatalogueGroup implements  ICatalogueItem {
 	private CataloguePage page;
 
 	public String getGroupSignature(){
-		if(articles.size()!=0) return articles.get(0).getArticle().getGroupSignature();
+		if(articles.size()!=0) return articles.get(0).getGroupSignature();
 		return ("Leere Artikelgruppe");
 		}
 	
 	public CatalogueGroup(CataloguePage page){};
 	
+	// Kopierkonstruktor
 	public CatalogueGroup(CatalogueGroup original){
 		super();
-		for(CatalogueArticle article : original.articles){
-			add(new CatalogueArticle(article));
-		}
+		articles.addAll(original.articles);
 	}
 	
 	public CatalogueArticle add(final CatalogueArticle article){

@@ -21,6 +21,8 @@ import javafx.scene.layout.AnchorPane;
 
 public class CatalogueUi extends AnchorPane implements ICatalogueUiItem {
 	
+	private static final long serialVersionUID = 1715415559808348020L;
+
 	private Catalogue catalogue = null;
 	
 	@SuppressWarnings("unused")

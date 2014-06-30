@@ -29,6 +29,8 @@ import javafx.scene.layout.HBox;
 
 public class CatalogueGroupUi extends HBox implements ICatalogueUiItem {
 	
+	private static final long serialVersionUID = 7766655443921809968L;
+
 	@SuppressWarnings("unused")
 	private CatalogueManager catalogueManager = CatalogueManager.getInstance();
 	

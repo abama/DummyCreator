@@ -22,6 +22,8 @@ import javafx.scene.layout.VBox;
 
 public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 		
+	private static final long serialVersionUID = -338695967450729330L;
+
 	private ApplicationUI controller = ControllerContext.getInstance().getMainController();
 	
 	@FXML
