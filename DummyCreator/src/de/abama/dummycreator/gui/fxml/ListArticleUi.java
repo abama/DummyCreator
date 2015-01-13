@@ -50,7 +50,7 @@ public class ListArticleUi extends HBox implements ICatalogueUiItem {
         	if(loadImage) this.setImage(article.getImage(true));
         	this.number.setText(String.valueOf(article.getNumber()));
         	this.title.setText(article.getTitle());
-        	this.description.setText(String.valueOf(article.getDescription()));
+        	this.description.setText(String.valueOf(article.getFullDescription()));
     		
         } catch (IOException exception) {
             throw new RuntimeException(exception);

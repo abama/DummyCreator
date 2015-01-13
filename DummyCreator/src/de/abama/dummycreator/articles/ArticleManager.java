@@ -31,8 +31,17 @@ public class ArticleManager {
 		return addedArticles;
 	}
 
-	public ListArticle getOrCreate(final ListArticle article){
-		if(!articles.containsKey(article.getNumber())) articles.put(article.getNumber(), article);
+	public ListArticle getOrCreate(ListArticle article){
+		ListArticle outputArticle;
+		if(!articles.containsKey(article.getNumber())) {
+			outputArticle = article;
+			articles.put(article.getNumber(), article);
+		} else {
+			outputArticle = articles.get(article.getNumber());
+			outputArticle.setPageNumber(article.getPageNumber());
+			outputArticle.setGroupIndex(article.getGroupIndex());
+		}
+		
 		return articles.get(article.getNumber());
 	}
 	
@@ -48,8 +57,16 @@ public class ArticleManager {
 		return new ArrayList<String>(articles.keySet());
 	}
 
-	public List<ListArticle> getArticles() {
-		return new ArrayList<ListArticle>(articles.values());
+	public List<ListArticle> getArticles() {		
+		List<ListArticle> result = new ArrayList<ListArticle>();
+		for(final String key : articles.keySet()){
+			final ListArticle article = articles.get(key);
+			//TODO Achtung hier werden alle Artikel weggefiltert, die mal in den Katalog gezogen wurden
+			if(article.getOccurencies() == 0) result.add(article);
+		}
+		return result;
+		
+		
 	}
 
 	public List<ListArticle> loadCsv(final File file) {
@@ -61,7 +78,13 @@ public class ArticleManager {
 	}
 	
 	public Collection<ListArticle> getAll() {
-		return articles.values();
+		List<ListArticle> result = new ArrayList<ListArticle>();
+		for(final String key : articles.keySet()){
+			final ListArticle article = articles.get(key);
+			//TODO Achtung hier werden alle Artikel weggefiltert, die mal in den Katalog gezogen wurden
+			if(article.getOccurencies() == 0) result.add(article);
+		}
+		return result;
 	}
 	
 	public List<ListArticle> getByDescription(String text){
@@ -77,7 +100,8 @@ public class ArticleManager {
 					break;
 				}
 			}
-			if(match) result.add(article);
+			//TODO Achtung hier werden alle Artikel weggefiltert, die mal in den Katalog gezogen wurden
+			if(match && article.getOccurencies() == 0) result.add(article);
 		}
 		return result;
 	}
@@ -101,7 +125,8 @@ public class ArticleManager {
 		List<ListArticle> result = new ArrayList<ListArticle>();
 		for(final String key : articles.keySet()){
 			if(key.contains(number)){
-				result.add(articles.get(key));
+				final ListArticle article = articles.get(key);
+				result.add(article);
 			}
 		}
 		return result;

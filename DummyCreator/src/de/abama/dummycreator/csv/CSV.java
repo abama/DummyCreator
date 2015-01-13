@@ -33,7 +33,8 @@ public class CSV {
 			final String value = getField(row, headings.indexOf(heading));
 			return value;
 		}
-		return null;
+		// TODO Besser null?
+		return "";
 	}
 
 	public List<String> getHeadings(){

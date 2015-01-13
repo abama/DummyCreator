@@ -43,6 +43,7 @@ public class CataloguePage implements ICatalogueItem {
 	@Override
 	public void add(ICatalogueItem item) {
 		
+		// Versuchen, als Gruppe einzufügen
 		try {
 			add((CatalogueGroup) item);
 			return;
@@ -50,6 +51,7 @@ public class CataloguePage implements ICatalogueItem {
 		catch(final Exception e){
 			System.out.println("Objekt kann nicht eingefügt werden");
 		}
+		// Sonst als Artikel versuchen
 		try {
 			final CatalogueArticle article = (CatalogueArticle) item;
 			final CatalogueGroup group = getOrCreateGroup(article.getGroupSignature());
@@ -171,5 +173,11 @@ public class CataloguePage implements ICatalogueItem {
 
 	public void addGroups(List<CatalogueGroup> groups) {
 		for(final CatalogueGroup item : groups) add(item);
+	}
+
+	public void clear() {
+		for(final CatalogueGroup group : groups) {
+			group.clear();
+		}
 	}
 }

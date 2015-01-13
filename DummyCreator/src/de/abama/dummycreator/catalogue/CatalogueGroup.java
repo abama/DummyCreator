@@ -3,6 +3,7 @@ package de.abama.dummycreator.catalogue;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.gui.image.ImageResource;
 import javafx.scene.image.Image;
 
@@ -35,16 +36,26 @@ public class CatalogueGroup implements  ICatalogueItem {
 	}
 	
 	public CatalogueArticle add(final CatalogueArticle article){
-		if(!articles.contains(article)) {
+		if(!contains(article)) {
 			System.out.println("Füge Artikel hinzu: " + article.getNumber());
 			article.setGroup(this);
 			articles.add(article);
+			ArticleManager.getInstance().get(article.getNumber()).incrementOccurencies();
 		}
 		return article;
 	}
 	
+	public boolean contains(final CatalogueArticle article) {
+		for(final CatalogueArticle catalogueArticle : articles) {
+			if(catalogueArticle.getNumber().equals(article.getNumber())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String getDescription() {
-		if(articles.size()!=0) return articles.get(0).getDescription1()+articles.get(0).getDescription2();
+		if(articles.size()!=0) return articles.get(0).getDescription();
 		return ("keine Beschreibung verfügbar");
 	}
 	
@@ -145,5 +156,11 @@ public class CatalogueGroup implements  ICatalogueItem {
 			rows.add(article.serialize());
 		}
 		return rows;
+	}
+
+	public void clear() {
+		for(final CatalogueArticle article : articles) {
+			ArticleManager.getInstance().get(article.getNumber()).decrementOccurencies();
+		}
 	}
 }

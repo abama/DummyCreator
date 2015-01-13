@@ -38,7 +38,7 @@ public class CatalogueArticle implements ICatalogueItem {
 	}
 
 	public String getDescription(){
-		return ArticleManager.getInstance().get(number).getDescription();
+		return ArticleManager.getInstance().get(number).getFullDescription();
 	}
 
 	public String getDescription1() {
@@ -130,13 +130,11 @@ public class CatalogueArticle implements ICatalogueItem {
 		row.add(getDescription1());
 		row.add(getDescription2());
 		row.add(getDescription3());
-		row.add(getDescription2());
 		row.add(getSu().singular());
 		row.add(Configuration.getInstance().numberFormat.format(getSinglePrice()));
 		row.add(getCurrency());
 		row.add(Configuration.getInstance().numberFormat.format(getSuPrice()));
 		row.add(getCurrency());
-		
 		return row;
 	}
 

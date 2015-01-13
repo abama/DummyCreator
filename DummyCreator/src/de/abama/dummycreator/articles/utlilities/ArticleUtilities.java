@@ -15,8 +15,8 @@ public class ArticleUtilities {
 	public static List<ListArticle> createListArticles(final CSV csv){
 		List<ListArticle> articles = new ArrayList<ListArticle>();
 		for(int i = 0; i<csv.getRowCount();i++){
+			final ListArticle article = new ListArticle();
 			try {
-				final ListArticle article = new ListArticle();
 				article.setPage(csv.getField(i, "Seite"));
 				article.setGroup(csv.getField(i, "Gruppe"));
 				article.setNumber(csv.getField(i, "Artikelnummer"));
@@ -27,10 +27,10 @@ public class ArticleUtilities {
 				article.setSinglePrice(Float.parseFloat(csv.getField(i, "Einzelpreis (Kat)").replace(",", ".")));
 				article.setCurrency(csv.getField(i, "PreisEinheit"));
 				article.setSuPrice(Float.parseFloat(csv.getField(i, "VE-Preis (Kat)").replace(",", ".")));
-				articles.add(article);
 			} catch(final Exception e){
-				System.out.println("Artikel konnte nicht angelegt werden: " + csv.getRow(i));
+				System.out.println("Artikel ist fehlerhaft oder unvollständig: " + csv.getRow(i));
 			}
+			articles.add(article);
 		}
 		return articles;
 	}

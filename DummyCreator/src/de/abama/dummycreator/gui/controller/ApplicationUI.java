@@ -309,8 +309,10 @@ public class ApplicationUI {
 	@FXML
 	private void saveFileAs(ActionEvent event) {
 		final FileChooser fileChooser = new FileChooser();
-		final File initialDirectory = catalogueManager.getFile().getParentFile();
-		if(catalogueManager.getFile()!=null) fileChooser.setInitialDirectory(initialDirectory);
+		try {
+			final File initialDirectory = catalogueManager.getFile().getParentFile();
+			if(catalogueManager.getFile()!=null) fileChooser.setInitialDirectory(initialDirectory);
+		} catch(final NullPointerException e) {}
 		final File file = fileChooser.showSaveDialog(null);
 		if (file != null) {
 			updateFile(file);
@@ -320,13 +322,15 @@ public class ApplicationUI {
 
 	@FXML
 	private void searchAll(ActionEvent event) {
-		search_result.setItems(GuiUtilities.createArticleListGroupEntries(articleManager.getAll(), false));
+		search_result.setItems(GuiUtilities.createArticleListGroupEntries(articleManager.getAll(), true));
 	}
 
 	@FXML
 	private void searchByDescription(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
-			final List<ListArticle> articles = articleManager.getByDescription(search_by_description.getText());
+			final String searchTerm = search_by_description.getText();
+			System.out.println("Suche nach: " + searchTerm);
+			final List<ListArticle> articles = articleManager.getByDescription(searchTerm);
 			search_result.setItems(GuiUtilities.createArticleListGroupEntries(articles, true));
 			search_by_description.clear();
 		}
@@ -421,10 +425,13 @@ public class ApplicationUI {
 		final CataloguePageUi rightPage = new CataloguePageUi(catalogueManager.getCurrentRightPage());
 		right_page.getChildren().clear();
 		right_page.getChildren().add(rightPage);
+		if(rightPage.getGroups()!=null) {
+			//System.out.println(spread_view.getHeight());
+			rightPage.getGroups().setPrefHeight(Math.min(rightPage.getGroups().getItems().size() * 115, spread_view.getHeight()-50));
+		}
 	}
 
 	public void setSelection(List<ICatalogueItem> items) {
-		System.out.println("POING");
 		selection = items;
 		catalogueManager.setInsertionPoint(items.get(items.size()-1));
 		updateSelectionInfo();

@@ -96,11 +96,16 @@ public class CatalogueManager {
 		catalogue.setFirstPage(articles.get(0).getPageNumber());
 		
 		for(final ListArticle article : articles){
-			final CataloguePage page = catalogue.getOrCreatePage(article.getPageNumber());
-			//System.out.println("Page: " + page);
-			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
-			//System.out.println("Group: " + group);
-			group.add(new CatalogueArticle(article.getNumber()));
+			try {
+				final CataloguePage page = catalogue.getOrCreatePage(article.getPageNumber());
+				//System.out.println("Page: " + page);
+				final CatalogueGroup group = page.getOrCreateGroup(article.getGroupIndex());
+				//System.out.println("Group: " + group);
+				group.add(new CatalogueArticle(article.getNumber()));
+			} catch(final Exception e) {
+				System.out.println("Artikel konnte keiner Seite/Gruppe zugeordnet werden");
+				// TODO Artikel ohne Gruppenzuweisung zulassen
+			}
 		}
 		
 		currentPage = catalogue.getFirstPage();
@@ -156,7 +161,7 @@ public class CatalogueManager {
 		csv.addRows(catalogue.serialize());
 				
 		try {
-			FileUtils.write(file, csv.serialize());//, "UTF-16LE");
+			FileUtils.write(file, csv.serialize(), "UTF-16");
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();

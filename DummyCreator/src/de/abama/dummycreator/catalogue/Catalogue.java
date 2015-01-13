@@ -33,7 +33,11 @@ public class Catalogue implements ICatalogueItem {
 	}
 	
 	public CataloguePage removePage(final int number){
-		try { pages.remove(getPage(number)); } catch(Exception e) {};
+		try {
+			CataloguePage page = getPage(number);
+			page.clear();
+			pages.remove(page); 
+		} catch(Exception e) {};
 		return getPage(number);
 	}
 	

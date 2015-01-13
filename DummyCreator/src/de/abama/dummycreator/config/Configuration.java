@@ -21,6 +21,7 @@ public class Configuration {
 	
 	//public static String imageBasePath = "file://abamasrv/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-PNG-S/";
 	public String imageBasePath = "file:/Volumes/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-PNG-S/";
+	public String imageArchivePath = "file:/Volumes/Marketing/Bilder/Produktbilder/Einzelbilder/RGB-JPG-S-ARCHIV/";
 	
 	public boolean loadImages = false;
 

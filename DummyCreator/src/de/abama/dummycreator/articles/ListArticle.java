@@ -15,12 +15,15 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	protected String description1 = "Beschreibung1";
 	protected String description2 = "Beschreibung2";
 	protected String description3 = "Beschreibung3";
-	protected char groupIndex;
+	
 
 	protected Image image = null;
 
 	protected String number = "Artikelnummer";
+	
+	protected int occurencies = 0;
 	protected int pageNumber;
+	protected char groupIndex;
 
 	protected float singlePrice;
 	protected SU su = SU.PIECE;
@@ -59,7 +62,7 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 		return currency;
 	}
 
-	public String getDescription() {
+	public String getFullDescription() {
 		return description1 + " " + description2 + " " + description3;
 	}
 
@@ -76,7 +79,7 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	}
 
 	public String getFullString() {
-		return title + " " + getDescription();
+		return title + " " + getFullDescription();
 	}
 
 	public char getGroupIndex() {
@@ -84,7 +87,7 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	}
 
 	public String getGroupSignature() {
-		return title + description1;
+		return title + description1 + singlePrice;
 	}
 
 	public Image getImage(boolean load) {
@@ -116,6 +119,10 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 
 	public String getTitle() {
 		return title;
+	}
+	
+	public void incrementOccurencies() {
+		occurencies += 1;
 	}
 
 	public void loadImage() {
@@ -163,6 +170,10 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 	public void setPage(String page) throws Exception {
 		this.pageNumber = Integer.parseInt(page);
 	}
+	
+	public void setPageNumber(int page) {
+		this.pageNumber = page;
+	}
 
 	public void setPageNumber(String page) throws Exception {
 		this.pageNumber = Integer.parseInt(page);
@@ -186,5 +197,17 @@ public class ListArticle implements Comparable<ListArticle>, Serializable {
 
 	public String toString() {
 		return "Artikel " + getNumber();
+	}
+
+	public int getOccurencies() {
+		return occurencies;
+	}
+
+	public void decrementOccurencies() {
+		occurencies -= 1;
+	}
+
+	public void setGroupIndex(char groupIndex) {
+		this.groupIndex = groupIndex;		
 	}
 }

@@ -1,6 +1,8 @@
 package de.abama.dummycreator.gui.fxml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
@@ -106,14 +108,32 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	*/
 	
 	
+	@SuppressWarnings("unchecked")
 	@FXML
 	private void dragDropped(DragEvent event) throws IOException{
-		//System.out.println("Drop.");
-
-		controller.dropItems(this);
-		controller.removeSelection();
-		//controller.setSelection(items);
-		event.setDropCompleted(true);
+				
+		List<ICatalogueItem> items = null;
+		
+		if(event.getDragboard().hasContent(ControllerContext.catalogueGroupFormat)){
+			items = (List<ICatalogueItem>) event.getDragboard().getContent(ControllerContext.catalogueGroupFormat);
+		}
+		else if(event.getDragboard().hasContent(ControllerContext.catalogueArticleFormat)) {
+			items = (List<ICatalogueItem>) event.getDragboard().getContent(ControllerContext.catalogueArticleFormat);
+		}
+		
+		if(items!=null){
+			
+			getPage().addAll(items);
+			
+			if(event.getTransferMode() == TransferMode.MOVE) {
+				((CataloguePageUi) event.getGestureSource()).removeSelection();
+			}
+			final List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
+			selection.addAll(items);
+			controller.setSelection(selection);
+			controller.updateUiViews();
+			event.setDropCompleted(true);
+		}
 		event.consume();
 	}
 	
@@ -133,7 +153,18 @@ public class CataloguePageThumbUi extends VBox implements ICatalogueUiItem {
 	
 	@FXML 
 	private void dragOver(DragEvent event){
-		event.acceptTransferModes(TransferMode.MOVE);
+		if(event.getGestureSource()!=this){
+			if(event.getDragboard().hasContent(ControllerContext.catalogueGroupFormat))
+				event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+			else if(event.getDragboard().hasContent(ControllerContext.catalogueArticleFormat))
+				event.acceptTransferModes(TransferMode.LINK);
+		}
+		event.consume();
+	}
+	
+	@FXML 
+	private void dragDone(DragEvent event) throws IOException{
+		System.out.println("Drag done");
 		event.consume();
 	}
 	

@@ -24,9 +24,9 @@
             <Insets bottom="5.0" />
          </VBox.margin>
       </HBox>
-      <AnchorPane fx:id="page" onMouseClicked="#mouseClick" onDragDropped="#dragDropped" onDragEntered="#dragEntered" onDragExited="#dragExited" onDragOver="#dragOver" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+      <AnchorPane fx:id="page" onDragDropped="#dragDropped" onDragEntered="#dragEntered" onDragExited="#dragExited" onDragOver="#dragOver" onMouseClicked="#mouseClick" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
          <children>
-             	<ListView fx:id="groups" onDragDetected="#dragDetected" onKeyReleased="#listSelection" onMouseReleased="#listSelection" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+             	<ListView fx:id="groups" onDragDetected="#dragDetected" onKeyReleased="#listSelection" onMouseReleased="#listSelection" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>
