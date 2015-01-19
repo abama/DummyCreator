@@ -103,6 +103,7 @@ public class CatalogueArticle implements ICatalogueItem {
 	
 	@Override
 	public ICatalogueItem remove() {
+		ArticleManager.getInstance().get(number).decrementOccurencies();
 		return this.getParent().remove(this);
 	}
 

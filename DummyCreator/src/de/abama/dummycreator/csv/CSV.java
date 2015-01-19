@@ -90,6 +90,7 @@ public class CSV {
 		for(final String field : getHeadings()){
 			content.append(field+sep);
 		}
+		content.append(br);
 		for(final List<String> row : getRows()){
 			for(final String field : row){
 				content.append(field+sep);

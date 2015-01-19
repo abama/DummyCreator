@@ -251,7 +251,20 @@
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
                                                 </Button>
-                                                <Button layoutX="10.0" layoutY="450.0" mnemonicParsing="false" prefWidth="120.0" text="&lt;&lt; Artikel" />
+                                                <Button layoutX="10.0" layoutY="450.0" mnemonicParsing="false" prefWidth="120.0" text="&lt;&lt; Artikel">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin></Button>
+                                                <CheckBox fx:id="auto_grouping" mnemonicParsing="false" onAction="#switchAutoGrouping" text="Auto-Gruppierung">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
+                                                <CheckBox fx:id="unused_articles" mnemonicParsing="false" onAction="#switchShowOnlyUnusedArticles" text="Nur unbenutzte">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
                                              </children>
                                           </VBox>
                                        </children>

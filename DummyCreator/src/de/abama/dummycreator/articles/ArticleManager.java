@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import de.abama.dummycreator.articles.utlilities.ArticleUtilities;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 import de.abama.dummycreator.csv.CsvFileUtility;
 
@@ -81,8 +82,16 @@ public class ArticleManager {
 		List<ListArticle> result = new ArrayList<ListArticle>();
 		for(final String key : articles.keySet()){
 			final ListArticle article = articles.get(key);
-			//TODO Achtung hier werden alle Artikel weggefiltert, die mal in den Katalog gezogen wurden
-			if(article.getOccurencies() == 0) result.add(article);
+
+			if(Configuration.getInstance().showOnlyUnusedArticles) {
+				if(article.getOccurencies() == 0) result.add(article);
+				//System.out.println("Suche nicht verwendete Artikel");
+			}
+				
+			else {
+				//System.out.println("Suche alle Artikel");
+				result.add(article);
+			}
 		}
 		return result;
 	}
@@ -100,8 +109,11 @@ public class ArticleManager {
 					break;
 				}
 			}
-			//TODO Achtung hier werden alle Artikel weggefiltert, die mal in den Katalog gezogen wurden
-			if(match && article.getOccurencies() == 0) result.add(article);
+
+			if(Configuration.getInstance().showOnlyUnusedArticles)
+				if(match && article.getOccurencies() == 0) result.add(article);
+			else
+				result.add(article);
 		}
 		return result;
 	}
@@ -110,7 +122,9 @@ public class ArticleManager {
 		List<ListArticle> result = new ArrayList<ListArticle>();
 		for(final ListArticle article : articles.values()){
 			if(article.getGroupSignature().equals(articles.get(articleNumber).getGroupSignature())){
-				result.add(article);
+				if(Configuration.getInstance().showOnlyUnusedArticles)
+					if(article.getOccurencies() == 0) result.add(article);
+				else result.add(article);
 			}
 		}
 		return result;

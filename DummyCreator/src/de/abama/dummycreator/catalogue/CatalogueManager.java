@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 
 import de.abama.dummycreator.articles.ArticleManager;
 import de.abama.dummycreator.articles.ListArticle;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.csv.CSV;
 
 public class CatalogueManager {
@@ -43,11 +44,14 @@ public class CatalogueManager {
 	public void addArticles(List<CatalogueArticle> articles) {
 		for(final CatalogueArticle article : articles){
 			final CataloguePage page = getOrCreatePage();
-			final CatalogueGroup group = page.getOrCreateGroup(article.getGroupSignature());
+			CatalogueGroup group;
+			if(Configuration.getInstance().autoGrouping)
+				group = page.getOrCreateGroup(article.getGroupSignature());
+			else
+				group = page.createGroup();
 			//System.out.println("Group: " + group);
 			group.add(new CatalogueArticle(group, article));
 		}
-		
 	}
 
 	public CataloguePage addPage(CataloguePage previousPage) {

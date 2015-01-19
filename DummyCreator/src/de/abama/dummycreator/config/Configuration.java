@@ -15,7 +15,7 @@ public class Configuration {
 	}
 	
 	//public static String articleListPath = "file://abamasrv/Marketing/Artikel/Listen/Katalog/";
-	public String articleListPath = "file:/Volumes/Marketing/Artikel/Listen/Kataloge/";
+	public String articleListPath = "file:/Volumes/Marketing/Artikel/Listen/Kataloge/SALE/";
 		
 	public String br = "\r\n";
 	
@@ -27,6 +27,9 @@ public class Configuration {
 
 	public Locale locale = new Locale("de", "DE");
 	
+	public boolean autoGrouping = true;
+	
+	public boolean showOnlyUnusedArticles = false;
 	
 	public NumberFormat numberFormat = new DecimalFormat(",#00.00");
 	

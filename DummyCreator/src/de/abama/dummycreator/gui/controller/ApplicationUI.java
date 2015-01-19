@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -61,7 +62,7 @@ public class ApplicationUI {
 	protected RestrictiveTextInput search_by_number;
 
 	protected List<ICatalogueItem> selection = new ArrayList<ICatalogueItem>();
-
+	
 	@FXML
 	private AnchorPane catalogue_pages;
 
@@ -124,6 +125,12 @@ public class ApplicationUI {
 
 	@FXML
 	private VBox search_panel;
+	
+	@FXML
+	private CheckBox auto_grouping;
+	
+	@FXML
+	private CheckBox unused_articles;
 
 	// @FXML
 	private ListView<ListArticleUi> search_result;
@@ -192,7 +199,7 @@ public class ApplicationUI {
 				}
 			}
 		});
-		search_by_description = new RestrictiveTextInput("Beschreibung", "[0-9a-zA-Z.,:; ]");
+		search_by_description = new RestrictiveTextInput("Beschreibung", "[0-9a-zA-Z.,:; äöüßÄÖÜ]");
 		search_by_description.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -206,6 +213,9 @@ public class ApplicationUI {
 		search_panel.getChildren().add(search_by_description);
 		search_panel.getChildren().add(search_result);
 		newFile(new ActionEvent());
+		
+		auto_grouping.setSelected(configuration.autoGrouping);
+		unused_articles.setSelected(configuration.showOnlyUnusedArticles);
 	}
 
 	@FXML
@@ -257,6 +267,7 @@ public class ApplicationUI {
 		} catch (MalformedURLException | URISyntaxException e) {
 			e.printStackTrace();
 		}
+		updateMasterData();
 	}
 
 	@FXML
@@ -372,6 +383,18 @@ public class ApplicationUI {
 	private void spreadUp(ActionEvent event) {
 		catalogueManager.nextSpread();
 		updateSpreadView();
+	}
+	
+	@FXML
+	private void switchAutoGrouping(ActionEvent event){
+		configuration.autoGrouping = auto_grouping.isSelected();
+		System.out.println("Auto-Gruppierung: " + String.valueOf(configuration.autoGrouping ? "an" : "aus"));
+	}
+	
+	@FXML
+	private void switchShowOnlyUnusedArticles(ActionEvent event){
+		configuration.showOnlyUnusedArticles = unused_articles.isSelected();
+		System.out.println("Nur unbenutzte Artikel anzeigen: " + String.valueOf(configuration.showOnlyUnusedArticles ? "an" : "aus"));
 	}
 
 	private void updateFile(final File file){

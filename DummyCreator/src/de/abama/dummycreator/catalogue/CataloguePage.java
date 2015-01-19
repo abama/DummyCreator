@@ -113,11 +113,15 @@ public class CataloguePage implements ICatalogueItem {
 		}
 		if(signatures.contains(groupSignature)) 
 			return groups.get(signatures.indexOf(groupSignature));
-		
+		else
+			return createGroup();
+	}
+	
+	public CatalogueGroup createGroup(){
 		final CatalogueGroup group = this.add(new CatalogueGroup(this));
 		System.out.println("Erstelle Gruppe " + group.getIndex());
 		return group; 
-	}	
+	}
 
 	@Override
 	public ICatalogueItem getParent() {

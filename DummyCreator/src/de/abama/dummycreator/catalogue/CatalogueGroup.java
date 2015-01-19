@@ -120,6 +120,7 @@ public class CatalogueGroup implements  ICatalogueItem {
 		try {
 			System.out.println("Lösche " + catalogueItem);
 			final int index = articles.indexOf(catalogueItem);
+			ArticleManager.getInstance().get(articles.get(index).getNumber()).decrementOccurencies();
 			articles.remove(index);
 			return articles.get(index);
 		}

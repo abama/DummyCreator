@@ -24,6 +24,7 @@ import de.abama.dummycreator.catalogue.CatalogueArticle;
 import de.abama.dummycreator.catalogue.CatalogueGroup;
 import de.abama.dummycreator.catalogue.CataloguePage;
 import de.abama.dummycreator.catalogue.ICatalogueItem;
+import de.abama.dummycreator.config.Configuration;
 import de.abama.dummycreator.gui.fxml.CatalogueArticleUi;
 import de.abama.dummycreator.gui.fxml.CatalogueGroupUi;
 import de.abama.dummycreator.gui.fxml.CataloguePageThumbUi;
@@ -33,7 +34,7 @@ import de.abama.dummycreator.gui.fxml.ListArticleUi;
 public class GuiUtilities {
 	
 	public static File chooseCsvFile(final String startFolderPath) throws MalformedURLException, URISyntaxException{
-		File startDir = new File(new URI("file:/Volumes/Marketing/Artikel/Listen/Kataloge/"));
+		File startDir = new File(new URI(Configuration.getInstance().articleListPath));
 		if(!startDir.exists()) startDir = null;
         FileChooser fileChooser = new FileChooser();    
         fileChooser.setInitialDirectory(startDir);
